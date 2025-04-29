@@ -3,8 +3,6 @@
 "use client";
 
 import { ColumnDef } from "@tanstack/react-table";
-import { LeaveBalanceModel } from "@/lib/schemas/leave-balance";
-import { DataTableColumnHeader } from "@/components/leave-balance/table/data-table-column-header";
 import { Button } from "@/components/ui/button";
 import { MoreHorizontal, Pencil, Trash } from "lucide-react";
 import {
@@ -13,44 +11,42 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { Room } from "@/generated/prisma";
+import { DataTableColumnHeader } from "./data-table-column-header";
 
-export const columns: ColumnDef<LeaveBalanceModel>[] = [
+export const columns: ColumnDef<Room>[] = [
   {
-    accessorKey: "leaveType.name",
+    accessorKey: "id",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Loại nghỉ phép" />
+      <DataTableColumnHeader column={column} title="ID" />
     ),
   },
   {
-    accessorKey: "total",
+    accessorKey: "name",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tổng số ngày" />
+      <DataTableColumnHeader column={column} title="Tên phòng" />
     ),
   },
   {
-    accessorKey: "used",
+    accessorKey: "capacity",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Đã sử dụng" />
+      <DataTableColumnHeader column={column} title="Sức chứa" />
     ),
   },
   {
-    accessorKey: "remaining",
+    accessorKey: "floor",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Còn lại" />
+      <DataTableColumnHeader column={column} title="Tầng" />
     ),
   },
   {
-    accessorKey: "carried",
+    accessorKey: "status",
     header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Chuyển tiếp" />
+      <DataTableColumnHeader column={column} title="Trạng thái" />
     ),
+    cell: ({ row }) => (row.original.status ? "Hoạt động" : "Không hoạt động"),
   },
-  {
-    accessorKey: "accrued",
-    header: ({ column }) => (
-      <DataTableColumnHeader column={column} title="Tích lũy" />
-    ),
-  },
+
   {
     id: "actions",
     cell: ({ row, table }) => {

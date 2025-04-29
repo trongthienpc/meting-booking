@@ -1,12 +1,12 @@
 import { ROOMS } from "@/constants/rooms";
-import { Booking } from "@/types/booking";
+import { Booking } from "@/lib/types/booking";
 
 // Giả sử danh sách booking hiện tại trong memory:
 export const BOOKINGS: Booking[] = [
   {
     roomName: "phòng A",
-    startTime: new Date("2025-04-29T09:00:00"),
-    endTime: new Date("2025-04-29T11:00:00"),
+    startTime: new Date("2025-04-30T09:00:00"),
+    endTime: new Date("2025-04-30T11:00:00"),
   },
   {
     roomName: "phòng B",
@@ -31,7 +31,7 @@ function normalizeRoomName(name: string): string {
     A: "phòng A",
   };
 
-  const lowercasedName = name.toLowerCase().trim();
+  const lowercasedName = name?.toLowerCase().trim();
 
   // Tìm kiếm trong roomMapping
   const normalized = Object.keys(roomMapping).find((key) =>
@@ -47,6 +47,7 @@ export function isRoomAvailable(
   startTime: Date,
   durationHours: number
 ): boolean {
+  console.log("🚀 ~ roomName:", roomName);
   const normalizedRoomName = normalizeRoomName(roomName); // Chuẩn hóa tên phòng
 
   // Tính thời gian kết thúc cuộc họp mới

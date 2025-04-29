@@ -2,7 +2,7 @@ import React from "react";
 import Logo from "./Logo";
 import { validateRequest } from "@/lib/lucia";
 import Profile from "./Profile";
-import { ModeToggle } from "../mode-toggle";
+import { ModeToggle } from "../ui/mode-toggle";
 import { MobileButton } from "./Menu";
 import { NotificationBell } from "../notifications/notification-bell";
 

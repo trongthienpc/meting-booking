@@ -1,7 +1,7 @@
 "use server";
 
 import { callGemini } from "@/lib/gemini";
-import { ParsedBooking } from "@/types/parsedBooking";
+import { ParsedBooking } from "@/lib/types/parsedBooking";
 
 export async function parseBookingRequest(input: string): Promise<{
   success: boolean;
@@ -63,16 +63,24 @@ Chỉ trả lại JSON, không giải thích thêm.
       parsed = JSON.parse(sanitizedJson);
       console.log("🚀 ~ parseBookingRequest ~ parsed:", parsed);
     } catch (e) {
-      throw new Error(`Lỗi cú pháp JSON: ${e instanceof Error ? e.message : "Unknown error"}`);
+      throw new Error(
+        `Lỗi cú pháp JSON: ${e instanceof Error ? e.message : "Unknown error"}`
+      );
     }
 
     // Validate parsed data chi tiết hơn
-    if (!parsed.roomName || typeof parsed.roomName !== "string" || parsed.roomName.trim().length === 0) {
+    if (
+      !parsed.roomName ||
+      typeof parsed.roomName !== "string" ||
+      parsed.roomName.trim().length === 0
+    ) {
       throw new Error("Tên phòng không được để trống");
     }
 
     if (!parsed.startTime || isNaN(Date.parse(parsed.startTime))) {
-      throw new Error("Thời gian bắt đầu không hợp lệ hoặc không đúng định dạng ISO 8601");
+      throw new Error(
+        "Thời gian bắt đầu không hợp lệ hoặc không đúng định dạng ISO 8601"
+      );
     }
 
     // Kiểm tra thời gian bắt đầu phải sau thời gian hiện tại
@@ -82,7 +90,11 @@ Chỉ trả lại JSON, không giải thích thêm.
       throw new Error("Thời gian bắt đầu phải sau thời gian hiện tại");
     }
 
-    if (typeof parsed.durationHours !== "number" || parsed.durationHours <= 0 || parsed.durationHours > 24) {
+    if (
+      typeof parsed.durationHours !== "number" ||
+      parsed.durationHours <= 0 ||
+      parsed.durationHours > 24
+    ) {
       throw new Error("Thời lượng phải là số dương và không quá 24 giờ");
     }
 

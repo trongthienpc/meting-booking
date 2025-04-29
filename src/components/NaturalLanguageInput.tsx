@@ -1,12 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { parseBookingRequest, simpleAction } from "@/app/actions/parseBooking";
-import { ParsedBooking } from "@/types/parsedBooking";
+import { parseBookingRequest } from "@/app/actions/parseBooking";
+import { ParsedBooking } from "@/lib/types/parsedBooking";
 import { checkAvailability } from "@/app/actions/checkAvailability";
 
 export default function NaturalLanguageInput() {
-  const [input, setInput] = useState("Đặt cho tôi phòng họp 1 lúc 10h ngày mai, họp khoảng 3h");
+  const [input, setInput] = useState(
+    "Đặt cho tôi phòng họp 1 lúc 10h ngày mai, họp khoảng 3h"
+  );
   const [result, setResult] = useState<ParsedBooking | null>(null);
   const [loading, setLoading] = useState(false);
   const [availability, setAvailability] = useState<{
@@ -20,21 +22,24 @@ export default function NaturalLanguageInput() {
     try {
       const parsed = await parseBookingRequest(input);
       console.log("✅ Parsed result:", parsed);
-      setResult(parsed);
-      if (parsed) {
-        const check = await checkAvailability(parsed.roomName, parsed.startTime, parsed.durationHours);
+      if (parsed.success) {
+        if (parsed.data) {
+          const data = parsed.data;
+          setResult(parsed.data);
+          const check = await checkAvailability(
+            data.roomName,
+            data.startTime,
+            data.durationHours
+          );
 
-        setAvailability(check);
+          setAvailability(check);
+        }
       }
-      setLoading(false);
     } catch (error) {
       console.error("❌ Error parsing:", error);
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const testSimple = async () => {
-    const result = await simpleAction();
-    console.log("Simple action result:", result);
   };
 
   return (
@@ -54,8 +59,6 @@ export default function NaturalLanguageInput() {
         {loading ? "Đang xử lý..." : "Phân tích yêu cầu"}
       </button>
 
-      <button onClick={testSimple}>Test Simple Action</button>
-
       {result && (
         <div className="bg-gray-100 p-4 rounded space-y-2">
           <h2 className="font-semibold text-lg">Kết quả phân tích:</h2>
@@ -63,7 +66,8 @@ export default function NaturalLanguageInput() {
             <strong>Phòng:</strong> {result.roomName}
           </p>
           <p>
-            <strong>Thời gian bắt đầu:</strong> {new Date(result.startTime).toLocaleString()}
+            <strong>Thời gian bắt đầu:</strong>{" "}
+            {new Date(result.startTime).toLocaleString()}
           </p>
           <p>
             <strong>Thời lượng:</strong> {result.durationHours} giờ
@@ -74,10 +78,14 @@ export default function NaturalLanguageInput() {
       {availability && (
         <div className="bg-yellow-100 p-4 rounded space-y-2">
           {availability.available ? (
-            <p className="text-green-700 font-semibold">Phòng họp {result?.roomName} còn trống. Bạn có thể đặt!</p>
+            <p className="text-green-700 font-semibold">
+              Phòng họp {result?.roomName} còn trống. Bạn có thể đặt!
+            </p>
           ) : (
             <>
-              <p className="text-red-700 font-semibold">Phòng họp {result?.roomName} đã có người đặt rồi.</p>
+              <p className="text-red-700 font-semibold">
+                Phòng họp {result?.roomName} đã có người đặt rồi.
+              </p>
               <p>Phòng trống khác:</p>
               <ul className="list-disc pl-5">
                 {availability.suggestions.map((room) => (

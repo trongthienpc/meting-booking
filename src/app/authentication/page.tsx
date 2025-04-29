@@ -8,7 +8,11 @@ import Login from "@/components/login";
 
 export const dynamic = "force-dynamic";
 
-const AuthenticationPage = async ({ searchParams }: { searchParams: Promise<{ redirectTo?: string }> }) => {
+const AuthenticationPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ redirectTo?: string }>;
+}) => {
   const session = await validateRequest();
   if (session?.user) {
     return redirect((await searchParams).redirectTo || "/");

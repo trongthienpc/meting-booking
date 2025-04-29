@@ -1,13 +1,22 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { createContext, useContext, useTransition, useOptimistic, useEffect } from "react";
+import {
+  createContext,
+  useContext,
+  useTransition,
+  useOptimistic,
+  useEffect,
+} from "react";
 import useSWR from "swr";
 import { toast } from "sonner";
 import { useUser } from "./user-provider";
 import { EventName } from "@/constants/channels";
 import { NotificationModel } from "@/lib/schemas/notification";
-import { deleteNotification, getNotifications, markAsRead } from "@/app/actions/notification-action";
+import {
+  deleteNotification,
+  getNotifications,
+  markAsRead,
+} from "@/app/actions/notification-action";
 import { useChannel } from "./pusher-provider";
 
 type NotificationContextType = {
@@ -20,20 +29,31 @@ type NotificationContextType = {
   mutate: () => Promise<void>;
 };
 
-const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
+const NotificationContext = createContext<NotificationContextType | undefined>(
+  undefined
+);
 
-export function NotificationProvider({ children }: { children: React.ReactNode }) {
+export function NotificationProvider({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   const [isPending, startTransition] = useTransition();
   const { user } = useUser();
-  console.log("🚀 ~ NotificationProvider ~ user:", user);
   const channel = useChannel(user ? `user-${user?.username}` : "");
+
   const {
     data: notifications = [],
     error,
     mutate,
   } = useSWR(
-    user ? ["notifications", user?.username] : null,
-    () => getNotifications(user!.username).then((res) => (res.success ? res.data : [])),
+    user?.username ? ["notifications", user?.username] : null,
+    () => {
+      if (!user?.username) return Promise.resolve([]);
+      return getNotifications(user.username).then((res) =>
+        res.success ? res.data : []
+      );
+    },
     { refreshInterval: 60000 * 5 } // Refresh every 30 seconds
   );
 
@@ -75,11 +95,23 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
     // channel.bind_global(handleAllEvents);
 
     return () => {
-      channel.unbind(EventName.UPDATE_LEAVE_REQUEST_EVENT, handleNewNotification);
-      channel.unbind(EventName.REJECT_LEAVE_REQUEST_EVENT, handleNewNotification);
-      channel.unbind(EventName.APPROVE_LEAVE_REQUEST_EVENT, handleNewNotification);
+      channel.unbind(
+        EventName.UPDATE_LEAVE_REQUEST_EVENT,
+        handleNewNotification
+      );
+      channel.unbind(
+        EventName.REJECT_LEAVE_REQUEST_EVENT,
+        handleNewNotification
+      );
+      channel.unbind(
+        EventName.APPROVE_LEAVE_REQUEST_EVENT,
+        handleNewNotification
+      );
       channel.unbind(EventName.NEW_LEAVE_REQUEST_EVENT, handleNewNotification);
-      channel.unbind(EventName.CANCEL_LEAVE_REQUEST_EVENT, handleNewNotification);
+      channel.unbind(
+        EventName.CANCEL_LEAVE_REQUEST_EVENT,
+        handleNewNotification
+      );
       // channel.unbind_global(handleAllEvents);
     };
   }, [channel, mutate]);
@@ -158,7 +190,9 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
 export function useNotification() {
   const context = useContext(NotificationContext);
   if (context === undefined) {
-    throw new Error("useNotification must be used within a NotificationProvider");
+    throw new Error(
+      "useNotification must be used within a NotificationProvider"
+    );
   }
   return context;
 }

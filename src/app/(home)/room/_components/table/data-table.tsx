@@ -23,20 +23,20 @@ import {
 } from "@/components/ui/table";
 import { DataTablePagination } from "./pagination";
 import { DataTableToolbar } from "./toolbar";
-import { LeaveBalanceModel } from "@/lib/schemas/leave-balance";
+import { Room } from "@/generated/prisma";
 
 declare module "@tanstack/react-table" {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   interface TableMeta<TData> {
-    handleEdit: (balance: LeaveBalanceModel) => void;
+    handleEdit: (balance: Room) => void;
     handleDelete: (balanceId: string) => void;
   }
 }
 interface DataTableProps {
-  data: LeaveBalanceModel[];
-  columns: ColumnDef<LeaveBalanceModel>[];
-  onEdit: (balance: LeaveBalanceModel) => void;
-  onDelete: (balanceId: string) => void;
+  data: Room[];
+  columns: ColumnDef<Room>[];
+  onEdit: (entity: Room) => void;
+  onDelete: (entityId: string) => void;
 }
 
 export function DataTable({ data, columns, onEdit, onDelete }: DataTableProps) {
@@ -45,7 +45,7 @@ export function DataTable({ data, columns, onEdit, onDelete }: DataTableProps) {
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
 
-  const table = useReactTable<LeaveBalanceModel>({
+  const table = useReactTable<Room>({
     data,
     columns,
     onSortingChange: setSorting,
