@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { parseBookingRequest } from "@/actions/parseBooking";
+import { parseBookingRequest, simpleAction } from "@/app/actions/parseBooking";
 import { ParsedBooking } from "@/types/parsedBooking";
-import { checkAvailability } from "@/actions/checkAvailability";
+import { checkAvailability } from "@/app/actions/checkAvailability";
 
 export default function NaturalLanguageInput() {
   const [input, setInput] = useState("Đặt cho tôi phòng họp 1 lúc 10h ngày mai, họp khoảng 3h");
@@ -32,6 +32,11 @@ export default function NaturalLanguageInput() {
     }
   };
 
+  const testSimple = async () => {
+    const result = await simpleAction();
+    console.log("Simple action result:", result);
+  };
+
   return (
     <div className="space-y-4 ">
       <textarea
@@ -48,6 +53,8 @@ export default function NaturalLanguageInput() {
       >
         {loading ? "Đang xử lý..." : "Phân tích yêu cầu"}
       </button>
+
+      <button onClick={testSimple}>Test Simple Action</button>
 
       {result && (
         <div className="bg-gray-100 p-4 rounded space-y-2">

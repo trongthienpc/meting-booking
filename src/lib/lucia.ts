@@ -39,6 +39,7 @@ export async function validateRequest(): Promise<{ user: User; session: Session 
   // Validate the session using Lucia
   const { user, session } = await lucia.validateSession(sessionId);
 
+  console.log("🚀 ~ validateRequest ~ user:", user);
   // If the session is invalid, clear the session cookie and return null
   if (!session) {
     // await clearSessionCookie();

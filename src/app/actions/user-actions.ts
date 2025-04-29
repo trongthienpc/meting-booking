@@ -10,7 +10,9 @@ import { redirect } from "next/navigation";
 
 export async function getUserInfo() {
   try {
-    const { user } = await validateRequest();
+    const { user, session } = await validateRequest();
+    console.log("🚀 ~ getUserInfo ~ user:", user);
+    console.log("🚀 ~ getUserInfo ~ session:", session);
     if (user) {
       return { user };
     } else {

@@ -25,13 +25,14 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
   const [isPending, startTransition] = useTransition();
   const { user } = useUser();
-  const channel = useChannel(user ? `user-${user.username}` : "");
+  console.log("🚀 ~ NotificationProvider ~ user:", user);
+  const channel = useChannel(user ? `user-${user?.username}` : "");
   const {
     data: notifications = [],
     error,
     mutate,
   } = useSWR(
-    user ? ["notifications", user.username] : null,
+    user ? ["notifications", user?.username] : null,
     () => getNotifications(user!.username).then((res) => (res.success ? res.data : [])),
     { refreshInterval: 60000 * 5 } // Refresh every 30 seconds
   );

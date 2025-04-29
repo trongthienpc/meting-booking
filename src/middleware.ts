@@ -3,7 +3,7 @@ import type { NextRequest } from "next/server";
 import logger from "./lib/logger";
 
 export function middleware(request: NextRequest) {
-  const authCookie = request.cookies.get("staff-auth-session-cookie");
+  const authCookie = request.cookies.get("meting-booking-auth-session-cookie");
   const ip = (request.headers.get("x-forwarded-for") ?? "127.0.0.1").split(",")[0].trim();
   logger.info(`Request: ${request.method} ${request.url} ${ip}`);
 

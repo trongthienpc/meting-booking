@@ -3,7 +3,15 @@
 import { callGemini } from "@/lib/gemini";
 import { ParsedBooking } from "@/types/parsedBooking";
 
-export async function parseBookingRequest(input: string): Promise<ParsedBooking> {
+export async function parseBookingRequest(input: string): Promise<{
+  success: boolean;
+  data?: {
+    roomName: string;
+    startTime: string;
+    durationHours: number;
+  };
+  error?: string;
+}> {
   if (!input?.trim()) {
     throw new Error("Input không được để trống");
   }
@@ -78,9 +86,23 @@ Chỉ trả lại JSON, không giải thích thêm.
       throw new Error("Thời lượng phải là số dương và không quá 24 giờ");
     }
 
-    return parsed;
+    return {
+      success: true,
+      data: {
+        roomName: parsed.roomName,
+        startTime: parsed.startTime,
+        durationHours: parsed.durationHours,
+      },
+    };
   } catch (error) {
-    console.error("Parse error:", error);
-    throw error instanceof Error ? error : new Error("Lỗi khi xử lý dữ liệu");
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
   }
+}
+
+export async function simpleAction() {
+  console.log("Simple action called");
+  return { test: "This is a simple test", timestamp: new Date().toISOString() };
 }
