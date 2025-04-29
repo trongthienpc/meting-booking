@@ -3,9 +3,7 @@
 import { callGemini } from "@/lib/gemini";
 import { ParsedBooking } from "@/types/parsedBooking";
 
-export async function parseBookingRequest(
-  input: string
-): Promise<ParsedBooking> {
+export async function parseBookingRequest(input: string): Promise<ParsedBooking> {
   if (!input?.trim()) {
     throw new Error("Input không được để trống");
   }
@@ -32,7 +30,6 @@ Chỉ trả lại JSON, không giải thích thêm.
   `;
 
   const geminiResponse = await callGemini(prompt);
-  console.log("🚀 ~ geminiResponse:", geminiResponse);
 
   if (geminiResponse.error) {
     throw new Error(`Lỗi khi gọi Gemini API: ${geminiResponse.error}`);
@@ -48,21 +45,37 @@ Chỉ trả lại JSON, không giải thích thêm.
     // Sanitize: chỉ loại bỏ kí tự điều khiển, giữ Unicode
     const sanitizedJson = jsonString
       .replace(/[\u0000-\u001F\u007F]/g, "")
-      .trim();
+      .trim()
+      .replace(/^\s*\{/, "{") // Loại bỏ khoảng trắng đầu dòng trước {
+      .replace(/\}\s*$/, "}"); // Loại bỏ khoảng trắng cuối dòng sau }
 
-    const parsed: ParsedBooking = JSON.parse(sanitizedJson);
+    // Parse JSON với try-catch riêng để bắt lỗi cú pháp
+    let parsed: ParsedBooking;
+    try {
+      parsed = JSON.parse(sanitizedJson);
+      console.log("🚀 ~ parseBookingRequest ~ parsed:", parsed);
+    } catch (e) {
+      throw new Error(`Lỗi cú pháp JSON: ${e instanceof Error ? e.message : "Unknown error"}`);
+    }
 
-    // Validate parsed data
-    if (!parsed.roomName || typeof parsed.roomName !== "string") {
-      throw new Error("Tên phòng không hợp lệ");
+    // Validate parsed data chi tiết hơn
+    if (!parsed.roomName || typeof parsed.roomName !== "string" || parsed.roomName.trim().length === 0) {
+      throw new Error("Tên phòng không được để trống");
     }
 
     if (!parsed.startTime || isNaN(Date.parse(parsed.startTime))) {
-      throw new Error("Thời gian bắt đầu không hợp lệ");
+      throw new Error("Thời gian bắt đầu không hợp lệ hoặc không đúng định dạng ISO 8601");
     }
 
-    if (typeof parsed.durationHours !== "number" || parsed.durationHours <= 0) {
-      throw new Error("Thời lượng không hợp lệ");
+    // Kiểm tra thời gian bắt đầu phải sau thời gian hiện tại
+    const currentTime = new Date();
+    const startTime = new Date(parsed.startTime);
+    if (startTime <= currentTime) {
+      throw new Error("Thời gian bắt đầu phải sau thời gian hiện tại");
+    }
+
+    if (typeof parsed.durationHours !== "number" || parsed.durationHours <= 0 || parsed.durationHours > 24) {
+      throw new Error("Thời lượng phải là số dương và không quá 24 giờ");
     }
 
     return parsed;

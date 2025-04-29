@@ -6,7 +6,7 @@ import { ParsedBooking } from "@/types/parsedBooking";
 import { checkAvailability } from "@/actions/checkAvailability";
 
 export default function NaturalLanguageInput() {
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState("Đặt cho tôi phòng họp 1 lúc 10h ngày mai, họp khoảng 3h");
   const [result, setResult] = useState<ParsedBooking | null>(null);
   const [loading, setLoading] = useState(false);
   const [availability, setAvailability] = useState<{
@@ -17,23 +17,23 @@ export default function NaturalLanguageInput() {
   const handleSubmit = async () => {
     setLoading(true);
     setAvailability(null);
-    const parsed = await parseBookingRequest(input);
-    setResult(parsed);
+    try {
+      const parsed = await parseBookingRequest(input);
+      console.log("✅ Parsed result:", parsed);
+      setResult(parsed);
+      if (parsed) {
+        const check = await checkAvailability(parsed.roomName, parsed.startTime, parsed.durationHours);
 
-    if (parsed) {
-      const check = await checkAvailability(
-        parsed.roomName,
-        parsed.startTime,
-        parsed.durationHours
-      );
-
-      setAvailability(check);
+        setAvailability(check);
+      }
+      setLoading(false);
+    } catch (error) {
+      console.error("❌ Error parsing:", error);
     }
-    setLoading(false);
   };
 
   return (
-    <div className="p-4 space-y-4 max-w-lg mx-auto">
+    <div className="space-y-4 ">
       <textarea
         className="w-full p-3 border rounded-md"
         rows={4}
@@ -56,8 +56,7 @@ export default function NaturalLanguageInput() {
             <strong>Phòng:</strong> {result.roomName}
           </p>
           <p>
-            <strong>Thời gian bắt đầu:</strong>{" "}
-            {new Date(result.startTime).toLocaleString()}
+            <strong>Thời gian bắt đầu:</strong> {new Date(result.startTime).toLocaleString()}
           </p>
           <p>
             <strong>Thời lượng:</strong> {result.durationHours} giờ
@@ -68,14 +67,10 @@ export default function NaturalLanguageInput() {
       {availability && (
         <div className="bg-yellow-100 p-4 rounded space-y-2">
           {availability.available ? (
-            <p className="text-green-700 font-semibold">
-              Phòng họp {result?.roomName} còn trống. Bạn có thể đặt!
-            </p>
+            <p className="text-green-700 font-semibold">Phòng họp {result?.roomName} còn trống. Bạn có thể đặt!</p>
           ) : (
             <>
-              <p className="text-red-700 font-semibold">
-                Phòng họp {result?.roomName} đã có người đặt rồi.
-              </p>
+              <p className="text-red-700 font-semibold">Phòng họp {result?.roomName} đã có người đặt rồi.</p>
               <p>Phòng trống khác:</p>
               <ul className="list-disc pl-5">
                 {availability.suggestions.map((room) => (

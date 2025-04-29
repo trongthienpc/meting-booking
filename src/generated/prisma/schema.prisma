@@ -1,0 +1,190 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum ROLE {
+  USER
+  MANAGER
+  ADMIN
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  action     String
+  entityId   String
+  entityType String
+  details    String
+  createdAt  DateTime @default(now())
+  createdBy  String?
+  user       user?    @relation(fields: [createdBy], references: [id])
+
+  @@map("audit_log")
+}
+
+model notification {
+  id        String   @id @default(uuid())
+  type      String
+  message   String
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String?
+  User      user?    @relation(fields: [userId], references: [id])
+
+  @@map("notification")
+}
+
+model session {
+  id        String   @id @default(uuid())
+  expiresAt DateTime
+  userId    String?
+  user      user?    @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Configuration {
+  id          String   @id @default(uuid())
+  name        String
+  value       String
+  status      Boolean  @default(true)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("configuration")
+}
+
+model department {
+  id          String       @id @default(uuid())
+  code        String?
+  name        String
+  status      Boolean      @default(true)
+  description String?
+  createdAt   DateTime     @default(now())
+  createdBy   String?
+  updatedAt   DateTime     @updatedAt
+  updatedBy   String?
+  branchId    String?
+  parentId    String?
+  Parent      department?  @relation("DepartmentHierarchy", fields: [parentId], references: [id])
+  Children    department[] @relation("DepartmentHierarchy")
+  Branches    branch?      @relation(fields: [branchId], references: [id])
+  Users       user[]
+
+  @@unique([name, branchId])
+  @@map("department")
+}
+
+model branch {
+  id          String       @id @default(uuid())
+  code        String?
+  name        String       @unique
+  status      Boolean      @default(true)
+  description String?
+  createdAt   DateTime     @default(now())
+  createdBy   String?
+  updatedAt   DateTime     @updatedAt
+  updatedBy   String?
+  Departments department[]
+
+  @@map("branch")
+}
+
+model user {
+  id            String            @id @default(uuid())
+  fullname      String
+  username      String            @unique
+  password      String
+  status        Boolean           @default(true)
+  createdAt     DateTime          @default(now())
+  departmentId  String?
+  avatarUrl     String?
+  level         Int               @default(1)
+  role          ROLE              @default(USER)
+  exp           Int               @default(0)
+  AuditLog      AuditLog[]
+  Notifications notification[]
+  session       session[]
+  Department    department?       @relation(fields: [departmentId], references: [id])
+  Bookings      Booking[]         @relation("BookingCreator")
+  Attendees     BookingAttendee[]
+
+  @@map("user")
+}
+
+model Room {
+  id                String         @id @default(uuid())
+  name              String         @unique
+  capacity          Int
+  floor             String?
+  status            Boolean        @default(true)
+  description       String?
+  minBookingTime    Int            @default(30) // Thời gian đặt phòng tối thiểu (phút)
+  maxBookingTime    Int            @default(480) // Thời gian đặt phòng tối đa (phút)
+  maxAdvanceBooking Int            @default(30) // Số ngày có thể đặt trước
+  cancelationTime   Int            @default(24) // Thời gian hủy đặt phòng (giờ)
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  Facilities        RoomFacility[]
+  Bookings          Booking[]
+
+  @@map("room")
+}
+
+model RoomFacility {
+  id          String   @id @default(uuid())
+  name        String
+  quantity    Int      @default(1)
+  status      Boolean  @default(true)
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  roomId      String
+  Room        Room     @relation(fields: [roomId], references: [id])
+
+  @@map("room_facility")
+}
+
+model Booking {
+  id          String            @id @default(uuid())
+  title       String
+  startTime   DateTime
+  endTime     DateTime
+  status      Boolean           @default(true)
+  description String?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  createdBy   String
+  roomId      String
+  Creator     user              @relation("BookingCreator", fields: [createdBy], references: [id])
+  Room        Room              @relation(fields: [roomId], references: [id])
+  Attendees   BookingAttendee[]
+
+  @@map("booking")
+}
+
+model BookingAttendee {
+  id        String   @id @default(uuid())
+  status    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  bookingId String
+  userId    String
+  Booking   Booking  @relation(fields: [bookingId], references: [id])
+  User      user     @relation(fields: [userId], references: [id])
+
+  @@map("booking_attendee")
+}
