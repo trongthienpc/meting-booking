@@ -2,17 +2,18 @@
 "use client";
 
 import { createContext, useContext, useOptimistic, useTransition } from "react";
-import { Room, CreateRoomFormData, UpdateRoomFormData } from "@/lib/schemas/room";
+import {  CreateRoomFormData, UpdateRoomFormData } from "@/lib/schemas/room";
 import useSWR from "swr";
 import { toast } from "sonner";
-import { createRoom, deleteRoom, updateRoom } from "@/app/actions/room-actions";
+import { createRoom, deleteRoom, getRooms, updateRoom } from "@/app/actions/room-actions";
+import { Room } from "@/generated/prisma";
 
 type RoomContextType = {
   rooms: Room[];
   isLoading: boolean;
   error: Error | null;
   createNewRoom: (data: CreateRoomFormData) => Promise<void>;
-  updateExistingRoom: (data: UpdateRoomFormData) => Promise<void>;
+  updateExistingRoom: (data: Room) => Promise<void>;
   removeRoom: (id: string) => Promise<void>;
 };
 
@@ -26,7 +27,11 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
     data: rooms = [],
     error,
     mutate,
-  } = useSWR<Room[]>("/api/rooms", {
+  } = useSWR<Room[]>("/api/rooms", async ()=> {
+    const res = await getRooms();
+    if(!res.success) return []; // Return an empty array if there is an error in the respons
+    return res.data;
+  }, {
     revalidateOnFocus: false,
   });
 
@@ -50,9 +55,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   // Create function with optimistic update
   const createNewRoom = async (data: CreateRoomFormData) => {
     try {
-      addOptimisticRoom({ action: "create", data });
-
+      
       startTransition(async () => {
+        addOptimisticRoom({ action: "create", data });
         const result = await createRoom(data);
         if (!result.success) {
           toast.error(result.message);
@@ -71,9 +76,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   // Update function with optimistic update
   const updateExistingRoom = async (data: UpdateRoomFormData) => {
     try {
-      addOptimisticRoom({ action: "update", data });
-
+      
       startTransition(async () => {
+        addOptimisticRoom({ action: "update", data });
         const result = await updateRoom(data);
         if (!result.success) {
           toast.error(result.message);
@@ -92,9 +97,9 @@ export function RoomProvider({ children }: { children: React.ReactNode }) {
   // Delete function with optimistic update
   const removeRoom = async (id: string) => {
     try {
-      addOptimisticRoom({ action: "delete", data: id });
-
+      
       startTransition(async () => {
+        addOptimisticRoom({ action: "delete", data: id });
         const result = await deleteRoom(id);
         if (!result.success) {
           toast.error(result.message);

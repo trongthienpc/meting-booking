@@ -3,8 +3,9 @@
 import { revalidatePath } from "next/cache";
 import { validateRequest } from "@/lib/lucia";
 import { handleServerError, ServerActionError } from "@/lib/utils";
-import { CreateRoomFormData, Room, UpdateRoomFormData, createRoomSchema, updateRoomSchema } from "@/lib/schemas/room";
+import { CreateRoomFormData,  UpdateRoomFormData, createRoomSchema, updateRoomSchema } from "@/lib/schemas/room";
 import { db } from "@/lib/db";
+import { Room } from "@/generated/prisma";
 
 // Tạo phòng họp mới
 export async function createRoom(data: CreateRoomFormData): Promise<{ success: true; data: Room } | ServerActionError> {
@@ -26,9 +27,7 @@ export async function createRoom(data: CreateRoomFormData): Promise<{ success: t
     const room = await db.room.create({
       data: {
         ...validated,
-        Facilities: {
-          create: validated.Facilities,
-        },
+
       },
       include: {
         Facilities: true,
@@ -46,6 +45,7 @@ export async function createRoom(data: CreateRoomFormData): Promise<{ success: t
 // Cập nhật phòng họp
 export async function updateRoom(data: UpdateRoomFormData): Promise<{ success: true; data: Room } | ServerActionError> {
   try {
+    console.log(data);
     // Xác thực người dùng
     const { user } = await validateRequest();
     if (!user) return handleServerError("Không có quyền truy cập");
@@ -61,19 +61,15 @@ export async function updateRoom(data: UpdateRoomFormData): Promise<{ success: t
 
     // Xác thực dữ liệu đầu vào
     const validated = updateRoomSchema.parse(data);
-    const { id, Facilities, ...updateData } = validated;
+    console.log(validated);
+    const { id, ...updateData } = validated;
 
     // Cập nhật phòng
     const room = await db.room.update({
       where: { id },
       data: {
         ...updateData,
-        ...(Facilities && {
-          Facilities: {
-            deleteMany: {},
-            create: Facilities,
-          },
-        }),
+
       },
       include: {
         Facilities: true,

@@ -36,6 +36,8 @@ model AuditLog {
 model notification {
   id        String   @id @default(uuid())
   type      String
+  title     String?
+  link      String?
   message   String
   isRead    Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -112,9 +114,7 @@ model user {
   createdAt     DateTime          @default(now())
   departmentId  String?
   avatarUrl     String?
-  level         Int               @default(1)
   role          ROLE              @default(USER)
-  exp           Int               @default(0)
   AuditLog      AuditLog[]
   Notifications notification[]
   session       session[]
@@ -152,8 +152,8 @@ model RoomFacility {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  roomId      String
-  Room        Room     @relation(fields: [roomId], references: [id])
+  roomId      String?
+  Room        Room?    @relation(fields: [roomId], references: [id])
 
   @@map("room_facility")
 }

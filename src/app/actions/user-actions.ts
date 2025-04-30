@@ -10,11 +10,9 @@ import { redirect } from "next/navigation";
 
 export async function getUserInfo() {
   try {
-    const { user, session } = await validateRequest();
-    console.log("🚀 ~ getUserInfo ~ user:", user);
-    console.log("🚀 ~ getUserInfo ~ session:", session);
+    const { user } = await validateRequest();
     if (user) {
-      return { user };
+      return {user};
     } else {
       return { error: "User not found" };
     }
@@ -93,14 +91,14 @@ export async function logout() {
   return redirect("/authentication");
 }
 
-export async function getUsersByDepartmentId(departmentId: string, branchId: string) {
+export async function getUsersByDepartmentId(departmentId: string) {
   const { user } = await validateRequest();
 
   if (!user) {
     return { success: false, message: "Unauthorized" };
   }
 
-  if (!departmentId || !branchId) {
+  if (!departmentId) {
     return { success: false, message: "Department id is required" };
   }
 

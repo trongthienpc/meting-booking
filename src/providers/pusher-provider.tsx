@@ -173,10 +173,10 @@ export const useChannel = (channelName: string): Channel | undefined => {
     // console.log(`[useChannel] Subscribing to channel: ${channelName}`);
     const newChannel = subscribe(channelName, componentIdRef.current);
     setChannel(newChannel);
-
+    const componentId = componentIdRef.current;
     return () => {
       // console.log(`[useChannel] Unsubscribing from: ${channelName}`);
-      unsubscribe(channelName, componentIdRef.current);
+      unsubscribe(channelName, componentId);
       setChannel(undefined);
     };
   }, [channelName, isInitialized, subscribe, unsubscribe]);

@@ -1,4 +1,5 @@
-// components/leave-balance/sheets/leave-balance-sheet.tsx
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import {
@@ -7,27 +8,33 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { CreateRoomFormData } from "@/lib/schemas/room";
-import { RoomProvider } from "@/providers/room-provider";
-import { RoomForm } from "../form/room-form";
+
+import { RoomProvider, useRoom } from "@/providers/room-provider";
+import { CreateRoomForm } from "../form/create-room-form";
+import { Room } from "";
+import { UpdateRoomForm } from "../form/update-room-form";
 
 interface RoomSheetProps {
   isOpen: boolean;
   onOpenChange: (open: boolean) => void;
-  onSubmit: (data: CreateRoomFormData) => void;
-  initialData?: Partial<CreateRoomFormData>;
+  initialData: Room | null;
   mode: "create" | "edit";
 }
 
 export function RoomSheet({
   isOpen,
   onOpenChange,
-  onSubmit,
   initialData,
   mode,
 }: RoomSheetProps) {
-  const handleSubmit = (data: CreateRoomFormData) => {
-    onSubmit(data);
+  const { createNewRoom, updateExistingRoom } = useRoom();
+  const handleSubmit = (data: any) => {
+    if (mode === "edit" && initialData?.id) {
+      updateExistingRoom(data);
+    } else {
+      createNewRoom(data);
+    }
+
     onOpenChange(false);
   };
 
@@ -48,7 +55,11 @@ export function RoomSheet({
           <SheetTitle>{title}</SheetTitle>
         </SheetHeader>
         <RoomProvider>
-          <RoomForm onSubmit={handleSubmit} initialData={initialData} />
+          {mode === "create" ? (
+            <CreateRoomForm onSubmit={handleSubmit} initialData={initialData} />
+          ) : (
+            <UpdateRoomForm onSubmit={handleSubmit} initialData={initialData} />
+          )}
         </RoomProvider>
       </SheetContent>
     </Sheet>

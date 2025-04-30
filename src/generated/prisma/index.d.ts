@@ -3121,6 +3121,8 @@ export namespace Prisma {
   export type NotificationMinAggregateOutputType = {
     id: string | null
     type: string | null
+    title: string | null
+    link: string | null
     message: string | null
     isRead: boolean | null
     createdAt: Date | null
@@ -3131,6 +3133,8 @@ export namespace Prisma {
   export type NotificationMaxAggregateOutputType = {
     id: string | null
     type: string | null
+    title: string | null
+    link: string | null
     message: string | null
     isRead: boolean | null
     createdAt: Date | null
@@ -3141,6 +3145,8 @@ export namespace Prisma {
   export type NotificationCountAggregateOutputType = {
     id: number
     type: number
+    title: number
+    link: number
     message: number
     isRead: number
     createdAt: number
@@ -3153,6 +3159,8 @@ export namespace Prisma {
   export type NotificationMinAggregateInputType = {
     id?: true
     type?: true
+    title?: true
+    link?: true
     message?: true
     isRead?: true
     createdAt?: true
@@ -3163,6 +3171,8 @@ export namespace Prisma {
   export type NotificationMaxAggregateInputType = {
     id?: true
     type?: true
+    title?: true
+    link?: true
     message?: true
     isRead?: true
     createdAt?: true
@@ -3173,6 +3183,8 @@ export namespace Prisma {
   export type NotificationCountAggregateInputType = {
     id?: true
     type?: true
+    title?: true
+    link?: true
     message?: true
     isRead?: true
     createdAt?: true
@@ -3256,6 +3268,8 @@ export namespace Prisma {
   export type NotificationGroupByOutputType = {
     id: string
     type: string
+    title: string | null
+    link: string | null
     message: string
     isRead: boolean
     createdAt: Date
@@ -3283,6 +3297,8 @@ export namespace Prisma {
   export type notificationSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    title?: boolean
+    link?: boolean
     message?: boolean
     isRead?: boolean
     createdAt?: boolean
@@ -3294,6 +3310,8 @@ export namespace Prisma {
   export type notificationSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    title?: boolean
+    link?: boolean
     message?: boolean
     isRead?: boolean
     createdAt?: boolean
@@ -3305,6 +3323,8 @@ export namespace Prisma {
   export type notificationSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
     type?: boolean
+    title?: boolean
+    link?: boolean
     message?: boolean
     isRead?: boolean
     createdAt?: boolean
@@ -3316,6 +3336,8 @@ export namespace Prisma {
   export type notificationSelectScalar = {
     id?: boolean
     type?: boolean
+    title?: boolean
+    link?: boolean
     message?: boolean
     isRead?: boolean
     createdAt?: boolean
@@ -3323,7 +3345,7 @@ export namespace Prisma {
     userId?: boolean
   }
 
-  export type notificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "message" | "isRead" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["notification"]>
+  export type notificationOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "type" | "title" | "link" | "message" | "isRead" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["notification"]>
   export type notificationInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     User?: boolean | notification$UserArgs<ExtArgs>
   }
@@ -3342,6 +3364,8 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: string
       type: string
+      title: string | null
+      link: string | null
       message: string
       isRead: boolean
       createdAt: Date
@@ -3773,6 +3797,8 @@ export namespace Prisma {
   interface notificationFieldRefs {
     readonly id: FieldRef<"notification", 'String'>
     readonly type: FieldRef<"notification", 'String'>
+    readonly title: FieldRef<"notification", 'String'>
+    readonly link: FieldRef<"notification", 'String'>
     readonly message: FieldRef<"notification", 'String'>
     readonly isRead: FieldRef<"notification", 'Boolean'>
     readonly createdAt: FieldRef<"notification", 'DateTime'>
@@ -8651,20 +8677,8 @@ export namespace Prisma {
 
   export type AggregateUser = {
     _count: UserCountAggregateOutputType | null
-    _avg: UserAvgAggregateOutputType | null
-    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
-  }
-
-  export type UserAvgAggregateOutputType = {
-    level: number | null
-    exp: number | null
-  }
-
-  export type UserSumAggregateOutputType = {
-    level: number | null
-    exp: number | null
   }
 
   export type UserMinAggregateOutputType = {
@@ -8676,9 +8690,7 @@ export namespace Prisma {
     createdAt: Date | null
     departmentId: string | null
     avatarUrl: string | null
-    level: number | null
     role: $Enums.ROLE | null
-    exp: number | null
   }
 
   export type UserMaxAggregateOutputType = {
@@ -8690,9 +8702,7 @@ export namespace Prisma {
     createdAt: Date | null
     departmentId: string | null
     avatarUrl: string | null
-    level: number | null
     role: $Enums.ROLE | null
-    exp: number | null
   }
 
   export type UserCountAggregateOutputType = {
@@ -8704,22 +8714,10 @@ export namespace Prisma {
     createdAt: number
     departmentId: number
     avatarUrl: number
-    level: number
     role: number
-    exp: number
     _all: number
   }
 
-
-  export type UserAvgAggregateInputType = {
-    level?: true
-    exp?: true
-  }
-
-  export type UserSumAggregateInputType = {
-    level?: true
-    exp?: true
-  }
 
   export type UserMinAggregateInputType = {
     id?: true
@@ -8730,9 +8728,7 @@ export namespace Prisma {
     createdAt?: true
     departmentId?: true
     avatarUrl?: true
-    level?: true
     role?: true
-    exp?: true
   }
 
   export type UserMaxAggregateInputType = {
@@ -8744,9 +8740,7 @@ export namespace Prisma {
     createdAt?: true
     departmentId?: true
     avatarUrl?: true
-    level?: true
     role?: true
-    exp?: true
   }
 
   export type UserCountAggregateInputType = {
@@ -8758,9 +8752,7 @@ export namespace Prisma {
     createdAt?: true
     departmentId?: true
     avatarUrl?: true
-    level?: true
     role?: true
-    exp?: true
     _all?: true
   }
 
@@ -8802,18 +8794,6 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
-     * Select which fields to average
-    **/
-    _avg?: UserAvgAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to sum
-    **/
-    _sum?: UserSumAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
      * Select which fields to find the minimum value
     **/
     _min?: UserMinAggregateInputType
@@ -8844,8 +8824,6 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: UserCountAggregateInputType | true
-    _avg?: UserAvgAggregateInputType
-    _sum?: UserSumAggregateInputType
     _min?: UserMinAggregateInputType
     _max?: UserMaxAggregateInputType
   }
@@ -8859,12 +8837,8 @@ export namespace Prisma {
     createdAt: Date
     departmentId: string | null
     avatarUrl: string | null
-    level: number
     role: $Enums.ROLE
-    exp: number
     _count: UserCountAggregateOutputType | null
-    _avg: UserAvgAggregateOutputType | null
-    _sum: UserSumAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
     _max: UserMaxAggregateOutputType | null
   }
@@ -8892,9 +8866,7 @@ export namespace Prisma {
     createdAt?: boolean
     departmentId?: boolean
     avatarUrl?: boolean
-    level?: boolean
     role?: boolean
-    exp?: boolean
     AuditLog?: boolean | user$AuditLogArgs<ExtArgs>
     Notifications?: boolean | user$NotificationsArgs<ExtArgs>
     session?: boolean | user$sessionArgs<ExtArgs>
@@ -8913,9 +8885,7 @@ export namespace Prisma {
     createdAt?: boolean
     departmentId?: boolean
     avatarUrl?: boolean
-    level?: boolean
     role?: boolean
-    exp?: boolean
     Department?: boolean | user$DepartmentArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8928,9 +8898,7 @@ export namespace Prisma {
     createdAt?: boolean
     departmentId?: boolean
     avatarUrl?: boolean
-    level?: boolean
     role?: boolean
-    exp?: boolean
     Department?: boolean | user$DepartmentArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8943,12 +8911,10 @@ export namespace Prisma {
     createdAt?: boolean
     departmentId?: boolean
     avatarUrl?: boolean
-    level?: boolean
     role?: boolean
-    exp?: boolean
   }
 
-  export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullname" | "username" | "password" | "status" | "createdAt" | "departmentId" | "avatarUrl" | "level" | "role" | "exp", ExtArgs["result"]["user"]>
+  export type userOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullname" | "username" | "password" | "status" | "createdAt" | "departmentId" | "avatarUrl" | "role", ExtArgs["result"]["user"]>
   export type userInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     AuditLog?: boolean | user$AuditLogArgs<ExtArgs>
     Notifications?: boolean | user$NotificationsArgs<ExtArgs>
@@ -8984,9 +8950,7 @@ export namespace Prisma {
       createdAt: Date
       departmentId: string | null
       avatarUrl: string | null
-      level: number
       role: $Enums.ROLE
-      exp: number
     }, ExtArgs["result"]["user"]>
     composites: {}
   }
@@ -9424,9 +9388,7 @@ export namespace Prisma {
     readonly createdAt: FieldRef<"user", 'DateTime'>
     readonly departmentId: FieldRef<"user", 'String'>
     readonly avatarUrl: FieldRef<"user", 'String'>
-    readonly level: FieldRef<"user", 'Int'>
     readonly role: FieldRef<"user", 'ROLE'>
-    readonly exp: FieldRef<"user", 'Int'>
   }
     
 
@@ -11410,7 +11372,7 @@ export namespace Prisma {
     description: string | null
     createdAt: Date
     updatedAt: Date
-    roomId: string
+    roomId: string | null
     _count: RoomFacilityCountAggregateOutputType | null
     _avg: RoomFacilityAvgAggregateOutputType | null
     _sum: RoomFacilitySumAggregateOutputType | null
@@ -11441,7 +11403,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     roomId?: boolean
-    Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Room?: boolean | RoomFacility$RoomArgs<ExtArgs>
   }, ExtArgs["result"]["roomFacility"]>
 
   export type RoomFacilitySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11453,7 +11415,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     roomId?: boolean
-    Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Room?: boolean | RoomFacility$RoomArgs<ExtArgs>
   }, ExtArgs["result"]["roomFacility"]>
 
   export type RoomFacilitySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -11465,7 +11427,7 @@ export namespace Prisma {
     createdAt?: boolean
     updatedAt?: boolean
     roomId?: boolean
-    Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Room?: boolean | RoomFacility$RoomArgs<ExtArgs>
   }, ExtArgs["result"]["roomFacility"]>
 
   export type RoomFacilitySelectScalar = {
@@ -11481,19 +11443,19 @@ export namespace Prisma {
 
   export type RoomFacilityOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "quantity" | "status" | "description" | "createdAt" | "updatedAt" | "roomId", ExtArgs["result"]["roomFacility"]>
   export type RoomFacilityInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Room?: boolean | RoomFacility$RoomArgs<ExtArgs>
   }
   export type RoomFacilityIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Room?: boolean | RoomFacility$RoomArgs<ExtArgs>
   }
   export type RoomFacilityIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Room?: boolean | RoomFacility$RoomArgs<ExtArgs>
   }
 
   export type $RoomFacilityPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "RoomFacility"
     objects: {
-      Room: Prisma.$RoomPayload<ExtArgs>
+      Room: Prisma.$RoomPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11503,7 +11465,7 @@ export namespace Prisma {
       description: string | null
       createdAt: Date
       updatedAt: Date
-      roomId: string
+      roomId: string | null
     }, ExtArgs["result"]["roomFacility"]>
     composites: {}
   }
@@ -11898,7 +11860,7 @@ export namespace Prisma {
    */
   export interface Prisma__RoomFacilityClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Room<T extends RoomDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoomDefaultArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Room<T extends RoomFacility$RoomArgs<ExtArgs> = {}>(args?: Subset<T, RoomFacility$RoomArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12329,6 +12291,25 @@ export namespace Prisma {
      * Limit how many RoomFacilities to delete.
      */
     limit?: number
+  }
+
+  /**
+   * RoomFacility.Room
+   */
+  export type RoomFacility$RoomArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Room
+     */
+    select?: RoomSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Room
+     */
+    omit?: RoomOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: RoomInclude<ExtArgs> | null
+    where?: RoomWhereInput
   }
 
   /**
@@ -14620,6 +14601,8 @@ export namespace Prisma {
   export const NotificationScalarFieldEnum: {
     id: 'id',
     type: 'type',
+    title: 'title',
+    link: 'link',
     message: 'message',
     isRead: 'isRead',
     createdAt: 'createdAt',
@@ -14693,9 +14676,7 @@ export namespace Prisma {
     createdAt: 'createdAt',
     departmentId: 'departmentId',
     avatarUrl: 'avatarUrl',
-    level: 'level',
-    role: 'role',
-    exp: 'exp'
+    role: 'role'
   };
 
   export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
@@ -14826,20 +14807,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Int'
-   */
-  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
-    
-
-
-  /**
-   * Reference to a field of type 'Int[]'
-   */
-  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
-    
-
-
-  /**
    * Reference to a field of type 'ROLE'
    */
   export type EnumROLEFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ROLE'>
@@ -14850,6 +14817,20 @@ export namespace Prisma {
    * Reference to a field of type 'ROLE[]'
    */
   export type ListEnumROLEFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ROLE[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int'
+   */
+  export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
+    
+
+
+  /**
+   * Reference to a field of type 'Int[]'
+   */
+  export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
     
 
 
@@ -14941,6 +14922,8 @@ export namespace Prisma {
     NOT?: notificationWhereInput | notificationWhereInput[]
     id?: StringFilter<"notification"> | string
     type?: StringFilter<"notification"> | string
+    title?: StringNullableFilter<"notification"> | string | null
+    link?: StringNullableFilter<"notification"> | string | null
     message?: StringFilter<"notification"> | string
     isRead?: BoolFilter<"notification"> | boolean
     createdAt?: DateTimeFilter<"notification"> | Date | string
@@ -14952,6 +14935,8 @@ export namespace Prisma {
   export type notificationOrderByWithRelationInput = {
     id?: SortOrder
     type?: SortOrder
+    title?: SortOrderInput | SortOrder
+    link?: SortOrderInput | SortOrder
     message?: SortOrder
     isRead?: SortOrder
     createdAt?: SortOrder
@@ -14966,6 +14951,8 @@ export namespace Prisma {
     OR?: notificationWhereInput[]
     NOT?: notificationWhereInput | notificationWhereInput[]
     type?: StringFilter<"notification"> | string
+    title?: StringNullableFilter<"notification"> | string | null
+    link?: StringNullableFilter<"notification"> | string | null
     message?: StringFilter<"notification"> | string
     isRead?: BoolFilter<"notification"> | boolean
     createdAt?: DateTimeFilter<"notification"> | Date | string
@@ -14977,6 +14964,8 @@ export namespace Prisma {
   export type notificationOrderByWithAggregationInput = {
     id?: SortOrder
     type?: SortOrder
+    title?: SortOrderInput | SortOrder
+    link?: SortOrderInput | SortOrder
     message?: SortOrder
     isRead?: SortOrder
     createdAt?: SortOrder
@@ -14993,6 +14982,8 @@ export namespace Prisma {
     NOT?: notificationScalarWhereWithAggregatesInput | notificationScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"notification"> | string
     type?: StringWithAggregatesFilter<"notification"> | string
+    title?: StringNullableWithAggregatesFilter<"notification"> | string | null
+    link?: StringNullableWithAggregatesFilter<"notification"> | string | null
     message?: StringWithAggregatesFilter<"notification"> | string
     isRead?: BoolWithAggregatesFilter<"notification"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"notification"> | Date | string
@@ -15289,9 +15280,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"user"> | Date | string
     departmentId?: StringNullableFilter<"user"> | string | null
     avatarUrl?: StringNullableFilter<"user"> | string | null
-    level?: IntFilter<"user"> | number
     role?: EnumROLEFilter<"user"> | $Enums.ROLE
-    exp?: IntFilter<"user"> | number
     AuditLog?: AuditLogListRelationFilter
     Notifications?: NotificationListRelationFilter
     session?: SessionListRelationFilter
@@ -15309,9 +15298,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     departmentId?: SortOrderInput | SortOrder
     avatarUrl?: SortOrderInput | SortOrder
-    level?: SortOrder
     role?: SortOrder
-    exp?: SortOrder
     AuditLog?: AuditLogOrderByRelationAggregateInput
     Notifications?: notificationOrderByRelationAggregateInput
     session?: sessionOrderByRelationAggregateInput
@@ -15332,9 +15319,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"user"> | Date | string
     departmentId?: StringNullableFilter<"user"> | string | null
     avatarUrl?: StringNullableFilter<"user"> | string | null
-    level?: IntFilter<"user"> | number
     role?: EnumROLEFilter<"user"> | $Enums.ROLE
-    exp?: IntFilter<"user"> | number
     AuditLog?: AuditLogListRelationFilter
     Notifications?: NotificationListRelationFilter
     session?: SessionListRelationFilter
@@ -15352,14 +15337,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     departmentId?: SortOrderInput | SortOrder
     avatarUrl?: SortOrderInput | SortOrder
-    level?: SortOrder
     role?: SortOrder
-    exp?: SortOrder
     _count?: userCountOrderByAggregateInput
-    _avg?: userAvgOrderByAggregateInput
     _max?: userMaxOrderByAggregateInput
     _min?: userMinOrderByAggregateInput
-    _sum?: userSumOrderByAggregateInput
   }
 
   export type userScalarWhereWithAggregatesInput = {
@@ -15374,9 +15355,7 @@ export namespace Prisma {
     createdAt?: DateTimeWithAggregatesFilter<"user"> | Date | string
     departmentId?: StringNullableWithAggregatesFilter<"user"> | string | null
     avatarUrl?: StringNullableWithAggregatesFilter<"user"> | string | null
-    level?: IntWithAggregatesFilter<"user"> | number
     role?: EnumROLEWithAggregatesFilter<"user"> | $Enums.ROLE
-    exp?: IntWithAggregatesFilter<"user"> | number
   }
 
   export type RoomWhereInput = {
@@ -15485,8 +15464,8 @@ export namespace Prisma {
     description?: StringNullableFilter<"RoomFacility"> | string | null
     createdAt?: DateTimeFilter<"RoomFacility"> | Date | string
     updatedAt?: DateTimeFilter<"RoomFacility"> | Date | string
-    roomId?: StringFilter<"RoomFacility"> | string
-    Room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
+    roomId?: StringNullableFilter<"RoomFacility"> | string | null
+    Room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
   }
 
   export type RoomFacilityOrderByWithRelationInput = {
@@ -15497,7 +15476,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    roomId?: SortOrder
+    roomId?: SortOrderInput | SortOrder
     Room?: RoomOrderByWithRelationInput
   }
 
@@ -15512,8 +15491,8 @@ export namespace Prisma {
     description?: StringNullableFilter<"RoomFacility"> | string | null
     createdAt?: DateTimeFilter<"RoomFacility"> | Date | string
     updatedAt?: DateTimeFilter<"RoomFacility"> | Date | string
-    roomId?: StringFilter<"RoomFacility"> | string
-    Room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
+    roomId?: StringNullableFilter<"RoomFacility"> | string | null
+    Room?: XOR<RoomNullableScalarRelationFilter, RoomWhereInput> | null
   }, "id">
 
   export type RoomFacilityOrderByWithAggregationInput = {
@@ -15524,7 +15503,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    roomId?: SortOrder
+    roomId?: SortOrderInput | SortOrder
     _count?: RoomFacilityCountOrderByAggregateInput
     _avg?: RoomFacilityAvgOrderByAggregateInput
     _max?: RoomFacilityMaxOrderByAggregateInput
@@ -15543,7 +15522,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"RoomFacility"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"RoomFacility"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"RoomFacility"> | Date | string
-    roomId?: StringWithAggregatesFilter<"RoomFacility"> | string
+    roomId?: StringNullableWithAggregatesFilter<"RoomFacility"> | string | null
   }
 
   export type BookingWhereInput = {
@@ -15767,6 +15746,8 @@ export namespace Prisma {
   export type notificationCreateInput = {
     id?: string
     type: string
+    title?: string | null
+    link?: string | null
     message: string
     isRead?: boolean
     createdAt?: Date | string
@@ -15777,6 +15758,8 @@ export namespace Prisma {
   export type notificationUncheckedCreateInput = {
     id?: string
     type: string
+    title?: string | null
+    link?: string | null
     message: string
     isRead?: boolean
     createdAt?: Date | string
@@ -15787,6 +15770,8 @@ export namespace Prisma {
   export type notificationUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     message?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15797,6 +15782,8 @@ export namespace Prisma {
   export type notificationUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     message?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15807,6 +15794,8 @@ export namespace Prisma {
   export type notificationCreateManyInput = {
     id?: string
     type: string
+    title?: string | null
+    link?: string | null
     message: string
     isRead?: boolean
     createdAt?: Date | string
@@ -15817,6 +15806,8 @@ export namespace Prisma {
   export type notificationUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     message?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -15826,6 +15817,8 @@ export namespace Prisma {
   export type notificationUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     message?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -16144,9 +16137,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogCreateNestedManyWithoutUserInput
     Notifications?: notificationCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
@@ -16164,9 +16155,7 @@ export namespace Prisma {
     createdAt?: Date | string
     departmentId?: string | null
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
@@ -16182,9 +16171,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
@@ -16202,9 +16189,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
@@ -16221,9 +16206,7 @@ export namespace Prisma {
     createdAt?: Date | string
     departmentId?: string | null
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
   }
 
   export type userUpdateManyMutationInput = {
@@ -16234,9 +16217,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
   }
 
   export type userUncheckedUpdateManyInput = {
@@ -16248,9 +16229,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
   }
 
   export type RoomCreateInput = {
@@ -16374,7 +16353,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    Room: RoomCreateNestedOneWithoutFacilitiesInput
+    Room?: RoomCreateNestedOneWithoutFacilitiesInput
   }
 
   export type RoomFacilityUncheckedCreateInput = {
@@ -16385,7 +16364,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roomId: string
+    roomId?: string | null
   }
 
   export type RoomFacilityUpdateInput = {
@@ -16396,7 +16375,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Room?: RoomUpdateOneRequiredWithoutFacilitiesNestedInput
+    Room?: RoomUpdateOneWithoutFacilitiesNestedInput
   }
 
   export type RoomFacilityUncheckedUpdateInput = {
@@ -16407,7 +16386,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roomId?: StringFieldUpdateOperationsInput | string
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type RoomFacilityCreateManyInput = {
@@ -16418,7 +16397,7 @@ export namespace Prisma {
     description?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    roomId: string
+    roomId?: string | null
   }
 
   export type RoomFacilityUpdateManyMutationInput = {
@@ -16439,7 +16418,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roomId?: StringFieldUpdateOperationsInput | string
+    roomId?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type BookingCreateInput = {
@@ -16735,6 +16714,8 @@ export namespace Prisma {
   export type notificationCountOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    title?: SortOrder
+    link?: SortOrder
     message?: SortOrder
     isRead?: SortOrder
     createdAt?: SortOrder
@@ -16745,6 +16726,8 @@ export namespace Prisma {
   export type notificationMaxOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    title?: SortOrder
+    link?: SortOrder
     message?: SortOrder
     isRead?: SortOrder
     createdAt?: SortOrder
@@ -16755,6 +16738,8 @@ export namespace Prisma {
   export type notificationMinOrderByAggregateInput = {
     id?: SortOrder
     type?: SortOrder
+    title?: SortOrder
+    link?: SortOrder
     message?: SortOrder
     isRead?: SortOrder
     createdAt?: SortOrder
@@ -16931,17 +16916,6 @@ export namespace Prisma {
     updatedBy?: SortOrder
   }
 
-  export type IntFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntFilter<$PrismaModel> | number
-  }
-
   export type EnumROLEFilter<$PrismaModel = never> = {
     equals?: $Enums.ROLE | EnumROLEFieldRefInput<$PrismaModel>
     in?: $Enums.ROLE[] | ListEnumROLEFieldRefInput<$PrismaModel>
@@ -17008,14 +16982,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     departmentId?: SortOrder
     avatarUrl?: SortOrder
-    level?: SortOrder
     role?: SortOrder
-    exp?: SortOrder
-  }
-
-  export type userAvgOrderByAggregateInput = {
-    level?: SortOrder
-    exp?: SortOrder
   }
 
   export type userMaxOrderByAggregateInput = {
@@ -17027,9 +16994,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     departmentId?: SortOrder
     avatarUrl?: SortOrder
-    level?: SortOrder
     role?: SortOrder
-    exp?: SortOrder
   }
 
   export type userMinOrderByAggregateInput = {
@@ -17041,30 +17006,7 @@ export namespace Prisma {
     createdAt?: SortOrder
     departmentId?: SortOrder
     avatarUrl?: SortOrder
-    level?: SortOrder
     role?: SortOrder
-    exp?: SortOrder
-  }
-
-  export type userSumOrderByAggregateInput = {
-    level?: SortOrder
-    exp?: SortOrder
-  }
-
-  export type IntWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel>
-    in?: number[] | ListIntFieldRefInput<$PrismaModel>
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
-    _count?: NestedIntFilter<$PrismaModel>
-    _avg?: NestedFloatFilter<$PrismaModel>
-    _sum?: NestedIntFilter<$PrismaModel>
-    _min?: NestedIntFilter<$PrismaModel>
-    _max?: NestedIntFilter<$PrismaModel>
   }
 
   export type EnumROLEWithAggregatesFilter<$PrismaModel = never> = {
@@ -17075,6 +17017,17 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumROLEFilter<$PrismaModel>
     _max?: NestedEnumROLEFilter<$PrismaModel>
+  }
+
+  export type IntFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntFilter<$PrismaModel> | number
   }
 
   export type RoomFacilityListRelationFilter = {
@@ -17148,9 +17101,25 @@ export namespace Prisma {
     cancelationTime?: SortOrder
   }
 
-  export type RoomScalarRelationFilter = {
-    is?: RoomWhereInput
-    isNot?: RoomWhereInput
+  export type IntWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel>
+    in?: number[] | ListIntFieldRefInput<$PrismaModel>
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel>
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntWithAggregatesFilter<$PrismaModel> | number
+    _count?: NestedIntFilter<$PrismaModel>
+    _avg?: NestedFloatFilter<$PrismaModel>
+    _sum?: NestedIntFilter<$PrismaModel>
+    _min?: NestedIntFilter<$PrismaModel>
+    _max?: NestedIntFilter<$PrismaModel>
+  }
+
+  export type RoomNullableScalarRelationFilter = {
+    is?: RoomWhereInput | null
+    isNot?: RoomWhereInput | null
   }
 
   export type RoomFacilityCountOrderByAggregateInput = {
@@ -17197,6 +17166,11 @@ export namespace Prisma {
   export type UserScalarRelationFilter = {
     is?: userWhereInput
     isNot?: userWhereInput
+  }
+
+  export type RoomScalarRelationFilter = {
+    is?: RoomWhereInput
+    isNot?: RoomWhereInput
   }
 
   export type BookingCountOrderByAggregateInput = {
@@ -17568,14 +17542,6 @@ export namespace Prisma {
     connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
   }
 
-  export type IntFieldUpdateOperationsInput = {
-    set?: number
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
-  }
-
   export type EnumROLEFieldUpdateOperationsInput = {
     set?: $Enums.ROLE
   }
@@ -17758,6 +17724,14 @@ export namespace Prisma {
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
+  export type IntFieldUpdateOperationsInput = {
+    set?: number
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
   export type RoomFacilityUpdateManyWithoutRoomNestedInput = {
     create?: XOR<RoomFacilityCreateWithoutRoomInput, RoomFacilityUncheckedCreateWithoutRoomInput> | RoomFacilityCreateWithoutRoomInput[] | RoomFacilityUncheckedCreateWithoutRoomInput[]
     connectOrCreate?: RoomFacilityCreateOrConnectWithoutRoomInput | RoomFacilityCreateOrConnectWithoutRoomInput[]
@@ -17820,10 +17794,12 @@ export namespace Prisma {
     connect?: RoomWhereUniqueInput
   }
 
-  export type RoomUpdateOneRequiredWithoutFacilitiesNestedInput = {
+  export type RoomUpdateOneWithoutFacilitiesNestedInput = {
     create?: XOR<RoomCreateWithoutFacilitiesInput, RoomUncheckedCreateWithoutFacilitiesInput>
     connectOrCreate?: RoomCreateOrConnectWithoutFacilitiesInput
     upsert?: RoomUpsertWithoutFacilitiesInput
+    disconnect?: RoomWhereInput | boolean
+    delete?: RoomWhereInput | boolean
     connect?: RoomWhereUniqueInput
     update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutFacilitiesInput, RoomUpdateWithoutFacilitiesInput>, RoomUncheckedUpdateWithoutFacilitiesInput>
   }
@@ -18055,6 +18031,16 @@ export namespace Prisma {
     not?: NestedEnumROLEFilter<$PrismaModel> | $Enums.ROLE
   }
 
+  export type NestedEnumROLEWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.ROLE | EnumROLEFieldRefInput<$PrismaModel>
+    in?: $Enums.ROLE[] | ListEnumROLEFieldRefInput<$PrismaModel>
+    notIn?: $Enums.ROLE[] | ListEnumROLEFieldRefInput<$PrismaModel>
+    not?: NestedEnumROLEWithAggregatesFilter<$PrismaModel> | $Enums.ROLE
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumROLEFilter<$PrismaModel>
+    _max?: NestedEnumROLEFilter<$PrismaModel>
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -18082,16 +18068,6 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
-  export type NestedEnumROLEWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: $Enums.ROLE | EnumROLEFieldRefInput<$PrismaModel>
-    in?: $Enums.ROLE[] | ListEnumROLEFieldRefInput<$PrismaModel>
-    notIn?: $Enums.ROLE[] | ListEnumROLEFieldRefInput<$PrismaModel>
-    not?: NestedEnumROLEWithAggregatesFilter<$PrismaModel> | $Enums.ROLE
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedEnumROLEFilter<$PrismaModel>
-    _max?: NestedEnumROLEFilter<$PrismaModel>
-  }
-
   export type userCreateWithoutAuditLogInput = {
     id?: string
     fullname: string
@@ -18100,9 +18076,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     Notifications?: notificationCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
     Department?: departmentCreateNestedOneWithoutUsersInput
@@ -18119,9 +18093,7 @@ export namespace Prisma {
     createdAt?: Date | string
     departmentId?: string | null
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
     Bookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
@@ -18152,9 +18124,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
     Department?: departmentUpdateOneWithoutUsersNestedInput
@@ -18171,9 +18141,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
     Bookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
@@ -18188,9 +18156,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
     Department?: departmentCreateNestedOneWithoutUsersInput
@@ -18207,9 +18173,7 @@ export namespace Prisma {
     createdAt?: Date | string
     departmentId?: string | null
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
     Bookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
@@ -18240,9 +18204,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
     Department?: departmentUpdateOneWithoutUsersNestedInput
@@ -18259,9 +18221,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
     Bookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
@@ -18276,9 +18236,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogCreateNestedManyWithoutUserInput
     Notifications?: notificationCreateNestedManyWithoutUserInput
     Department?: departmentCreateNestedOneWithoutUsersInput
@@ -18295,9 +18253,7 @@ export namespace Prisma {
     createdAt?: Date | string
     departmentId?: string | null
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     Bookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
@@ -18328,9 +18284,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     Department?: departmentUpdateOneWithoutUsersNestedInput
@@ -18347,9 +18301,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     Bookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
@@ -18468,9 +18420,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogCreateNestedManyWithoutUserInput
     Notifications?: notificationCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
@@ -18486,9 +18436,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
@@ -18643,9 +18591,7 @@ export namespace Prisma {
     createdAt?: DateTimeFilter<"user"> | Date | string
     departmentId?: StringNullableFilter<"user"> | string | null
     avatarUrl?: StringNullableFilter<"user"> | string | null
-    level?: IntFilter<"user"> | number
     role?: EnumROLEFilter<"user"> | $Enums.ROLE
-    exp?: IntFilter<"user"> | number
   }
 
   export type departmentCreateWithoutBranchesInput = {
@@ -18735,6 +18681,8 @@ export namespace Prisma {
   export type notificationCreateWithoutUserInput = {
     id?: string
     type: string
+    title?: string | null
+    link?: string | null
     message: string
     isRead?: boolean
     createdAt?: Date | string
@@ -18744,6 +18692,8 @@ export namespace Prisma {
   export type notificationUncheckedCreateWithoutUserInput = {
     id?: string
     type: string
+    title?: string | null
+    link?: string | null
     message: string
     isRead?: boolean
     createdAt?: Date | string
@@ -18928,6 +18878,8 @@ export namespace Prisma {
     NOT?: notificationScalarWhereInput | notificationScalarWhereInput[]
     id?: StringFilter<"notification"> | string
     type?: StringFilter<"notification"> | string
+    title?: StringNullableFilter<"notification"> | string | null
+    link?: StringNullableFilter<"notification"> | string | null
     message?: StringFilter<"notification"> | string
     isRead?: BoolFilter<"notification"> | boolean
     createdAt?: DateTimeFilter<"notification"> | Date | string
@@ -19154,7 +19106,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"RoomFacility"> | string | null
     createdAt?: DateTimeFilter<"RoomFacility"> | Date | string
     updatedAt?: DateTimeFilter<"RoomFacility"> | Date | string
-    roomId?: StringFilter<"RoomFacility"> | string
+    roomId?: StringNullableFilter<"RoomFacility"> | string | null
   }
 
   export type BookingUpsertWithWhereUniqueWithoutRoomInput = {
@@ -19261,9 +19213,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogCreateNestedManyWithoutUserInput
     Notifications?: notificationCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
@@ -19280,9 +19230,7 @@ export namespace Prisma {
     createdAt?: Date | string
     departmentId?: string | null
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
@@ -19376,9 +19324,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
@@ -19395,9 +19341,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
@@ -19502,9 +19446,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogCreateNestedManyWithoutUserInput
     Notifications?: notificationCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
@@ -19521,9 +19463,7 @@ export namespace Prisma {
     createdAt?: Date | string
     departmentId?: string | null
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
@@ -19591,9 +19531,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
@@ -19610,9 +19548,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     departmentId?: NullableStringFieldUpdateOperationsInput | string | null
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
@@ -19640,9 +19576,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     avatarUrl?: string | null
-    level?: number
     role?: $Enums.ROLE
-    exp?: number
   }
 
   export type departmentUpdateWithoutParentInput = {
@@ -19696,9 +19630,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
@@ -19714,9 +19646,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
@@ -19732,9 +19662,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    level?: IntFieldUpdateOperationsInput | number
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    exp?: IntFieldUpdateOperationsInput | number
   }
 
   export type departmentCreateManyBranchesInput = {
@@ -19805,6 +19733,8 @@ export namespace Prisma {
   export type notificationCreateManyUserInput = {
     id?: string
     type: string
+    title?: string | null
+    link?: string | null
     message: string
     isRead?: boolean
     createdAt?: Date | string
@@ -19866,6 +19796,8 @@ export namespace Prisma {
   export type notificationUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     message?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19875,6 +19807,8 @@ export namespace Prisma {
   export type notificationUncheckedUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     message?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -19884,6 +19818,8 @@ export namespace Prisma {
   export type notificationUncheckedUpdateManyWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     type?: StringFieldUpdateOperationsInput | string
+    title?: NullableStringFieldUpdateOperationsInput | string | null
+    link?: NullableStringFieldUpdateOperationsInput | string | null
     message?: StringFieldUpdateOperationsInput | string
     isRead?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string

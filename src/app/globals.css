@@ -121,3 +121,12 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* react-day-picker table */
+.rdp-caption_start {
+  width: 100%;
+}
+
+.rdp-button {
+  color: white
+}

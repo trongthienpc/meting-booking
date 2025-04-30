@@ -61,6 +61,13 @@ export async function handleServerError(
     };
   }
 
+  if(typeof error === "string"){
+    return {
+      success: false,
+      message: error,
+    };
+  }
+
   return {
     success: false,
     message: defaultMessage,

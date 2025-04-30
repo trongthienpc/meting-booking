@@ -130,6 +130,8 @@ exports.Prisma.AuditLogScalarFieldEnum = {
 exports.Prisma.NotificationScalarFieldEnum = {
   id: 'id',
   type: 'type',
+  title: 'title',
+  link: 'link',
   message: 'message',
   isRead: 'isRead',
   createdAt: 'createdAt',
@@ -188,9 +190,7 @@ exports.Prisma.UserScalarFieldEnum = {
   createdAt: 'createdAt',
   departmentId: 'departmentId',
   avatarUrl: 'avatarUrl',
-  level: 'level',
-  role: 'role',
-  exp: 'exp'
+  role: 'role'
 };
 
 exports.Prisma.RoomScalarFieldEnum = {

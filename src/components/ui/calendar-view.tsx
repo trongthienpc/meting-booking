@@ -15,7 +15,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./dialog";
-import EventForm from "../EventForm";
+import EventForm from "../event/EventForm";
+import EnventDialog from "../event/Dialog";
 
 type Event = {
   id: number;
@@ -36,35 +37,35 @@ const initialEvents: Event[] = [
   {
     id: 2,
     title: "Client Call",
-    date: new Date("2025-05-05"),
+    date: new Date("2025-05-01"),
     startTime: "14:30",
     duration: 60,
   },
   {
     id: 3,
     title: "Project Deadline",
-    date: new Date("2025-05-15"),
+    date: new Date("2025-05-1"),
     startTime: "17:00",
     duration: 60,
   },
   {
     id: 4,
     title: "Workshop",
-    date: new Date("2025-05-25"),
+    date: new Date("2025-05-1"),
     startTime: "10:00",
     duration: 60,
   },
   {
     id: 5,
     title: "Review Session",
-    date: new Date("2025-05-30"),
+    date: new Date("2025-05-1"),
     startTime: "13:00",
     duration: 60,
   },
   {
     id: 6,
     title: "Create React App",
-    date: new Date("2025-05-12"),
+    date: new Date("2025-05-1"),
     startTime: "10:00",
     duration: 60,
   },
@@ -107,6 +108,7 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [events, setEvents] = useState(initialEvents);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [open, setOpen] = useState(false);
 
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
@@ -130,24 +132,24 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
   );
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 rounded shadow p-4 min-h-screen">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 rounded shadow p-4 h-full min-h-0">
       {/* Left: Calendar */}
-      <div className="p-4 rounded-xl">
+      <div className="p-4 rounded-xl h-full flex flex-col min-h-0">
         <h1 className="text-3xl font-bold mb-2">CALENDAR</h1>
         <p className="text-xl mb-4">{format(selectedDate, "MMMM, yyyy")}</p>
-        <Card>
+        <Card className="flex-1 flex flex-col min-h-0">
           <CardHeader>
-            <CardTitle className="text-2xl">Lịch</CardTitle>
+            <CardTitle className="text-2xl"></CardTitle>
             <CardDescription>
-              {format(selectedDate, "MMMM, yyyy")}
+              {/* {format(selectedDate, "MMMM, yyyy")} */}
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex-1">
             <Calendar
               mode="single"
               selected={selectedDate}
               onSelect={(date) => date && handleDayClick(date)}
-              className="rounded-md"
+              className="rounded-md w-full"
               modifiers={{
                 hasEvent: (date) =>
                   events.some(
@@ -166,8 +168,8 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
         <div className="w-full mt-3">
           <Dialog>
             <DialogTrigger asChild>
-              <Button className="w-full">
-                <CalendarIcon className="w-6 h-6" />
+              <Button className="w-full text-white">
+                <CalendarIcon className="w-6 h-6 text-white" />
                 Đăng ký phòng họp
               </Button>
             </DialogTrigger>
@@ -178,7 +180,7 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
               onInteractOutside={(e) => e.preventDefault()}
             >
               <DialogHeader>
-                <DialogTitle>Đăng ký phòng họp</DialogTitle>
+                <DialogTitle className="">Đăng ký phòng họp</DialogTitle>
                 <DialogDescription>
                   Vui lòng điền vào các thông tin bên dưới
                 </DialogDescription>
@@ -192,10 +194,9 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
       </div>
 
       {/* Right: Event List */}
-      <div className="p-4">
-        <h2 className="text-2xl font-bold mb-4">
-          Sự kiện ngày {format(selectedDate, "dd/MM/yyyy")}
-        </h2>
+      <div className="p-4 overflow-y-auto h-full flex flex-col min-h-0 max-h-[calc(100vh-8rem)]">
+        <h1 className="text-3xl font-bold mb-2">SỰ KIỆN TRONG NGÀY</h1>
+        <p className="text-xl mb-4">{format(selectedDate, "dd/MM/yyyy")}</p>
 
         <div className="space-y-4">
           {dailyEvents.length === 0 ? (
@@ -226,7 +227,7 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
                         variant="ghost"
                         onClick={() => {
                           setEditingEvent(event);
-                          handleOpenSheet(true);
+                          setOpen(true);
                         }}
                       >
                         <Pencil className="w-4 h-4" />
@@ -249,6 +250,8 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
           )}
         </div>
       </div>
+
+      {editingEvent && <EnventDialog open={open} onOpenChange={setOpen} />}
     </div>
   );
 }

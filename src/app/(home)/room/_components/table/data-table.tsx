@@ -42,7 +42,9 @@ interface DataTableProps {
 export function DataTable({ data, columns, onEdit, onDelete }: DataTableProps) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    id: false
+  });
   const [rowSelection, setRowSelection] = useState({});
 
   const table = useReactTable<Room>({
@@ -65,6 +67,7 @@ export function DataTable({ data, columns, onEdit, onDelete }: DataTableProps) {
       columnFilters,
       columnVisibility,
       rowSelection,
+      
     },
   });
 

@@ -7,6 +7,7 @@ import { MenuProvider } from "@/providers/menu-provider";
 import { NotificationProvider } from "@/providers/notification-provider";
 import { PusherProvider } from "@/providers/pusher-provider";
 import QueryProvider from "@/providers/query-provider";
+import { RoomProvider } from "@/providers/room-provider";
 import SessionProvider from "@/providers/session-provider";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
@@ -31,6 +32,8 @@ const HomeLayout = async ({ children }: { children: React.ReactNode }) => {
       >
         <NotificationProvider>
           <QueryProvider>
+            <RoomProvider>
+
             <div className="w-full min-h-screen flex flex-col px-3 md:px-4 lg:px-6 xl:px-12 2xl:px-16 font-light">
               <MenuProvider>
                 <div className="w-full h-20 bg-transparent bg-opacity-50 backdrop-blur-md fixed left-0 top-0 z-50 px-3 md:px-6 lg:px-9 xl:px-12">
@@ -51,6 +54,7 @@ const HomeLayout = async ({ children }: { children: React.ReactNode }) => {
               </MenuProvider>
             </div>
             <NotificationListener />
+            </RoomProvider>
           </QueryProvider>
         </NotificationProvider>
       </PusherProvider>

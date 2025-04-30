@@ -31,6 +31,7 @@ export const roomSchema = z.object({
 export type RoomFacility = z.infer<typeof roomFacilitySchema>;
 export type Room = z.infer<typeof roomSchema>;
 
+
 // Schema cho tạo mới
 export const createRoomSchema = roomSchema.omit({ id: true });
 export type CreateRoomFormData = z.infer<typeof createRoomSchema>;
