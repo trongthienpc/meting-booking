@@ -1,13 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import Calendar from "react-calendar";
+
 import { format } from "date-fns";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Pencil, Trash2 } from "lucide-react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import EventForm from "../EventForm";
+import {  Pencil, Trash2 } from "lucide-react";
+
+
+
+import { CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Calendar } from "./calendar";
+
 
 type Event = {
   id: number;
@@ -39,28 +43,36 @@ const initialEvents: Event[] = [
   { id: 5, title: "Work out", date: new Date("2024-05-29"), time: "11:00" },
 ];
 
-export default function CalendarView() {
-  const [selectedDate, setSelectedDate] = useState(new Date());
+interface CalendarViewProps {
+  handleOpensheet: (isOpen: boolean) => void;
+  handleDate: (date: Date) => void;
+}
+
+export default function CalendarView({handleOpensheet, handleDate}: CalendarViewProps) {
+  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+
   const [events, setEvents] = useState(initialEvents);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
-  const [modalOpen, setModalOpen] = useState(false);
+
+
+  const handleDayClick = (date: Date) => {
+    setSelectedDate(date);
+    if(date > new Date()) {
+      handleDate(date);
+    } else {
+      handleDate(new Date());
+    }
+    handleOpensheet(true);
+    setEditingEvent(null); // Reset event khi tạo mới
+  };
 
   const handleSave = (updatedEvent: Event) => {
-    if (editingEvent) {
-      // Update
-      setEvents((prev) =>
-        prev.map((e) => (e.id === editingEvent.id ? updatedEvent : e))
-      );
+    if (updatedEvent.id) {
+      setEvents(prev => prev.map(e => e.id === updatedEvent.id ? updatedEvent : e));
     } else {
-      // Create
-      const newEvent = {
-        ...updatedEvent,
-        id: Date.now(), // đơn giản hóa
-      };
-      setEvents((prev) => [...prev, newEvent]);
+      setEvents(prev => [...prev, { ...updatedEvent, id: Date.now() }]);
     }
-    setEditingEvent(null);
-    setModalOpen(false);
+    handleOpensheet(false);
   };
 
   const dailyEvents = events.filter(
@@ -73,19 +85,18 @@ export default function CalendarView() {
       <div className="bg-[#1e1e1e] p-4 rounded-xl shadow">
         <h1 className="text-3xl font-bold mb-2">CALENDAR</h1>
         <p className="text-xl mb-4">{format(selectedDate, "MMMM, yyyy")}</p>
-        <Calendar
-          onChange={setSelectedDate}
-          value={selectedDate}
-          className="REACT-CALENDAR p-2 rounded-lg"
-          tileClassName={({ date }) =>
-            events.some(
-              (event) =>
-                format(event.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
-            )
-              ? "bg-blue-500 text-white rounded-full"
-              : undefined
-          }
-        />
+        <Card className="p-4">
+          <CardHeader className="p-0 pb-4">
+            <CardTitle className="text-2xl">Lịch</CardTitle>
+            <CardDescription>{format(selectedDate, 'MMMM, yyyy')}</CardDescription>
+          </CardHeader>
+          <Calendar
+            mode="single"
+            selected={selectedDate}
+            onSelect={(date) => date && handleDayClick(date)}
+            className="rounded-md"
+          />
+        </Card>
       </div>
 
       {/* Right: Event List */}
@@ -109,7 +120,7 @@ export default function CalendarView() {
                     variant="ghost"
                     onClick={() => {
                       setEditingEvent(event);
-                      setModalOpen(true);
+                      handleOpensheet(true);
                     }}
                   >
                     <Pencil className="w-4 h-4" />
@@ -129,13 +140,9 @@ export default function CalendarView() {
           ))
         )}
       </div>
-      {editingEvent && (
-        <Dialog open={modalOpen} onOpenChange={setModalOpen}>
-          <DialogContent>
-            <EventForm event={editingEvent} onSave={handleSave} />
-          </DialogContent>
-        </Dialog>
-      )}
+     
     </div>
   );
 }
+
+

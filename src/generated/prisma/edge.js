@@ -257,7 +257,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "D:\\coding\\2025\\meeting-booking\\src\\generated\\prisma",
+      "value": "/Users/thientt/Documents/2025/meting-booking/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -266,12 +266,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "D:\\coding\\2025\\meeting-booking\\prisma\\schema.prisma",
+    "sourceFilePath": "/Users/thientt/Documents/2025/meting-booking/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -285,12 +285,11 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://zubu:553113@localhost:5432/meting-booking?schema=public"
       }
     }
   },
