@@ -83,5 +83,9 @@ _(Note: `base-queue.ts` and `worker-factory.ts` are typically defined once.)_
 - **Optimistic UI:** Enhance user experience for common actions where applicable.
 - **Consistency:** Follow established patterns and naming conventions across modules.
 - **Reusability:** Build common infrastructure components (like base queue/worker) to avoid repetition.
+- **Reusability:** Build common infrastructure components (like base queue/worker) to avoid repetition.
+- Small & Focused Units: Break code into the smallest meaningful units — each function, component, or module should do one thing and do it well.
+
+- Readable Structure: Prioritize code clarity with consistent formatting, naming, and inline documentation where needed.
 
 ---

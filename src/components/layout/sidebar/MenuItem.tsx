@@ -12,7 +12,13 @@ interface MenuItemProps {
   onClose?: () => void;
 }
 
-export const MenuItem: React.FC<MenuItemProps> = ({ item, isSubmenu = false, isOpen, onToggle, onClose }) => {
+export const MenuItem: React.FC<MenuItemProps> = ({
+  item,
+  isSubmenu = false,
+  isOpen,
+  onToggle,
+  onClose,
+}) => {
   const pathname = usePathname();
   const Icon = item.icon;
   // const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -34,7 +40,7 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, isSubmenu = false, isO
         "p-1 group flex items-center mb-2 font-medium",
         isSubmenu && "pl-10",
         isActive
-          ? "text-teal-600 dark:text-teal-400"
+          ? "text-blue-600 dark:text-blue-400"
           : "text-slate-700 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-300"
       )}
     >
@@ -44,12 +50,20 @@ export const MenuItem: React.FC<MenuItemProps> = ({ item, isSubmenu = false, isO
       <span className="flex-1">{item.label}</span>
       {item.children?.length && (
         <svg
-          className={cn("w-4 h-4 transition-transform duration-200", isOpen ? "transform rotate-180" : "")}
+          className={cn(
+            "w-4 h-4 transition-transform duration-200",
+            isOpen ? "transform rotate-180" : ""
+          )}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
         </svg>
       )}
     </Link>

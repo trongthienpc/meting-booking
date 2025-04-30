@@ -5,9 +5,17 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useRoom } from "@/providers/room-provider";
 import { Room, CreateRoomFormData, createRoomSchema } from "@/lib/schemas/room";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+import { Switch } from "../ui/switch";
 
 type RoomFormProps = {
   room?: Room | null;
@@ -23,9 +31,9 @@ export function RoomForm({ room, onSuccess }: RoomFormProps) {
       name: "",
       capacity: 0,
       floor: "",
-      facilities: [],
+      // facilities: [],
       description: "",
-      status: "available",
+      status: true,
       minBookingTime: 30,
       maxBookingTime: 480,
       maxAdvanceBooking: 30,
@@ -107,21 +115,19 @@ export function RoomForm({ room, onSuccess }: RoomFormProps) {
           control={form.control}
           name="status"
           render={({ field }) => (
-            <FormItem>
-              <FormLabel>Trạng Thái</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Chọn trạng thái" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="available">Trống</SelectItem>
-                  <SelectItem value="occupied">Đang sử dụng</SelectItem>
-                  <SelectItem value="maintenance">Bảo trì</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormMessage />
+            <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
+              <div className="space-y-0.5">
+                <FormLabel className="text-base">Trạng Thái</FormLabel>
+                <div className="text-sm text-muted-foreground">
+                  Phòng họp có sẵn sàng để sử dụng
+                </div>
+              </div>
+              <FormControl>
+                <Switch
+                  checked={field.value}
+                  onCheckedChange={field.onChange}
+                />
+              </FormControl>
             </FormItem>
           )}
         />

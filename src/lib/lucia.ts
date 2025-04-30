@@ -27,7 +27,9 @@ import { db } from "./db";
  * Validates the current session and retrieves the associated user.
  * @returns {Promise<{ user: User; session: Session } | { user: null; session: null }>}
  */
-export async function validateRequest(): Promise<{ user: User; session: Session } | { user: null; session: null }> {
+export async function validateRequest(): Promise<
+  { user: User; session: Session } | { user: null; session: null }
+> {
   const cookieStore = await cookies();
   const sessionId = cookieStore.get(lucia.sessionCookieName)?.value ?? null;
 
@@ -39,7 +41,6 @@ export async function validateRequest(): Promise<{ user: User; session: Session 
   // Validate the session using Lucia
   const { user, session } = await lucia.validateSession(sessionId);
 
-  console.log("🚀 ~ validateRequest ~ user:", user);
   // If the session is invalid, clear the session cookie and return null
   if (!session) {
     // await clearSessionCookie();

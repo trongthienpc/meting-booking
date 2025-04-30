@@ -4,7 +4,10 @@ import { z } from "zod";
 export const roomFacilitySchema = z.object({
   id: z.string().min(1, { message: "ID tiện nghi là bắt buộc" }),
   name: z.string().min(1, { message: "Tên tiện nghi là bắt buộc" }),
-  quantity: z.number().min(1, { message: "Số lượng phải lớn hơn 0" }).default(1),
+  quantity: z
+    .number()
+    .min(1, { message: "Số lượng phải lớn hơn 0" })
+    .default(1),
   description: z.string().nullable(),
   status: z.boolean(),
 });
@@ -16,7 +19,7 @@ export const roomSchema = z.object({
   capacity: z.number().min(1, { message: "Sức chứa phải lớn hơn 0" }),
   floor: z.string().nullable(),
   description: z.string().nullable(),
-  Facilities: z.array(roomFacilitySchema),
+  // Facilities: z.array(roomFacilitySchema),
   status: z.boolean(),
   minBookingTime: z.number(), // 30 phút
   maxBookingTime: z.number(), // 8 giờ

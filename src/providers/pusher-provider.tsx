@@ -1,6 +1,12 @@
 // PusherContext.tsx - Final solution with queue mechanism
 "use client";
-import React, { createContext, useContext, useEffect, useRef, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Pusher, { Channel, Options as PusherOptions } from "pusher-js";
 
 interface PusherContextType {
@@ -17,7 +23,11 @@ interface PusherProviderProps {
   children: React.ReactNode;
 }
 
-export function PusherProvider({ appKey, options, children }: PusherProviderProps) {
+export function PusherProvider({
+  appKey,
+  options,
+  children,
+}: PusherProviderProps) {
   const [isInitialized, setIsInitialized] = useState(false);
   const clientRef = useRef<Pusher | null>(null);
   const channelsRef = useRef<Record<string, Channel>>({});
@@ -29,7 +39,7 @@ export function PusherProvider({ appKey, options, children }: PusherProviderProp
     let isActive = true; // For cleanup safety
 
     const init = async () => {
-      console.log("[PusherProvider] Initializing Pusher client...");
+      // console.log("[PusherProvider] Initializing Pusher client...");
 
       // Create Pusher client
       const pusherClient = new Pusher(appKey, {
@@ -70,7 +80,10 @@ export function PusherProvider({ appKey, options, children }: PusherProviderProp
   }, [appKey, options]); // Only depend on appKey
 
   // Subscribe function that tracks component subscriptions
-  const subscribe = (channelName: string, componentId: string): Channel | undefined => {
+  const subscribe = (
+    channelName: string,
+    componentId: string
+  ): Channel | undefined => {
     if (!channelName) return undefined;
 
     // If not initialized yet, just return undefined
@@ -94,7 +107,8 @@ export function PusherProvider({ appKey, options, children }: PusherProviderProp
     // Subscribe to channel if not already subscribed
     if (!channelsRef.current[channelName]) {
       // console.log(`[PusherProvider] Subscribing to channel: ${channelName}`);
-      channelsRef.current[channelName] = clientRef.current.subscribe(channelName);
+      channelsRef.current[channelName] =
+        clientRef.current.subscribe(channelName);
     } else {
       // console.log(`[PusherProvider] Reusing existing channel: ${channelName}`);
     }
@@ -112,7 +126,9 @@ export function PusherProvider({ appKey, options, children }: PusherProviderProp
 
       // If no components are subscribed to this channel anymore, unsubscribe
       if (subscriptionsRef.current[channelName].size === 0) {
-        console.log(`[PusherProvider] Unsubscribing from channel: ${channelName}`);
+        console.log(
+          `[PusherProvider] Unsubscribing from channel: ${channelName}`
+        );
         clientRef.current.unsubscribe(channelName);
         delete channelsRef.current[channelName];
         delete subscriptionsRef.current[channelName];
@@ -126,7 +142,11 @@ export function PusherProvider({ appKey, options, children }: PusherProviderProp
 
   const contextValue = { subscribe, unsubscribe, isInitialized };
 
-  return <PusherContext.Provider value={contextValue}>{children}</PusherContext.Provider>;
+  return (
+    <PusherContext.Provider value={contextValue}>
+      {children}
+    </PusherContext.Provider>
+  );
 }
 
 export const usePusher = (): PusherContextType => {

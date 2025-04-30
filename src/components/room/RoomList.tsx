@@ -39,17 +39,19 @@ export function RoomList() {
           <Card key={room.id}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-xl font-bold">{room.name}</CardTitle>
-              <Badge>{room.status === "available" ? "Trống" : "Đang sử dụng"}</Badge>
+              <Badge>{room.status ? "Trống" : "Đang sử dụng"}</Badge>
             </CardHeader>
             <CardContent>
               <div className="space-y-2">
                 <p>
-                  <span className="font-semibold">Sức chứa:</span> {room.capacity} người
+                  <span className="font-semibold">Sức chứa:</span>{" "}
+                  {room.capacity} người
                 </p>
                 <p>
-                  <span className="font-semibold">Vị trí:</span> Tầng {room.floor}
+                  <span className="font-semibold">Vị trí:</span> Tầng{" "}
+                  {room.floor}
                 </p>
-                <div>
+                {/* <div>
                   <span className="font-semibold">Tiện nghi:</span>
                   <div className="flex flex-wrap gap-1 mt-1">
                     {room.facilities.map((facility) => (
@@ -58,12 +60,20 @@ export function RoomList() {
                       </Badge>
                     ))}
                   </div>
-                </div>
+                </div> */}
                 <div className="flex justify-end space-x-2 mt-4">
-                  <Button variant="outline" size="sm" onClick={() => setEditingRoom(room)}>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setEditingRoom(room)}
+                  >
                     <Edit className="h-4 w-4" />
                   </Button>
-                  <Button variant="destructive" size="sm" onClick={() => handleDelete(room.id)}>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(room.id)}
+                  >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>

@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Be_Vietnam_Pro } from "next/font/google";
 import "./globals.css";
 import { UserProvider } from "@/providers/user-provider";
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/providers/theme-provider";
 
-const poppins = Poppins({
+const poppins = Be_Vietnam_Pro({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
@@ -23,7 +23,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className}  antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+        >
           <UserProvider>{children}</UserProvider>
         </ThemeProvider>
         <Toaster richColors position="top-center" duration={5000} closeButton />
