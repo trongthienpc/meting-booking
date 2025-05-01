@@ -3,6 +3,7 @@ import Header from "@/components/layout/Header";
 import Sidebar from "@/components/layout/Sidebar";
 import { NotificationListener } from "@/components/notifications/notification-listener";
 import { validateRequest } from "@/lib/lucia";
+import { BookingProvider } from "@/providers/booking-provider";
 import { MenuProvider } from "@/providers/menu-provider";
 import { NotificationProvider } from "@/providers/notification-provider";
 import { PusherProvider } from "@/providers/pusher-provider";
@@ -19,7 +20,9 @@ const HomeLayout = async ({ children }: { children: React.ReactNode }) => {
   const pathname = headerList.get("x-current-path");
 
   if (!session.user) {
-    return redirect(`/authentication?redirectTo=${encodeURIComponent(pathname ?? "")}`);
+    return redirect(
+      `/authentication?redirectTo=${encodeURIComponent(pathname ?? "")}`
+    );
   }
   return (
     <SessionProvider value={session}>
@@ -33,27 +36,28 @@ const HomeLayout = async ({ children }: { children: React.ReactNode }) => {
         <NotificationProvider>
           <QueryProvider>
             <RoomProvider>
-
-            <div className="w-full min-h-screen flex flex-col px-3 md:px-4 lg:px-6 xl:px-12 2xl:px-16 font-light">
-              <MenuProvider>
-                <div className="w-full h-20 bg-transparent bg-opacity-50 backdrop-blur-md fixed left-0 top-0 z-50 px-3 md:px-6 lg:px-9 xl:px-12">
-                  <Header />
-                </div>
-                {/* <div className="flex-1 flex flex-col lg:flex-row h-[calc(100vh-5rem)] pt-20"> */}
-                <div className="flex-1 flex flex-col lg:flex-row min-h-screen pt-20">
-                  <div className="hidden xl:block lg:w-72">
-                    <Sidebar />
-                  </div>
-                  <main className="flex flex-col flex-1 w-full overflow-hidden  p-3 md:p-6 ">
-                    <div className="flex-1">{children}</div>
-                    <div className="h-14 w-full flex items-end justify-center mt-auto ">
-                      <Footer />
+              <BookingProvider>
+                <div className="w-full min-h-screen flex flex-col px-3 md:px-4 lg:px-6 xl:px-12 2xl:px-16 font-light">
+                  <MenuProvider>
+                    <div className="w-full h-20 bg-transparent bg-opacity-50 backdrop-blur-md fixed left-0 top-0 z-50 px-3 md:px-6 lg:px-9 xl:px-12">
+                      <Header />
                     </div>
-                  </main>
+                    {/* <div className="flex-1 flex flex-col lg:flex-row h-[calc(100vh-5rem)] pt-20"> */}
+                    <div className="flex-1 flex flex-col lg:flex-row min-h-screen pt-20">
+                      <div className="hidden xl:block lg:w-72">
+                        <Sidebar />
+                      </div>
+                      <main className="flex flex-col flex-1 w-full overflow-hidden  p-3 md:p-6 ">
+                        <div className="flex-1">{children}</div>
+                        <div className="h-14 w-full flex items-end justify-center mt-auto ">
+                          <Footer />
+                        </div>
+                      </main>
+                    </div>
+                  </MenuProvider>
                 </div>
-              </MenuProvider>
-            </div>
-            <NotificationListener />
+                <NotificationListener />
+              </BookingProvider>
             </RoomProvider>
           </QueryProvider>
         </NotificationProvider>

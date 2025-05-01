@@ -39,7 +39,7 @@ This document outlines a structured approach for developing new application modu
 ## 5. Client-Side State Management & Data Fetching (`src/providers/`)
 
 - **Purpose:** Manage UI state, interact with server actions, and provide data to components efficiently.
-- **Pattern:** Use a Context Provider combined with a data fetching library (e.g., SWR or React Query).
+- **Pattern:** Use a Context Provider combined with a data fetching library (e.g., SWR or React Query(SWR priority)).
   - **Context Provider:** Holds module-specific state, fetched data, loading/error states, and functions to trigger server actions.
   - **Data Fetching:** Manages fetching, caching, and revalidation of data from server actions.
   - **Optimistic Updates:** (Optional but recommended) Update the UI immediately before the server confirms the action, improving perceived performance. Rollback on error.

@@ -24,13 +24,12 @@ export const roomSchema = z.object({
   minBookingTime: z.number(), // 30 phút
   maxBookingTime: z.number(), // 8 giờ
   maxAdvanceBooking: z.number(), // 30 ngày
-  cancelationTime: z.number(), // 24 giờ
+  cancellationTime: z.number(), // 24 giờ
 });
 
 // Types cho form data
 export type RoomFacility = z.infer<typeof roomFacilitySchema>;
 export type Room = z.infer<typeof roomSchema>;
-
 
 // Schema cho tạo mới
 export const createRoomSchema = roomSchema.omit({ id: true });

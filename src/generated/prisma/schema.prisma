@@ -106,21 +106,22 @@ model branch {
 }
 
 model user {
-  id            String            @id @default(uuid())
-  fullname      String
-  username      String            @unique
-  password      String
-  status        Boolean           @default(true)
-  createdAt     DateTime          @default(now())
-  departmentId  String?
-  avatarUrl     String?
-  role          ROLE              @default(USER)
-  AuditLog      AuditLog[]
-  Notifications notification[]
-  session       session[]
-  Department    department?       @relation(fields: [departmentId], references: [id])
-  Bookings      Booking[]         @relation("BookingCreator")
-  Attendees     BookingAttendee[]
+  id               String            @id @default(uuid())
+  fullname         String
+  username         String            @unique
+  password         String
+  status           Boolean           @default(true)
+  createdAt        DateTime          @default(now())
+  departmentId     String?
+  avatarUrl        String?
+  role             ROLE              @default(USER)
+  AuditLog         AuditLog[]
+  Notifications    notification[]
+  session          session[]
+  Department       department?       @relation(fields: [departmentId], references: [id])
+  Attendees        BookingAttendee[]
+  createdBookings  Booking[]         @relation("CreatedBookings")
+  approvedBookings Booking[]         @relation("ApprovedBookings")
 
   @@map("user")
 }
@@ -135,7 +136,7 @@ model Room {
   minBookingTime    Int            @default(30) // Thời gian đặt phòng tối thiểu (phút)
   maxBookingTime    Int            @default(480) // Thời gian đặt phòng tối đa (phút)
   maxAdvanceBooking Int            @default(30) // Số ngày có thể đặt trước
-  cancelationTime   Int            @default(24) // Thời gian hủy đặt phòng (giờ)
+  cancellationTime  Int            @default(24) // Thời gian hủy đặt phòng (giờ)
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
   Facilities        RoomFacility[]
@@ -159,21 +160,41 @@ model RoomFacility {
 }
 
 model Booking {
-  id          String            @id @default(uuid())
-  title       String
-  startTime   DateTime
-  endTime     DateTime
-  status      Boolean           @default(true)
-  description String?
-  createdAt   DateTime          @default(now())
-  updatedAt   DateTime          @updatedAt
-  createdBy   String
-  roomId      String
-  Creator     user              @relation("BookingCreator", fields: [createdBy], references: [id])
-  Room        Room              @relation(fields: [roomId], references: [id])
-  Attendees   BookingAttendee[]
+  id           String        @id @default(uuid())
+  roomId       String
+  title        String
+  description  String?
+  startTime    DateTime
+  endTime      DateTime
+  status       BookingStatus @default(PENDING)
+  participants String[] // Danh sách người tham gia
+  createdBy    String
+  approvedBy   String?
 
+  // Cho tính năng đặt định kỳ
+  recurrencePattern String? // 'DAILY', 'WEEKLY', 'MONTHLY'
+  recurrenceEndDate DateTime?
+  recurrenceId      String? // Nhóm các booking cùng chu kỳ
+
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  Room            Room              @relation(fields: [roomId], references: [id])
+  BookingAttendee BookingAttendee[]
+  Creator         user              @relation("CreatedBookings", fields: [createdBy], references: [id])
+  Approver        user?             @relation("ApprovedBookings", fields: [approvedBy], references: [id])
+
+  @@index([roomId])
+  @@index([createdBy])
+  @@index([startTime])
+  @@index([endTime])
   @@map("booking")
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
 }
 
 model BookingAttendee {

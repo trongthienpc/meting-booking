@@ -203,7 +203,7 @@ exports.Prisma.RoomScalarFieldEnum = {
   minBookingTime: 'minBookingTime',
   maxBookingTime: 'maxBookingTime',
   maxAdvanceBooking: 'maxAdvanceBooking',
-  cancelationTime: 'cancelationTime',
+  cancellationTime: 'cancellationTime',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -221,15 +221,20 @@ exports.Prisma.RoomFacilityScalarFieldEnum = {
 
 exports.Prisma.BookingScalarFieldEnum = {
   id: 'id',
+  roomId: 'roomId',
   title: 'title',
+  description: 'description',
   startTime: 'startTime',
   endTime: 'endTime',
   status: 'status',
-  description: 'description',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
+  participants: 'participants',
   createdBy: 'createdBy',
-  roomId: 'roomId'
+  approvedBy: 'approvedBy',
+  recurrencePattern: 'recurrencePattern',
+  recurrenceEndDate: 'recurrenceEndDate',
+  recurrenceId: 'recurrenceId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.BookingAttendeeScalarFieldEnum = {
@@ -259,6 +264,13 @@ exports.ROLE = exports.$Enums.ROLE = {
   USER: 'USER',
   MANAGER: 'MANAGER',
   ADMIN: 'ADMIN'
+};
+
+exports.BookingStatus = exports.$Enums.BookingStatus = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
 };
 
 exports.Prisma.ModelName = {

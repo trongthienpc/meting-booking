@@ -21,12 +21,10 @@ import { Room } from "@/generated/prisma";
 
 interface RoomFormProps {
   onSubmit: (data: UpdateRoomFormData) => void;
-  initialData: Room | null
- 
+  initialData: Room | null;
 }
 
 export function UpdateRoomForm({ onSubmit, initialData }: RoomFormProps) {
-
   const form = useForm<UpdateRoomFormData>({
     resolver: zodResolver(updateRoomSchema),
     defaultValues: initialData as UpdateRoomFormData,
@@ -177,7 +175,7 @@ export function UpdateRoomForm({ onSubmit, initialData }: RoomFormProps) {
 
             <FormField
               control={form.control}
-              name="cancelationTime"
+              name="cancellationTime"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Thời Gian Hủy Trước (giờ)</FormLabel>

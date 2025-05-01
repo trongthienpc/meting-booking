@@ -16,90 +16,11 @@ import {
   DialogTrigger,
 } from "./dialog";
 import EventForm from "../../app/(home)/room/_components/form/create-event-form";
-import EnventDialog from "../../app/(home)/room/_components/sheet/event-dialog";
+import EventDialog from "../../app/(home)/room/_components/sheet/event-dialog";
 import { DeleteConfirmDialog } from "@/app/(home)/room/_components/form/delete-dialog";
-
-type Event = {
-  id: number;
-  title: string;
-  date: Date;
-  startTime: string;
-  duration: number;
-};
-
-const initialEvents: Event[] = [
-  {
-    id: 1,
-    title: "Team Meeting",
-    date: new Date("2025-05-01"),
-    startTime: "09:00",
-    duration: 60,
-  },
-  {
-    id: 2,
-    title: "Client Call",
-    date: new Date("2025-05-01"),
-    startTime: "14:30",
-    duration: 60,
-  },
-  {
-    id: 3,
-    title: "Project Deadline",
-    date: new Date("2025-05-1"),
-    startTime: "17:00",
-    duration: 60,
-  },
-  {
-    id: 4,
-    title: "Workshop",
-    date: new Date("2025-05-1"),
-    startTime: "10:00",
-    duration: 60,
-  },
-  {
-    id: 5,
-    title: "Review Session",
-    date: new Date("2025-05-1"),
-    startTime: "13:00",
-    duration: 60,
-  },
-  {
-    id: 6,
-    title: "Create React App",
-    date: new Date("2025-05-1"),
-    startTime: "10:00",
-    duration: 60,
-  },
-  {
-    id: 7,
-    title: "Listen to Music",
-    date: new Date("2025-05-20"),
-    startTime: "07:00",
-    duration: 60,
-  },
-  {
-    id: 8,
-    title: "Learn JavaScript",
-    date: new Date("2025-05-23"),
-    startTime: "05:00",
-    duration: 60,
-  },
-  {
-    id: 9,
-    title: "Sleep",
-    date: new Date("2025-04-24"),
-    startTime: "00:00",
-    duration: 60,
-  },
-
-  {
-    id: 10,
-    title: "Work out",
-    date: new Date("2025-04-29"),
-    startTime: "11:00",
-    duration: 60,
-  },
-];
+import { useBooking } from "@/providers/booking-provider";
+import { Booking } from "@/generated/prisma";
+import { BookingData } from "@/lib/schemas/booking";
 
 interface CalendarViewProps {
   handleOpenSheet: (isOpen: boolean) => void;
@@ -107,10 +28,11 @@ interface CalendarViewProps {
 
 export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
-  const [events, setEvents] = useState(initialEvents);
-  const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [editingEvent, setEditingEvent] = useState<Booking | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [open, setOpen] = useState(false);
+
+  const { bookings, createBooking } = useBooking();
 
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
@@ -118,19 +40,14 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
     setEditingEvent(null);
   };
 
-  const handleSave = (updatedEvent: Event) => {
-    if (updatedEvent.id) {
-      setEvents((prev) =>
-        prev.map((e) => (e.id === updatedEvent.id ? updatedEvent : e))
-      );
-    } else {
-      setEvents((prev) => [...prev, { ...updatedEvent, id: Date.now() }]);
-    }
+  const handleSave = (data: BookingData) => {
+    createBooking(data);
     handleOpenSheet(false);
   };
 
-  const dailyEvents = events.filter(
-    (e) => format(e.date, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
+  const dailyBookings = bookings.filter(
+    (e) =>
+      format(e.startTime, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
   );
 
   return (
@@ -154,9 +71,9 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
               className="rounded-md w-full"
               modifiers={{
                 hasEvent: (date) =>
-                  events.some(
+                  bookings.some(
                     (event) =>
-                      format(event.date, "yyyy-MM-dd") ===
+                      format(event.startTime, "yyyy-MM-dd") ===
                       format(date, "yyyy-MM-dd")
                   ),
               }}
@@ -201,26 +118,26 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
         <p className="text-xl mb-4">{format(selectedDate, "dd/MM/yyyy")}</p>
 
         <div className="space-y-4">
-          {dailyEvents.length === 0 ? (
+          {dailyBookings.length === 0 ? (
             <Card>
               <CardContent className="p-6 text-center text-muted-foreground">
                 Không có sự kiện nào cho ngày này
               </CardContent>
             </Card>
           ) : (
-            dailyEvents.map((event) => (
+            dailyBookings.map((event) => (
               <Card key={event.id} className="overflow-hidden">
                 <CardContent className="p-0">
                   <div className="flex items-center">
                     <div className="bg-blue-500 p-4 flex flex-col items-center justify-center text-white">
                       <span className="text-xl font-bold">
-                        {event.startTime ?? "00:00"}
+                        {format(event.startTime, "HH:mm") ?? "00:00"}
                       </span>
                     </div>
                     <div className="p-4 flex-1">
                       <h3 className="text-lg font-semibold">{event.title}</h3>
                       <p className="text-sm text-muted-foreground">
-                        {format(event.date, "EEEE, dd MMMM yyyy")}
+                        {format(event.startTime, "EEEE, dd MMMM yyyy")}
                       </p>
                     </div>
                     <div className="p-2 flex flex-col gap-2">
@@ -255,7 +172,7 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
       </div>
 
       {editingEvent && (
-        <EnventDialog mode="edit" open={open} onOpenChange={setOpen} />
+        <EventDialog mode="edit" open={open} onOpenChange={setOpen} />
       )}
 
       {deleteDialogOpen && (

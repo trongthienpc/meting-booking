@@ -81,11 +81,25 @@ export namespace $Enums {
 
 export type ROLE = (typeof ROLE)[keyof typeof ROLE]
 
+
+export const BookingStatus: {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  CANCELLED: 'CANCELLED',
+  COMPLETED: 'COMPLETED'
+};
+
+export type BookingStatus = (typeof BookingStatus)[keyof typeof BookingStatus]
+
 }
 
 export type ROLE = $Enums.ROLE
 
 export const ROLE: typeof $Enums.ROLE
+
+export type BookingStatus = $Enums.BookingStatus
+
+export const BookingStatus: typeof $Enums.BookingStatus
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1871,16 +1885,18 @@ export namespace Prisma {
     AuditLog: number
     Notifications: number
     session: number
-    Bookings: number
     Attendees: number
+    createdBookings: number
+    approvedBookings: number
   }
 
   export type UserCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     AuditLog?: boolean | UserCountOutputTypeCountAuditLogArgs
     Notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
     session?: boolean | UserCountOutputTypeCountSessionArgs
-    Bookings?: boolean | UserCountOutputTypeCountBookingsArgs
     Attendees?: boolean | UserCountOutputTypeCountAttendeesArgs
+    createdBookings?: boolean | UserCountOutputTypeCountCreatedBookingsArgs
+    approvedBookings?: boolean | UserCountOutputTypeCountApprovedBookingsArgs
   }
 
   // Custom InputTypes
@@ -1918,15 +1934,22 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type UserCountOutputTypeCountAttendeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BookingAttendeeWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
+  export type UserCountOutputTypeCountCreatedBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BookingWhereInput
   }
 
   /**
    * UserCountOutputType without action
    */
-  export type UserCountOutputTypeCountAttendeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    where?: BookingAttendeeWhereInput
+  export type UserCountOutputTypeCountApprovedBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: BookingWhereInput
   }
 
 
@@ -1975,11 +1998,11 @@ export namespace Prisma {
    */
 
   export type BookingCountOutputType = {
-    Attendees: number
+    BookingAttendee: number
   }
 
   export type BookingCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Attendees?: boolean | BookingCountOutputTypeCountAttendeesArgs
+    BookingAttendee?: boolean | BookingCountOutputTypeCountBookingAttendeeArgs
   }
 
   // Custom InputTypes
@@ -1996,7 +2019,7 @@ export namespace Prisma {
   /**
    * BookingCountOutputType without action
    */
-  export type BookingCountOutputTypeCountAttendeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type BookingCountOutputTypeCountBookingAttendeeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: BookingAttendeeWhereInput
   }
 
@@ -8871,8 +8894,9 @@ export namespace Prisma {
     Notifications?: boolean | user$NotificationsArgs<ExtArgs>
     session?: boolean | user$sessionArgs<ExtArgs>
     Department?: boolean | user$DepartmentArgs<ExtArgs>
-    Bookings?: boolean | user$BookingsArgs<ExtArgs>
     Attendees?: boolean | user$AttendeesArgs<ExtArgs>
+    createdBookings?: boolean | user$createdBookingsArgs<ExtArgs>
+    approvedBookings?: boolean | user$approvedBookingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["user"]>
 
@@ -8920,8 +8944,9 @@ export namespace Prisma {
     Notifications?: boolean | user$NotificationsArgs<ExtArgs>
     session?: boolean | user$sessionArgs<ExtArgs>
     Department?: boolean | user$DepartmentArgs<ExtArgs>
-    Bookings?: boolean | user$BookingsArgs<ExtArgs>
     Attendees?: boolean | user$AttendeesArgs<ExtArgs>
+    createdBookings?: boolean | user$createdBookingsArgs<ExtArgs>
+    approvedBookings?: boolean | user$approvedBookingsArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type userIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -8938,8 +8963,9 @@ export namespace Prisma {
       Notifications: Prisma.$notificationPayload<ExtArgs>[]
       session: Prisma.$sessionPayload<ExtArgs>[]
       Department: Prisma.$departmentPayload<ExtArgs> | null
-      Bookings: Prisma.$BookingPayload<ExtArgs>[]
       Attendees: Prisma.$BookingAttendeePayload<ExtArgs>[]
+      createdBookings: Prisma.$BookingPayload<ExtArgs>[]
+      approvedBookings: Prisma.$BookingPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -9349,8 +9375,9 @@ export namespace Prisma {
     Notifications<T extends user$NotificationsArgs<ExtArgs> = {}>(args?: Subset<T, user$NotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$notificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     session<T extends user$sessionArgs<ExtArgs> = {}>(args?: Subset<T, user$sessionArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$sessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Department<T extends user$DepartmentArgs<ExtArgs> = {}>(args?: Subset<T, user$DepartmentArgs<ExtArgs>>): Prisma__departmentClient<$Result.GetResult<Prisma.$departmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-    Bookings<T extends user$BookingsArgs<ExtArgs> = {}>(args?: Subset<T, user$BookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     Attendees<T extends user$AttendeesArgs<ExtArgs> = {}>(args?: Subset<T, user$AttendeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    createdBookings<T extends user$createdBookingsArgs<ExtArgs> = {}>(args?: Subset<T, user$createdBookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    approvedBookings<T extends user$approvedBookingsArgs<ExtArgs> = {}>(args?: Subset<T, user$approvedBookingsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -9876,30 +9903,6 @@ export namespace Prisma {
   }
 
   /**
-   * user.Bookings
-   */
-  export type user$BookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    /**
-     * Select specific fields to fetch from the Booking
-     */
-    select?: BookingSelect<ExtArgs> | null
-    /**
-     * Omit specific fields from the Booking
-     */
-    omit?: BookingOmit<ExtArgs> | null
-    /**
-     * Choose, which related nodes to fetch as well
-     */
-    include?: BookingInclude<ExtArgs> | null
-    where?: BookingWhereInput
-    orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
-    cursor?: BookingWhereUniqueInput
-    take?: number
-    skip?: number
-    distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
-  }
-
-  /**
    * user.Attendees
    */
   export type user$AttendeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -9921,6 +9924,54 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BookingAttendeeScalarFieldEnum | BookingAttendeeScalarFieldEnum[]
+  }
+
+  /**
+   * user.createdBookings
+   */
+  export type user$createdBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Booking
+     */
+    select?: BookingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Booking
+     */
+    omit?: BookingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BookingInclude<ExtArgs> | null
+    where?: BookingWhereInput
+    orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
+    cursor?: BookingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
+  }
+
+  /**
+   * user.approvedBookings
+   */
+  export type user$approvedBookingsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Booking
+     */
+    select?: BookingSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Booking
+     */
+    omit?: BookingOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: BookingInclude<ExtArgs> | null
+    where?: BookingWhereInput
+    orderBy?: BookingOrderByWithRelationInput | BookingOrderByWithRelationInput[]
+    cursor?: BookingWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: BookingScalarFieldEnum | BookingScalarFieldEnum[]
   }
 
   /**
@@ -9959,7 +10010,7 @@ export namespace Prisma {
     minBookingTime: number | null
     maxBookingTime: number | null
     maxAdvanceBooking: number | null
-    cancelationTime: number | null
+    cancellationTime: number | null
   }
 
   export type RoomSumAggregateOutputType = {
@@ -9967,7 +10018,7 @@ export namespace Prisma {
     minBookingTime: number | null
     maxBookingTime: number | null
     maxAdvanceBooking: number | null
-    cancelationTime: number | null
+    cancellationTime: number | null
   }
 
   export type RoomMinAggregateOutputType = {
@@ -9980,7 +10031,7 @@ export namespace Prisma {
     minBookingTime: number | null
     maxBookingTime: number | null
     maxAdvanceBooking: number | null
-    cancelationTime: number | null
+    cancellationTime: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -9995,7 +10046,7 @@ export namespace Prisma {
     minBookingTime: number | null
     maxBookingTime: number | null
     maxAdvanceBooking: number | null
-    cancelationTime: number | null
+    cancellationTime: number | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -10010,7 +10061,7 @@ export namespace Prisma {
     minBookingTime: number
     maxBookingTime: number
     maxAdvanceBooking: number
-    cancelationTime: number
+    cancellationTime: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -10022,7 +10073,7 @@ export namespace Prisma {
     minBookingTime?: true
     maxBookingTime?: true
     maxAdvanceBooking?: true
-    cancelationTime?: true
+    cancellationTime?: true
   }
 
   export type RoomSumAggregateInputType = {
@@ -10030,7 +10081,7 @@ export namespace Prisma {
     minBookingTime?: true
     maxBookingTime?: true
     maxAdvanceBooking?: true
-    cancelationTime?: true
+    cancellationTime?: true
   }
 
   export type RoomMinAggregateInputType = {
@@ -10043,7 +10094,7 @@ export namespace Prisma {
     minBookingTime?: true
     maxBookingTime?: true
     maxAdvanceBooking?: true
-    cancelationTime?: true
+    cancellationTime?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10058,7 +10109,7 @@ export namespace Prisma {
     minBookingTime?: true
     maxBookingTime?: true
     maxAdvanceBooking?: true
-    cancelationTime?: true
+    cancellationTime?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -10073,7 +10124,7 @@ export namespace Prisma {
     minBookingTime?: true
     maxBookingTime?: true
     maxAdvanceBooking?: true
-    cancelationTime?: true
+    cancellationTime?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -10175,7 +10226,7 @@ export namespace Prisma {
     minBookingTime: number
     maxBookingTime: number
     maxAdvanceBooking: number
-    cancelationTime: number
+    cancellationTime: number
     createdAt: Date
     updatedAt: Date
     _count: RoomCountAggregateOutputType | null
@@ -10209,7 +10260,7 @@ export namespace Prisma {
     minBookingTime?: boolean
     maxBookingTime?: boolean
     maxAdvanceBooking?: boolean
-    cancelationTime?: boolean
+    cancellationTime?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     Facilities?: boolean | Room$FacilitiesArgs<ExtArgs>
@@ -10227,7 +10278,7 @@ export namespace Prisma {
     minBookingTime?: boolean
     maxBookingTime?: boolean
     maxAdvanceBooking?: boolean
-    cancelationTime?: boolean
+    cancellationTime?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["room"]>
@@ -10242,7 +10293,7 @@ export namespace Prisma {
     minBookingTime?: boolean
     maxBookingTime?: boolean
     maxAdvanceBooking?: boolean
-    cancelationTime?: boolean
+    cancellationTime?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["room"]>
@@ -10257,12 +10308,12 @@ export namespace Prisma {
     minBookingTime?: boolean
     maxBookingTime?: boolean
     maxAdvanceBooking?: boolean
-    cancelationTime?: boolean
+    cancellationTime?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type RoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "capacity" | "floor" | "status" | "description" | "minBookingTime" | "maxBookingTime" | "maxAdvanceBooking" | "cancelationTime" | "createdAt" | "updatedAt", ExtArgs["result"]["room"]>
+  export type RoomOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "capacity" | "floor" | "status" | "description" | "minBookingTime" | "maxBookingTime" | "maxAdvanceBooking" | "cancellationTime" | "createdAt" | "updatedAt", ExtArgs["result"]["room"]>
   export type RoomInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Facilities?: boolean | Room$FacilitiesArgs<ExtArgs>
     Bookings?: boolean | Room$BookingsArgs<ExtArgs>
@@ -10287,7 +10338,7 @@ export namespace Prisma {
       minBookingTime: number
       maxBookingTime: number
       maxAdvanceBooking: number
-      cancelationTime: number
+      cancellationTime: number
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["room"]>
@@ -10724,7 +10775,7 @@ export namespace Prisma {
     readonly minBookingTime: FieldRef<"Room", 'Int'>
     readonly maxBookingTime: FieldRef<"Room", 'Int'>
     readonly maxAdvanceBooking: FieldRef<"Room", 'Int'>
-    readonly cancelationTime: FieldRef<"Room", 'Int'>
+    readonly cancellationTime: FieldRef<"Room", 'Int'>
     readonly createdAt: FieldRef<"Room", 'DateTime'>
     readonly updatedAt: FieldRef<"Room", 'DateTime'>
   }
@@ -12343,82 +12394,108 @@ export namespace Prisma {
 
   export type BookingMinAggregateOutputType = {
     id: string | null
+    roomId: string | null
     title: string | null
+    description: string | null
     startTime: Date | null
     endTime: Date | null
-    status: boolean | null
-    description: string | null
+    status: $Enums.BookingStatus | null
+    createdBy: string | null
+    approvedBy: string | null
+    recurrencePattern: string | null
+    recurrenceEndDate: Date | null
+    recurrenceId: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    createdBy: string | null
-    roomId: string | null
   }
 
   export type BookingMaxAggregateOutputType = {
     id: string | null
+    roomId: string | null
     title: string | null
+    description: string | null
     startTime: Date | null
     endTime: Date | null
-    status: boolean | null
-    description: string | null
+    status: $Enums.BookingStatus | null
+    createdBy: string | null
+    approvedBy: string | null
+    recurrencePattern: string | null
+    recurrenceEndDate: Date | null
+    recurrenceId: string | null
     createdAt: Date | null
     updatedAt: Date | null
-    createdBy: string | null
-    roomId: string | null
   }
 
   export type BookingCountAggregateOutputType = {
     id: number
+    roomId: number
     title: number
+    description: number
     startTime: number
     endTime: number
     status: number
-    description: number
+    participants: number
+    createdBy: number
+    approvedBy: number
+    recurrencePattern: number
+    recurrenceEndDate: number
+    recurrenceId: number
     createdAt: number
     updatedAt: number
-    createdBy: number
-    roomId: number
     _all: number
   }
 
 
   export type BookingMinAggregateInputType = {
     id?: true
+    roomId?: true
     title?: true
+    description?: true
     startTime?: true
     endTime?: true
     status?: true
-    description?: true
+    createdBy?: true
+    approvedBy?: true
+    recurrencePattern?: true
+    recurrenceEndDate?: true
+    recurrenceId?: true
     createdAt?: true
     updatedAt?: true
-    createdBy?: true
-    roomId?: true
   }
 
   export type BookingMaxAggregateInputType = {
     id?: true
+    roomId?: true
     title?: true
+    description?: true
     startTime?: true
     endTime?: true
     status?: true
-    description?: true
+    createdBy?: true
+    approvedBy?: true
+    recurrencePattern?: true
+    recurrenceEndDate?: true
+    recurrenceId?: true
     createdAt?: true
     updatedAt?: true
-    createdBy?: true
-    roomId?: true
   }
 
   export type BookingCountAggregateInputType = {
     id?: true
+    roomId?: true
     title?: true
+    description?: true
     startTime?: true
     endTime?: true
     status?: true
-    description?: true
+    participants?: true
+    createdBy?: true
+    approvedBy?: true
+    recurrencePattern?: true
+    recurrenceEndDate?: true
+    recurrenceId?: true
     createdAt?: true
     updatedAt?: true
-    createdBy?: true
-    roomId?: true
     _all?: true
   }
 
@@ -12496,15 +12573,20 @@ export namespace Prisma {
 
   export type BookingGroupByOutputType = {
     id: string
+    roomId: string
     title: string
+    description: string | null
     startTime: Date
     endTime: Date
-    status: boolean
-    description: string | null
+    status: $Enums.BookingStatus
+    participants: string[]
+    createdBy: string
+    approvedBy: string | null
+    recurrencePattern: string | null
+    recurrenceEndDate: Date | null
+    recurrenceId: string | null
     createdAt: Date
     updatedAt: Date
-    createdBy: string
-    roomId: string
     _count: BookingCountAggregateOutputType | null
     _min: BookingMinAggregateOutputType | null
     _max: BookingMaxAggregateOutputType | null
@@ -12526,98 +12608,130 @@ export namespace Prisma {
 
   export type BookingSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    roomId?: boolean
     title?: boolean
+    description?: boolean
     startTime?: boolean
     endTime?: boolean
     status?: boolean
-    description?: boolean
+    participants?: boolean
+    createdBy?: boolean
+    approvedBy?: boolean
+    recurrencePattern?: boolean
+    recurrenceEndDate?: boolean
+    recurrenceId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    createdBy?: boolean
-    roomId?: boolean
-    Creator?: boolean | userDefaultArgs<ExtArgs>
     Room?: boolean | RoomDefaultArgs<ExtArgs>
-    Attendees?: boolean | Booking$AttendeesArgs<ExtArgs>
+    BookingAttendee?: boolean | Booking$BookingAttendeeArgs<ExtArgs>
+    Creator?: boolean | userDefaultArgs<ExtArgs>
+    Approver?: boolean | Booking$ApproverArgs<ExtArgs>
     _count?: boolean | BookingCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
 
   export type BookingSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    roomId?: boolean
     title?: boolean
+    description?: boolean
     startTime?: boolean
     endTime?: boolean
     status?: boolean
-    description?: boolean
+    participants?: boolean
+    createdBy?: boolean
+    approvedBy?: boolean
+    recurrencePattern?: boolean
+    recurrenceEndDate?: boolean
+    recurrenceId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    createdBy?: boolean
-    roomId?: boolean
-    Creator?: boolean | userDefaultArgs<ExtArgs>
     Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Creator?: boolean | userDefaultArgs<ExtArgs>
+    Approver?: boolean | Booking$ApproverArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
 
   export type BookingSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
+    roomId?: boolean
     title?: boolean
+    description?: boolean
     startTime?: boolean
     endTime?: boolean
     status?: boolean
-    description?: boolean
+    participants?: boolean
+    createdBy?: boolean
+    approvedBy?: boolean
+    recurrencePattern?: boolean
+    recurrenceEndDate?: boolean
+    recurrenceId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    createdBy?: boolean
-    roomId?: boolean
-    Creator?: boolean | userDefaultArgs<ExtArgs>
     Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Creator?: boolean | userDefaultArgs<ExtArgs>
+    Approver?: boolean | Booking$ApproverArgs<ExtArgs>
   }, ExtArgs["result"]["booking"]>
 
   export type BookingSelectScalar = {
     id?: boolean
+    roomId?: boolean
     title?: boolean
+    description?: boolean
     startTime?: boolean
     endTime?: boolean
     status?: boolean
-    description?: boolean
+    participants?: boolean
+    createdBy?: boolean
+    approvedBy?: boolean
+    recurrencePattern?: boolean
+    recurrenceEndDate?: boolean
+    recurrenceId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
-    createdBy?: boolean
-    roomId?: boolean
   }
 
-  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "title" | "startTime" | "endTime" | "status" | "description" | "createdAt" | "updatedAt" | "createdBy" | "roomId", ExtArgs["result"]["booking"]>
+  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roomId" | "title" | "description" | "startTime" | "endTime" | "status" | "participants" | "createdBy" | "approvedBy" | "recurrencePattern" | "recurrenceEndDate" | "recurrenceId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
   export type BookingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Creator?: boolean | userDefaultArgs<ExtArgs>
     Room?: boolean | RoomDefaultArgs<ExtArgs>
-    Attendees?: boolean | Booking$AttendeesArgs<ExtArgs>
+    BookingAttendee?: boolean | Booking$BookingAttendeeArgs<ExtArgs>
+    Creator?: boolean | userDefaultArgs<ExtArgs>
+    Approver?: boolean | Booking$ApproverArgs<ExtArgs>
     _count?: boolean | BookingCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type BookingIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Creator?: boolean | userDefaultArgs<ExtArgs>
     Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Creator?: boolean | userDefaultArgs<ExtArgs>
+    Approver?: boolean | Booking$ApproverArgs<ExtArgs>
   }
   export type BookingIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
-    Creator?: boolean | userDefaultArgs<ExtArgs>
     Room?: boolean | RoomDefaultArgs<ExtArgs>
+    Creator?: boolean | userDefaultArgs<ExtArgs>
+    Approver?: boolean | Booking$ApproverArgs<ExtArgs>
   }
 
   export type $BookingPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Booking"
     objects: {
-      Creator: Prisma.$userPayload<ExtArgs>
       Room: Prisma.$RoomPayload<ExtArgs>
-      Attendees: Prisma.$BookingAttendeePayload<ExtArgs>[]
+      BookingAttendee: Prisma.$BookingAttendeePayload<ExtArgs>[]
+      Creator: Prisma.$userPayload<ExtArgs>
+      Approver: Prisma.$userPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
+      roomId: string
       title: string
+      description: string | null
       startTime: Date
       endTime: Date
-      status: boolean
-      description: string | null
+      status: $Enums.BookingStatus
+      participants: string[]
+      createdBy: string
+      approvedBy: string | null
+      recurrencePattern: string | null
+      recurrenceEndDate: Date | null
+      recurrenceId: string | null
       createdAt: Date
       updatedAt: Date
-      createdBy: string
-      roomId: string
     }, ExtArgs["result"]["booking"]>
     composites: {}
   }
@@ -13012,9 +13126,10 @@ export namespace Prisma {
    */
   export interface Prisma__BookingClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
-    Creator<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
     Room<T extends RoomDefaultArgs<ExtArgs> = {}>(args?: Subset<T, RoomDefaultArgs<ExtArgs>>): Prisma__RoomClient<$Result.GetResult<Prisma.$RoomPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-    Attendees<T extends Booking$AttendeesArgs<ExtArgs> = {}>(args?: Subset<T, Booking$AttendeesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    BookingAttendee<T extends Booking$BookingAttendeeArgs<ExtArgs> = {}>(args?: Subset<T, Booking$BookingAttendeeArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$BookingAttendeePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    Creator<T extends userDefaultArgs<ExtArgs> = {}>(args?: Subset<T, userDefaultArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+    Approver<T extends Booking$ApproverArgs<ExtArgs> = {}>(args?: Subset<T, Booking$ApproverArgs<ExtArgs>>): Prisma__userClient<$Result.GetResult<Prisma.$userPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -13045,15 +13160,20 @@ export namespace Prisma {
    */
   interface BookingFieldRefs {
     readonly id: FieldRef<"Booking", 'String'>
+    readonly roomId: FieldRef<"Booking", 'String'>
     readonly title: FieldRef<"Booking", 'String'>
+    readonly description: FieldRef<"Booking", 'String'>
     readonly startTime: FieldRef<"Booking", 'DateTime'>
     readonly endTime: FieldRef<"Booking", 'DateTime'>
-    readonly status: FieldRef<"Booking", 'Boolean'>
-    readonly description: FieldRef<"Booking", 'String'>
+    readonly status: FieldRef<"Booking", 'BookingStatus'>
+    readonly participants: FieldRef<"Booking", 'String[]'>
+    readonly createdBy: FieldRef<"Booking", 'String'>
+    readonly approvedBy: FieldRef<"Booking", 'String'>
+    readonly recurrencePattern: FieldRef<"Booking", 'String'>
+    readonly recurrenceEndDate: FieldRef<"Booking", 'DateTime'>
+    readonly recurrenceId: FieldRef<"Booking", 'String'>
     readonly createdAt: FieldRef<"Booking", 'DateTime'>
     readonly updatedAt: FieldRef<"Booking", 'DateTime'>
-    readonly createdBy: FieldRef<"Booking", 'String'>
-    readonly roomId: FieldRef<"Booking", 'String'>
   }
     
 
@@ -13450,9 +13570,9 @@ export namespace Prisma {
   }
 
   /**
-   * Booking.Attendees
+   * Booking.BookingAttendee
    */
-  export type Booking$AttendeesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+  export type Booking$BookingAttendeeArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     /**
      * Select specific fields to fetch from the BookingAttendee
      */
@@ -13471,6 +13591,25 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: BookingAttendeeScalarFieldEnum | BookingAttendeeScalarFieldEnum[]
+  }
+
+  /**
+   * Booking.Approver
+   */
+  export type Booking$ApproverArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the user
+     */
+    select?: userSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the user
+     */
+    omit?: userOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: userInclude<ExtArgs> | null
+    where?: userWhereInput
   }
 
   /**
@@ -14692,7 +14831,7 @@ export namespace Prisma {
     minBookingTime: 'minBookingTime',
     maxBookingTime: 'maxBookingTime',
     maxAdvanceBooking: 'maxAdvanceBooking',
-    cancelationTime: 'cancelationTime',
+    cancellationTime: 'cancellationTime',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -14716,15 +14855,20 @@ export namespace Prisma {
 
   export const BookingScalarFieldEnum: {
     id: 'id',
+    roomId: 'roomId',
     title: 'title',
+    description: 'description',
     startTime: 'startTime',
     endTime: 'endTime',
     status: 'status',
-    description: 'description',
-    createdAt: 'createdAt',
-    updatedAt: 'updatedAt',
+    participants: 'participants',
     createdBy: 'createdBy',
-    roomId: 'roomId'
+    approvedBy: 'approvedBy',
+    recurrencePattern: 'recurrencePattern',
+    recurrenceEndDate: 'recurrenceEndDate',
+    recurrenceId: 'recurrenceId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
   };
 
   export type BookingScalarFieldEnum = (typeof BookingScalarFieldEnum)[keyof typeof BookingScalarFieldEnum]
@@ -14831,6 +14975,20 @@ export namespace Prisma {
    * Reference to a field of type 'Int[]'
    */
   export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'BookingStatus'
+   */
+  export type EnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus'>
+    
+
+
+  /**
+   * Reference to a field of type 'BookingStatus[]'
+   */
+  export type ListEnumBookingStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BookingStatus[]'>
     
 
 
@@ -15285,8 +15443,9 @@ export namespace Prisma {
     Notifications?: NotificationListRelationFilter
     session?: SessionListRelationFilter
     Department?: XOR<DepartmentNullableScalarRelationFilter, departmentWhereInput> | null
-    Bookings?: BookingListRelationFilter
     Attendees?: BookingAttendeeListRelationFilter
+    createdBookings?: BookingListRelationFilter
+    approvedBookings?: BookingListRelationFilter
   }
 
   export type userOrderByWithRelationInput = {
@@ -15303,8 +15462,9 @@ export namespace Prisma {
     Notifications?: notificationOrderByRelationAggregateInput
     session?: sessionOrderByRelationAggregateInput
     Department?: departmentOrderByWithRelationInput
-    Bookings?: BookingOrderByRelationAggregateInput
     Attendees?: BookingAttendeeOrderByRelationAggregateInput
+    createdBookings?: BookingOrderByRelationAggregateInput
+    approvedBookings?: BookingOrderByRelationAggregateInput
   }
 
   export type userWhereUniqueInput = Prisma.AtLeast<{
@@ -15324,8 +15484,9 @@ export namespace Prisma {
     Notifications?: NotificationListRelationFilter
     session?: SessionListRelationFilter
     Department?: XOR<DepartmentNullableScalarRelationFilter, departmentWhereInput> | null
-    Bookings?: BookingListRelationFilter
     Attendees?: BookingAttendeeListRelationFilter
+    createdBookings?: BookingListRelationFilter
+    approvedBookings?: BookingListRelationFilter
   }, "id" | "username">
 
   export type userOrderByWithAggregationInput = {
@@ -15371,7 +15532,7 @@ export namespace Prisma {
     minBookingTime?: IntFilter<"Room"> | number
     maxBookingTime?: IntFilter<"Room"> | number
     maxAdvanceBooking?: IntFilter<"Room"> | number
-    cancelationTime?: IntFilter<"Room"> | number
+    cancellationTime?: IntFilter<"Room"> | number
     createdAt?: DateTimeFilter<"Room"> | Date | string
     updatedAt?: DateTimeFilter<"Room"> | Date | string
     Facilities?: RoomFacilityListRelationFilter
@@ -15388,7 +15549,7 @@ export namespace Prisma {
     minBookingTime?: SortOrder
     maxBookingTime?: SortOrder
     maxAdvanceBooking?: SortOrder
-    cancelationTime?: SortOrder
+    cancellationTime?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     Facilities?: RoomFacilityOrderByRelationAggregateInput
@@ -15408,7 +15569,7 @@ export namespace Prisma {
     minBookingTime?: IntFilter<"Room"> | number
     maxBookingTime?: IntFilter<"Room"> | number
     maxAdvanceBooking?: IntFilter<"Room"> | number
-    cancelationTime?: IntFilter<"Room"> | number
+    cancellationTime?: IntFilter<"Room"> | number
     createdAt?: DateTimeFilter<"Room"> | Date | string
     updatedAt?: DateTimeFilter<"Room"> | Date | string
     Facilities?: RoomFacilityListRelationFilter
@@ -15425,7 +15586,7 @@ export namespace Prisma {
     minBookingTime?: SortOrder
     maxBookingTime?: SortOrder
     maxAdvanceBooking?: SortOrder
-    cancelationTime?: SortOrder
+    cancellationTime?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: RoomCountOrderByAggregateInput
@@ -15448,7 +15609,7 @@ export namespace Prisma {
     minBookingTime?: IntWithAggregatesFilter<"Room"> | number
     maxBookingTime?: IntWithAggregatesFilter<"Room"> | number
     maxAdvanceBooking?: IntWithAggregatesFilter<"Room"> | number
-    cancelationTime?: IntWithAggregatesFilter<"Room"> | number
+    cancellationTime?: IntWithAggregatesFilter<"Room"> | number
     createdAt?: DateTimeWithAggregatesFilter<"Room"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Room"> | Date | string
   }
@@ -15530,34 +15691,46 @@ export namespace Prisma {
     OR?: BookingWhereInput[]
     NOT?: BookingWhereInput | BookingWhereInput[]
     id?: StringFilter<"Booking"> | string
+    roomId?: StringFilter<"Booking"> | string
     title?: StringFilter<"Booking"> | string
+    description?: StringNullableFilter<"Booking"> | string | null
     startTime?: DateTimeFilter<"Booking"> | Date | string
     endTime?: DateTimeFilter<"Booking"> | Date | string
-    status?: BoolFilter<"Booking"> | boolean
-    description?: StringNullableFilter<"Booking"> | string | null
+    status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
+    participants?: StringNullableListFilter<"Booking">
+    createdBy?: StringFilter<"Booking"> | string
+    approvedBy?: StringNullableFilter<"Booking"> | string | null
+    recurrencePattern?: StringNullableFilter<"Booking"> | string | null
+    recurrenceEndDate?: DateTimeNullableFilter<"Booking"> | Date | string | null
+    recurrenceId?: StringNullableFilter<"Booking"> | string | null
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
-    createdBy?: StringFilter<"Booking"> | string
-    roomId?: StringFilter<"Booking"> | string
-    Creator?: XOR<UserScalarRelationFilter, userWhereInput>
     Room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
-    Attendees?: BookingAttendeeListRelationFilter
+    BookingAttendee?: BookingAttendeeListRelationFilter
+    Creator?: XOR<UserScalarRelationFilter, userWhereInput>
+    Approver?: XOR<UserNullableScalarRelationFilter, userWhereInput> | null
   }
 
   export type BookingOrderByWithRelationInput = {
     id?: SortOrder
+    roomId?: SortOrder
     title?: SortOrder
+    description?: SortOrderInput | SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
     status?: SortOrder
-    description?: SortOrderInput | SortOrder
+    participants?: SortOrder
+    createdBy?: SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    recurrencePattern?: SortOrderInput | SortOrder
+    recurrenceEndDate?: SortOrderInput | SortOrder
+    recurrenceId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    createdBy?: SortOrder
-    roomId?: SortOrder
-    Creator?: userOrderByWithRelationInput
     Room?: RoomOrderByWithRelationInput
-    Attendees?: BookingAttendeeOrderByRelationAggregateInput
+    BookingAttendee?: BookingAttendeeOrderByRelationAggregateInput
+    Creator?: userOrderByWithRelationInput
+    Approver?: userOrderByWithRelationInput
   }
 
   export type BookingWhereUniqueInput = Prisma.AtLeast<{
@@ -15565,31 +15738,42 @@ export namespace Prisma {
     AND?: BookingWhereInput | BookingWhereInput[]
     OR?: BookingWhereInput[]
     NOT?: BookingWhereInput | BookingWhereInput[]
+    roomId?: StringFilter<"Booking"> | string
     title?: StringFilter<"Booking"> | string
+    description?: StringNullableFilter<"Booking"> | string | null
     startTime?: DateTimeFilter<"Booking"> | Date | string
     endTime?: DateTimeFilter<"Booking"> | Date | string
-    status?: BoolFilter<"Booking"> | boolean
-    description?: StringNullableFilter<"Booking"> | string | null
+    status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
+    participants?: StringNullableListFilter<"Booking">
+    createdBy?: StringFilter<"Booking"> | string
+    approvedBy?: StringNullableFilter<"Booking"> | string | null
+    recurrencePattern?: StringNullableFilter<"Booking"> | string | null
+    recurrenceEndDate?: DateTimeNullableFilter<"Booking"> | Date | string | null
+    recurrenceId?: StringNullableFilter<"Booking"> | string | null
     createdAt?: DateTimeFilter<"Booking"> | Date | string
     updatedAt?: DateTimeFilter<"Booking"> | Date | string
-    createdBy?: StringFilter<"Booking"> | string
-    roomId?: StringFilter<"Booking"> | string
-    Creator?: XOR<UserScalarRelationFilter, userWhereInput>
     Room?: XOR<RoomScalarRelationFilter, RoomWhereInput>
-    Attendees?: BookingAttendeeListRelationFilter
+    BookingAttendee?: BookingAttendeeListRelationFilter
+    Creator?: XOR<UserScalarRelationFilter, userWhereInput>
+    Approver?: XOR<UserNullableScalarRelationFilter, userWhereInput> | null
   }, "id">
 
   export type BookingOrderByWithAggregationInput = {
     id?: SortOrder
+    roomId?: SortOrder
     title?: SortOrder
+    description?: SortOrderInput | SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
     status?: SortOrder
-    description?: SortOrderInput | SortOrder
+    participants?: SortOrder
+    createdBy?: SortOrder
+    approvedBy?: SortOrderInput | SortOrder
+    recurrencePattern?: SortOrderInput | SortOrder
+    recurrenceEndDate?: SortOrderInput | SortOrder
+    recurrenceId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    createdBy?: SortOrder
-    roomId?: SortOrder
     _count?: BookingCountOrderByAggregateInput
     _max?: BookingMaxOrderByAggregateInput
     _min?: BookingMinOrderByAggregateInput
@@ -15600,15 +15784,20 @@ export namespace Prisma {
     OR?: BookingScalarWhereWithAggregatesInput[]
     NOT?: BookingScalarWhereWithAggregatesInput | BookingScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Booking"> | string
+    roomId?: StringWithAggregatesFilter<"Booking"> | string
     title?: StringWithAggregatesFilter<"Booking"> | string
+    description?: StringNullableWithAggregatesFilter<"Booking"> | string | null
     startTime?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
     endTime?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
-    status?: BoolWithAggregatesFilter<"Booking"> | boolean
-    description?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    status?: EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
+    participants?: StringNullableListFilter<"Booking">
+    createdBy?: StringWithAggregatesFilter<"Booking"> | string
+    approvedBy?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    recurrencePattern?: StringNullableWithAggregatesFilter<"Booking"> | string | null
+    recurrenceEndDate?: DateTimeNullableWithAggregatesFilter<"Booking"> | Date | string | null
+    recurrenceId?: StringNullableWithAggregatesFilter<"Booking"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
-    createdBy?: StringWithAggregatesFilter<"Booking"> | string
-    roomId?: StringWithAggregatesFilter<"Booking"> | string
   }
 
   export type BookingAttendeeWhereInput = {
@@ -16142,8 +16331,9 @@ export namespace Prisma {
     Notifications?: notificationCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
     Department?: departmentCreateNestedOneWithoutUsersInput
-    Bookings?: BookingCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeCreateNestedManyWithoutUserInput
+    createdBookings?: BookingCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingCreateNestedManyWithoutApproverInput
   }
 
   export type userUncheckedCreateInput = {
@@ -16159,8 +16349,9 @@ export namespace Prisma {
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
-    Bookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutUserInput
+    createdBookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type userUpdateInput = {
@@ -16176,8 +16367,9 @@ export namespace Prisma {
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
     Department?: departmentUpdateOneWithoutUsersNestedInput
-    Bookings?: BookingUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUpdateManyWithoutApproverNestedInput
   }
 
   export type userUncheckedUpdateInput = {
@@ -16193,8 +16385,9 @@ export namespace Prisma {
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
-    Bookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type userCreateManyInput = {
@@ -16242,7 +16435,7 @@ export namespace Prisma {
     minBookingTime?: number
     maxBookingTime?: number
     maxAdvanceBooking?: number
-    cancelationTime?: number
+    cancellationTime?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Facilities?: RoomFacilityCreateNestedManyWithoutRoomInput
@@ -16259,7 +16452,7 @@ export namespace Prisma {
     minBookingTime?: number
     maxBookingTime?: number
     maxAdvanceBooking?: number
-    cancelationTime?: number
+    cancellationTime?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Facilities?: RoomFacilityUncheckedCreateNestedManyWithoutRoomInput
@@ -16276,7 +16469,7 @@ export namespace Prisma {
     minBookingTime?: IntFieldUpdateOperationsInput | number
     maxBookingTime?: IntFieldUpdateOperationsInput | number
     maxAdvanceBooking?: IntFieldUpdateOperationsInput | number
-    cancelationTime?: IntFieldUpdateOperationsInput | number
+    cancellationTime?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Facilities?: RoomFacilityUpdateManyWithoutRoomNestedInput
@@ -16293,7 +16486,7 @@ export namespace Prisma {
     minBookingTime?: IntFieldUpdateOperationsInput | number
     maxBookingTime?: IntFieldUpdateOperationsInput | number
     maxAdvanceBooking?: IntFieldUpdateOperationsInput | number
-    cancelationTime?: IntFieldUpdateOperationsInput | number
+    cancellationTime?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Facilities?: RoomFacilityUncheckedUpdateManyWithoutRoomNestedInput
@@ -16310,7 +16503,7 @@ export namespace Prisma {
     minBookingTime?: number
     maxBookingTime?: number
     maxAdvanceBooking?: number
-    cancelationTime?: number
+    cancellationTime?: number
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -16325,7 +16518,7 @@ export namespace Prisma {
     minBookingTime?: IntFieldUpdateOperationsInput | number
     maxBookingTime?: IntFieldUpdateOperationsInput | number
     maxAdvanceBooking?: IntFieldUpdateOperationsInput | number
-    cancelationTime?: IntFieldUpdateOperationsInput | number
+    cancellationTime?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16340,7 +16533,7 @@ export namespace Prisma {
     minBookingTime?: IntFieldUpdateOperationsInput | number
     maxBookingTime?: IntFieldUpdateOperationsInput | number
     maxAdvanceBooking?: IntFieldUpdateOperationsInput | number
-    cancelationTime?: IntFieldUpdateOperationsInput | number
+    cancellationTime?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -16424,94 +16617,128 @@ export namespace Prisma {
   export type BookingCreateInput = {
     id?: string
     title: string
+    description?: string | null
     startTime: Date | string
     endTime: Date | string
-    status?: boolean
-    description?: string | null
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    Creator: userCreateNestedOneWithoutBookingsInput
     Room: RoomCreateNestedOneWithoutBookingsInput
-    Attendees?: BookingAttendeeCreateNestedManyWithoutBookingInput
+    BookingAttendee?: BookingAttendeeCreateNestedManyWithoutBookingInput
+    Creator: userCreateNestedOneWithoutCreatedBookingsInput
+    Approver?: userCreateNestedOneWithoutApprovedBookingsInput
   }
 
   export type BookingUncheckedCreateInput = {
     id?: string
+    roomId: string
     title: string
+    description?: string | null
     startTime: Date | string
     endTime: Date | string
-    status?: boolean
-    description?: string | null
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    createdBy: string
+    approvedBy?: string | null
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    createdBy: string
-    roomId: string
-    Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutBookingInput
+    BookingAttendee?: BookingAttendeeUncheckedCreateNestedManyWithoutBookingInput
   }
 
   export type BookingUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Creator?: userUpdateOneRequiredWithoutBookingsNestedInput
     Room?: RoomUpdateOneRequiredWithoutBookingsNestedInput
-    Attendees?: BookingAttendeeUpdateManyWithoutBookingNestedInput
+    BookingAttendee?: BookingAttendeeUpdateManyWithoutBookingNestedInput
+    Creator?: userUpdateOneRequiredWithoutCreatedBookingsNestedInput
+    Approver?: userUpdateOneWithoutApprovedBookingsNestedInput
   }
 
   export type BookingUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    createdBy?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: StringFieldUpdateOperationsInput | string
-    roomId?: StringFieldUpdateOperationsInput | string
-    Attendees?: BookingAttendeeUncheckedUpdateManyWithoutBookingNestedInput
+    BookingAttendee?: BookingAttendeeUncheckedUpdateManyWithoutBookingNestedInput
   }
 
   export type BookingCreateManyInput = {
     id?: string
+    roomId: string
     title: string
+    description?: string | null
     startTime: Date | string
     endTime: Date | string
-    status?: boolean
-    description?: string | null
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    createdBy: string
+    approvedBy?: string | null
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    createdBy: string
-    roomId: string
   }
 
   export type BookingUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type BookingUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    createdBy?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: StringFieldUpdateOperationsInput | string
-    roomId?: StringFieldUpdateOperationsInput | string
   }
 
   export type BookingAttendeeCreateInput = {
@@ -16519,7 +16746,7 @@ export namespace Prisma {
     status?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    Booking: BookingCreateNestedOneWithoutAttendeesInput
+    Booking: BookingCreateNestedOneWithoutBookingAttendeeInput
     User: userCreateNestedOneWithoutAttendeesInput
   }
 
@@ -16537,7 +16764,7 @@ export namespace Prisma {
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Booking?: BookingUpdateOneRequiredWithoutAttendeesNestedInput
+    Booking?: BookingUpdateOneRequiredWithoutBookingAttendeeNestedInput
     User?: userUpdateOneRequiredWithoutAttendeesNestedInput
   }
 
@@ -16941,16 +17168,16 @@ export namespace Prisma {
     none?: sessionWhereInput
   }
 
-  export type BookingListRelationFilter = {
-    every?: BookingWhereInput
-    some?: BookingWhereInput
-    none?: BookingWhereInput
-  }
-
   export type BookingAttendeeListRelationFilter = {
     every?: BookingAttendeeWhereInput
     some?: BookingAttendeeWhereInput
     none?: BookingAttendeeWhereInput
+  }
+
+  export type BookingListRelationFilter = {
+    every?: BookingWhereInput
+    some?: BookingWhereInput
+    none?: BookingWhereInput
   }
 
   export type AuditLogOrderByRelationAggregateInput = {
@@ -16965,11 +17192,11 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
-  export type BookingOrderByRelationAggregateInput = {
+  export type BookingAttendeeOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
-  export type BookingAttendeeOrderByRelationAggregateInput = {
+  export type BookingOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -17050,7 +17277,7 @@ export namespace Prisma {
     minBookingTime?: SortOrder
     maxBookingTime?: SortOrder
     maxAdvanceBooking?: SortOrder
-    cancelationTime?: SortOrder
+    cancellationTime?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -17060,7 +17287,7 @@ export namespace Prisma {
     minBookingTime?: SortOrder
     maxBookingTime?: SortOrder
     maxAdvanceBooking?: SortOrder
-    cancelationTime?: SortOrder
+    cancellationTime?: SortOrder
   }
 
   export type RoomMaxOrderByAggregateInput = {
@@ -17073,7 +17300,7 @@ export namespace Prisma {
     minBookingTime?: SortOrder
     maxBookingTime?: SortOrder
     maxAdvanceBooking?: SortOrder
-    cancelationTime?: SortOrder
+    cancellationTime?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -17088,7 +17315,7 @@ export namespace Prisma {
     minBookingTime?: SortOrder
     maxBookingTime?: SortOrder
     maxAdvanceBooking?: SortOrder
-    cancelationTime?: SortOrder
+    cancellationTime?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -17098,7 +17325,7 @@ export namespace Prisma {
     minBookingTime?: SortOrder
     maxBookingTime?: SortOrder
     maxAdvanceBooking?: SortOrder
-    cancelationTime?: SortOrder
+    cancellationTime?: SortOrder
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -17163,9 +17390,30 @@ export namespace Prisma {
     quantity?: SortOrder
   }
 
-  export type UserScalarRelationFilter = {
-    is?: userWhereInput
-    isNot?: userWhereInput
+  export type EnumBookingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BookingStatus | EnumBookingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBookingStatusFilter<$PrismaModel> | $Enums.BookingStatus
+  }
+
+  export type StringNullableListFilter<$PrismaModel = never> = {
+    equals?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    has?: string | StringFieldRefInput<$PrismaModel> | null
+    hasEvery?: string[] | ListStringFieldRefInput<$PrismaModel>
+    hasSome?: string[] | ListStringFieldRefInput<$PrismaModel>
+    isEmpty?: boolean
+  }
+
+  export type DateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
   }
 
   export type RoomScalarRelationFilter = {
@@ -17173,43 +17421,85 @@ export namespace Prisma {
     isNot?: RoomWhereInput
   }
 
+  export type UserScalarRelationFilter = {
+    is?: userWhereInput
+    isNot?: userWhereInput
+  }
+
   export type BookingCountOrderByAggregateInput = {
     id?: SortOrder
+    roomId?: SortOrder
     title?: SortOrder
+    description?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
     status?: SortOrder
-    description?: SortOrder
+    participants?: SortOrder
+    createdBy?: SortOrder
+    approvedBy?: SortOrder
+    recurrencePattern?: SortOrder
+    recurrenceEndDate?: SortOrder
+    recurrenceId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    createdBy?: SortOrder
-    roomId?: SortOrder
   }
 
   export type BookingMaxOrderByAggregateInput = {
     id?: SortOrder
+    roomId?: SortOrder
     title?: SortOrder
+    description?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
     status?: SortOrder
-    description?: SortOrder
+    createdBy?: SortOrder
+    approvedBy?: SortOrder
+    recurrencePattern?: SortOrder
+    recurrenceEndDate?: SortOrder
+    recurrenceId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    createdBy?: SortOrder
-    roomId?: SortOrder
   }
 
   export type BookingMinOrderByAggregateInput = {
     id?: SortOrder
+    roomId?: SortOrder
     title?: SortOrder
+    description?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
     status?: SortOrder
-    description?: SortOrder
+    createdBy?: SortOrder
+    approvedBy?: SortOrder
+    recurrencePattern?: SortOrder
+    recurrenceEndDate?: SortOrder
+    recurrenceId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
-    createdBy?: SortOrder
-    roomId?: SortOrder
+  }
+
+  export type EnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BookingStatus | EnumBookingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBookingStatusWithAggregatesFilter<$PrismaModel> | $Enums.BookingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBookingStatusFilter<$PrismaModel>
+    _max?: NestedEnumBookingStatusFilter<$PrismaModel>
+  }
+
+  export type DateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
   }
 
   export type BookingScalarRelationFilter = {
@@ -17493,6 +17783,13 @@ export namespace Prisma {
     connect?: departmentWhereUniqueInput
   }
 
+  export type BookingAttendeeCreateNestedManyWithoutUserInput = {
+    create?: XOR<BookingAttendeeCreateWithoutUserInput, BookingAttendeeUncheckedCreateWithoutUserInput> | BookingAttendeeCreateWithoutUserInput[] | BookingAttendeeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BookingAttendeeCreateOrConnectWithoutUserInput | BookingAttendeeCreateOrConnectWithoutUserInput[]
+    createMany?: BookingAttendeeCreateManyUserInputEnvelope
+    connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+  }
+
   export type BookingCreateNestedManyWithoutCreatorInput = {
     create?: XOR<BookingCreateWithoutCreatorInput, BookingUncheckedCreateWithoutCreatorInput> | BookingCreateWithoutCreatorInput[] | BookingUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: BookingCreateOrConnectWithoutCreatorInput | BookingCreateOrConnectWithoutCreatorInput[]
@@ -17500,11 +17797,11 @@ export namespace Prisma {
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
-  export type BookingAttendeeCreateNestedManyWithoutUserInput = {
-    create?: XOR<BookingAttendeeCreateWithoutUserInput, BookingAttendeeUncheckedCreateWithoutUserInput> | BookingAttendeeCreateWithoutUserInput[] | BookingAttendeeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookingAttendeeCreateOrConnectWithoutUserInput | BookingAttendeeCreateOrConnectWithoutUserInput[]
-    createMany?: BookingAttendeeCreateManyUserInputEnvelope
-    connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+  export type BookingCreateNestedManyWithoutApproverInput = {
+    create?: XOR<BookingCreateWithoutApproverInput, BookingUncheckedCreateWithoutApproverInput> | BookingCreateWithoutApproverInput[] | BookingUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutApproverInput | BookingCreateOrConnectWithoutApproverInput[]
+    createMany?: BookingCreateManyApproverInputEnvelope
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
   export type AuditLogUncheckedCreateNestedManyWithoutUserInput = {
@@ -17528,6 +17825,13 @@ export namespace Prisma {
     connect?: sessionWhereUniqueInput | sessionWhereUniqueInput[]
   }
 
+  export type BookingAttendeeUncheckedCreateNestedManyWithoutUserInput = {
+    create?: XOR<BookingAttendeeCreateWithoutUserInput, BookingAttendeeUncheckedCreateWithoutUserInput> | BookingAttendeeCreateWithoutUserInput[] | BookingAttendeeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BookingAttendeeCreateOrConnectWithoutUserInput | BookingAttendeeCreateOrConnectWithoutUserInput[]
+    createMany?: BookingAttendeeCreateManyUserInputEnvelope
+    connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+  }
+
   export type BookingUncheckedCreateNestedManyWithoutCreatorInput = {
     create?: XOR<BookingCreateWithoutCreatorInput, BookingUncheckedCreateWithoutCreatorInput> | BookingCreateWithoutCreatorInput[] | BookingUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: BookingCreateOrConnectWithoutCreatorInput | BookingCreateOrConnectWithoutCreatorInput[]
@@ -17535,11 +17839,11 @@ export namespace Prisma {
     connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
-  export type BookingAttendeeUncheckedCreateNestedManyWithoutUserInput = {
-    create?: XOR<BookingAttendeeCreateWithoutUserInput, BookingAttendeeUncheckedCreateWithoutUserInput> | BookingAttendeeCreateWithoutUserInput[] | BookingAttendeeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookingAttendeeCreateOrConnectWithoutUserInput | BookingAttendeeCreateOrConnectWithoutUserInput[]
-    createMany?: BookingAttendeeCreateManyUserInputEnvelope
-    connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+  export type BookingUncheckedCreateNestedManyWithoutApproverInput = {
+    create?: XOR<BookingCreateWithoutApproverInput, BookingUncheckedCreateWithoutApproverInput> | BookingCreateWithoutApproverInput[] | BookingUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutApproverInput | BookingCreateOrConnectWithoutApproverInput[]
+    createMany?: BookingCreateManyApproverInputEnvelope
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
   }
 
   export type EnumROLEFieldUpdateOperationsInput = {
@@ -17598,6 +17902,20 @@ export namespace Prisma {
     update?: XOR<XOR<departmentUpdateToOneWithWhereWithoutUsersInput, departmentUpdateWithoutUsersInput>, departmentUncheckedUpdateWithoutUsersInput>
   }
 
+  export type BookingAttendeeUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BookingAttendeeCreateWithoutUserInput, BookingAttendeeUncheckedCreateWithoutUserInput> | BookingAttendeeCreateWithoutUserInput[] | BookingAttendeeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BookingAttendeeCreateOrConnectWithoutUserInput | BookingAttendeeCreateOrConnectWithoutUserInput[]
+    upsert?: BookingAttendeeUpsertWithWhereUniqueWithoutUserInput | BookingAttendeeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BookingAttendeeCreateManyUserInputEnvelope
+    set?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+    disconnect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+    delete?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+    connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+    update?: BookingAttendeeUpdateWithWhereUniqueWithoutUserInput | BookingAttendeeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BookingAttendeeUpdateManyWithWhereWithoutUserInput | BookingAttendeeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BookingAttendeeScalarWhereInput | BookingAttendeeScalarWhereInput[]
+  }
+
   export type BookingUpdateManyWithoutCreatorNestedInput = {
     create?: XOR<BookingCreateWithoutCreatorInput, BookingUncheckedCreateWithoutCreatorInput> | BookingCreateWithoutCreatorInput[] | BookingUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: BookingCreateOrConnectWithoutCreatorInput | BookingCreateOrConnectWithoutCreatorInput[]
@@ -17612,18 +17930,18 @@ export namespace Prisma {
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
   }
 
-  export type BookingAttendeeUpdateManyWithoutUserNestedInput = {
-    create?: XOR<BookingAttendeeCreateWithoutUserInput, BookingAttendeeUncheckedCreateWithoutUserInput> | BookingAttendeeCreateWithoutUserInput[] | BookingAttendeeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookingAttendeeCreateOrConnectWithoutUserInput | BookingAttendeeCreateOrConnectWithoutUserInput[]
-    upsert?: BookingAttendeeUpsertWithWhereUniqueWithoutUserInput | BookingAttendeeUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: BookingAttendeeCreateManyUserInputEnvelope
-    set?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
-    disconnect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
-    delete?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
-    connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
-    update?: BookingAttendeeUpdateWithWhereUniqueWithoutUserInput | BookingAttendeeUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: BookingAttendeeUpdateManyWithWhereWithoutUserInput | BookingAttendeeUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: BookingAttendeeScalarWhereInput | BookingAttendeeScalarWhereInput[]
+  export type BookingUpdateManyWithoutApproverNestedInput = {
+    create?: XOR<BookingCreateWithoutApproverInput, BookingUncheckedCreateWithoutApproverInput> | BookingCreateWithoutApproverInput[] | BookingUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutApproverInput | BookingCreateOrConnectWithoutApproverInput[]
+    upsert?: BookingUpsertWithWhereUniqueWithoutApproverInput | BookingUpsertWithWhereUniqueWithoutApproverInput[]
+    createMany?: BookingCreateManyApproverInputEnvelope
+    set?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    disconnect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    delete?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    update?: BookingUpdateWithWhereUniqueWithoutApproverInput | BookingUpdateWithWhereUniqueWithoutApproverInput[]
+    updateMany?: BookingUpdateManyWithWhereWithoutApproverInput | BookingUpdateManyWithWhereWithoutApproverInput[]
+    deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
   }
 
   export type AuditLogUncheckedUpdateManyWithoutUserNestedInput = {
@@ -17668,6 +17986,20 @@ export namespace Prisma {
     deleteMany?: sessionScalarWhereInput | sessionScalarWhereInput[]
   }
 
+  export type BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput = {
+    create?: XOR<BookingAttendeeCreateWithoutUserInput, BookingAttendeeUncheckedCreateWithoutUserInput> | BookingAttendeeCreateWithoutUserInput[] | BookingAttendeeUncheckedCreateWithoutUserInput[]
+    connectOrCreate?: BookingAttendeeCreateOrConnectWithoutUserInput | BookingAttendeeCreateOrConnectWithoutUserInput[]
+    upsert?: BookingAttendeeUpsertWithWhereUniqueWithoutUserInput | BookingAttendeeUpsertWithWhereUniqueWithoutUserInput[]
+    createMany?: BookingAttendeeCreateManyUserInputEnvelope
+    set?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+    disconnect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+    delete?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+    connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
+    update?: BookingAttendeeUpdateWithWhereUniqueWithoutUserInput | BookingAttendeeUpdateWithWhereUniqueWithoutUserInput[]
+    updateMany?: BookingAttendeeUpdateManyWithWhereWithoutUserInput | BookingAttendeeUpdateManyWithWhereWithoutUserInput[]
+    deleteMany?: BookingAttendeeScalarWhereInput | BookingAttendeeScalarWhereInput[]
+  }
+
   export type BookingUncheckedUpdateManyWithoutCreatorNestedInput = {
     create?: XOR<BookingCreateWithoutCreatorInput, BookingUncheckedCreateWithoutCreatorInput> | BookingCreateWithoutCreatorInput[] | BookingUncheckedCreateWithoutCreatorInput[]
     connectOrCreate?: BookingCreateOrConnectWithoutCreatorInput | BookingCreateOrConnectWithoutCreatorInput[]
@@ -17682,18 +18014,18 @@ export namespace Prisma {
     deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
   }
 
-  export type BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput = {
-    create?: XOR<BookingAttendeeCreateWithoutUserInput, BookingAttendeeUncheckedCreateWithoutUserInput> | BookingAttendeeCreateWithoutUserInput[] | BookingAttendeeUncheckedCreateWithoutUserInput[]
-    connectOrCreate?: BookingAttendeeCreateOrConnectWithoutUserInput | BookingAttendeeCreateOrConnectWithoutUserInput[]
-    upsert?: BookingAttendeeUpsertWithWhereUniqueWithoutUserInput | BookingAttendeeUpsertWithWhereUniqueWithoutUserInput[]
-    createMany?: BookingAttendeeCreateManyUserInputEnvelope
-    set?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
-    disconnect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
-    delete?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
-    connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
-    update?: BookingAttendeeUpdateWithWhereUniqueWithoutUserInput | BookingAttendeeUpdateWithWhereUniqueWithoutUserInput[]
-    updateMany?: BookingAttendeeUpdateManyWithWhereWithoutUserInput | BookingAttendeeUpdateManyWithWhereWithoutUserInput[]
-    deleteMany?: BookingAttendeeScalarWhereInput | BookingAttendeeScalarWhereInput[]
+  export type BookingUncheckedUpdateManyWithoutApproverNestedInput = {
+    create?: XOR<BookingCreateWithoutApproverInput, BookingUncheckedCreateWithoutApproverInput> | BookingCreateWithoutApproverInput[] | BookingUncheckedCreateWithoutApproverInput[]
+    connectOrCreate?: BookingCreateOrConnectWithoutApproverInput | BookingCreateOrConnectWithoutApproverInput[]
+    upsert?: BookingUpsertWithWhereUniqueWithoutApproverInput | BookingUpsertWithWhereUniqueWithoutApproverInput[]
+    createMany?: BookingCreateManyApproverInputEnvelope
+    set?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    disconnect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    delete?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    connect?: BookingWhereUniqueInput | BookingWhereUniqueInput[]
+    update?: BookingUpdateWithWhereUniqueWithoutApproverInput | BookingUpdateWithWhereUniqueWithoutApproverInput[]
+    updateMany?: BookingUpdateManyWithWhereWithoutApproverInput | BookingUpdateManyWithWhereWithoutApproverInput[]
+    deleteMany?: BookingScalarWhereInput | BookingScalarWhereInput[]
   }
 
   export type RoomFacilityCreateNestedManyWithoutRoomInput = {
@@ -17804,10 +18136,8 @@ export namespace Prisma {
     update?: XOR<XOR<RoomUpdateToOneWithWhereWithoutFacilitiesInput, RoomUpdateWithoutFacilitiesInput>, RoomUncheckedUpdateWithoutFacilitiesInput>
   }
 
-  export type userCreateNestedOneWithoutBookingsInput = {
-    create?: XOR<userCreateWithoutBookingsInput, userUncheckedCreateWithoutBookingsInput>
-    connectOrCreate?: userCreateOrConnectWithoutBookingsInput
-    connect?: userWhereUniqueInput
+  export type BookingCreateparticipantsInput = {
+    set: string[]
   }
 
   export type RoomCreateNestedOneWithoutBookingsInput = {
@@ -17823,6 +18153,18 @@ export namespace Prisma {
     connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
   }
 
+  export type userCreateNestedOneWithoutCreatedBookingsInput = {
+    create?: XOR<userCreateWithoutCreatedBookingsInput, userUncheckedCreateWithoutCreatedBookingsInput>
+    connectOrCreate?: userCreateOrConnectWithoutCreatedBookingsInput
+    connect?: userWhereUniqueInput
+  }
+
+  export type userCreateNestedOneWithoutApprovedBookingsInput = {
+    create?: XOR<userCreateWithoutApprovedBookingsInput, userUncheckedCreateWithoutApprovedBookingsInput>
+    connectOrCreate?: userCreateOrConnectWithoutApprovedBookingsInput
+    connect?: userWhereUniqueInput
+  }
+
   export type BookingAttendeeUncheckedCreateNestedManyWithoutBookingInput = {
     create?: XOR<BookingAttendeeCreateWithoutBookingInput, BookingAttendeeUncheckedCreateWithoutBookingInput> | BookingAttendeeCreateWithoutBookingInput[] | BookingAttendeeUncheckedCreateWithoutBookingInput[]
     connectOrCreate?: BookingAttendeeCreateOrConnectWithoutBookingInput | BookingAttendeeCreateOrConnectWithoutBookingInput[]
@@ -17830,12 +18172,17 @@ export namespace Prisma {
     connect?: BookingAttendeeWhereUniqueInput | BookingAttendeeWhereUniqueInput[]
   }
 
-  export type userUpdateOneRequiredWithoutBookingsNestedInput = {
-    create?: XOR<userCreateWithoutBookingsInput, userUncheckedCreateWithoutBookingsInput>
-    connectOrCreate?: userCreateOrConnectWithoutBookingsInput
-    upsert?: userUpsertWithoutBookingsInput
-    connect?: userWhereUniqueInput
-    update?: XOR<XOR<userUpdateToOneWithWhereWithoutBookingsInput, userUpdateWithoutBookingsInput>, userUncheckedUpdateWithoutBookingsInput>
+  export type EnumBookingStatusFieldUpdateOperationsInput = {
+    set?: $Enums.BookingStatus
+  }
+
+  export type BookingUpdateparticipantsInput = {
+    set?: string[]
+    push?: string | string[]
+  }
+
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
   }
 
   export type RoomUpdateOneRequiredWithoutBookingsNestedInput = {
@@ -17860,6 +18207,24 @@ export namespace Prisma {
     deleteMany?: BookingAttendeeScalarWhereInput | BookingAttendeeScalarWhereInput[]
   }
 
+  export type userUpdateOneRequiredWithoutCreatedBookingsNestedInput = {
+    create?: XOR<userCreateWithoutCreatedBookingsInput, userUncheckedCreateWithoutCreatedBookingsInput>
+    connectOrCreate?: userCreateOrConnectWithoutCreatedBookingsInput
+    upsert?: userUpsertWithoutCreatedBookingsInput
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutCreatedBookingsInput, userUpdateWithoutCreatedBookingsInput>, userUncheckedUpdateWithoutCreatedBookingsInput>
+  }
+
+  export type userUpdateOneWithoutApprovedBookingsNestedInput = {
+    create?: XOR<userCreateWithoutApprovedBookingsInput, userUncheckedCreateWithoutApprovedBookingsInput>
+    connectOrCreate?: userCreateOrConnectWithoutApprovedBookingsInput
+    upsert?: userUpsertWithoutApprovedBookingsInput
+    disconnect?: userWhereInput | boolean
+    delete?: userWhereInput | boolean
+    connect?: userWhereUniqueInput
+    update?: XOR<XOR<userUpdateToOneWithWhereWithoutApprovedBookingsInput, userUpdateWithoutApprovedBookingsInput>, userUncheckedUpdateWithoutApprovedBookingsInput>
+  }
+
   export type BookingAttendeeUncheckedUpdateManyWithoutBookingNestedInput = {
     create?: XOR<BookingAttendeeCreateWithoutBookingInput, BookingAttendeeUncheckedCreateWithoutBookingInput> | BookingAttendeeCreateWithoutBookingInput[] | BookingAttendeeUncheckedCreateWithoutBookingInput[]
     connectOrCreate?: BookingAttendeeCreateOrConnectWithoutBookingInput | BookingAttendeeCreateOrConnectWithoutBookingInput[]
@@ -17874,9 +18239,9 @@ export namespace Prisma {
     deleteMany?: BookingAttendeeScalarWhereInput | BookingAttendeeScalarWhereInput[]
   }
 
-  export type BookingCreateNestedOneWithoutAttendeesInput = {
-    create?: XOR<BookingCreateWithoutAttendeesInput, BookingUncheckedCreateWithoutAttendeesInput>
-    connectOrCreate?: BookingCreateOrConnectWithoutAttendeesInput
+  export type BookingCreateNestedOneWithoutBookingAttendeeInput = {
+    create?: XOR<BookingCreateWithoutBookingAttendeeInput, BookingUncheckedCreateWithoutBookingAttendeeInput>
+    connectOrCreate?: BookingCreateOrConnectWithoutBookingAttendeeInput
     connect?: BookingWhereUniqueInput
   }
 
@@ -17886,12 +18251,12 @@ export namespace Prisma {
     connect?: userWhereUniqueInput
   }
 
-  export type BookingUpdateOneRequiredWithoutAttendeesNestedInput = {
-    create?: XOR<BookingCreateWithoutAttendeesInput, BookingUncheckedCreateWithoutAttendeesInput>
-    connectOrCreate?: BookingCreateOrConnectWithoutAttendeesInput
-    upsert?: BookingUpsertWithoutAttendeesInput
+  export type BookingUpdateOneRequiredWithoutBookingAttendeeNestedInput = {
+    create?: XOR<BookingCreateWithoutBookingAttendeeInput, BookingUncheckedCreateWithoutBookingAttendeeInput>
+    connectOrCreate?: BookingCreateOrConnectWithoutBookingAttendeeInput
+    upsert?: BookingUpsertWithoutBookingAttendeeInput
     connect?: BookingWhereUniqueInput
-    update?: XOR<XOR<BookingUpdateToOneWithWhereWithoutAttendeesInput, BookingUpdateWithoutAttendeesInput>, BookingUncheckedUpdateWithoutAttendeesInput>
+    update?: XOR<XOR<BookingUpdateToOneWithWhereWithoutBookingAttendeeInput, BookingUpdateWithoutBookingAttendeeInput>, BookingUncheckedUpdateWithoutBookingAttendeeInput>
   }
 
   export type userUpdateOneRequiredWithoutAttendeesNestedInput = {
@@ -18068,6 +18433,48 @@ export namespace Prisma {
     not?: NestedFloatFilter<$PrismaModel> | number
   }
 
+  export type NestedEnumBookingStatusFilter<$PrismaModel = never> = {
+    equals?: $Enums.BookingStatus | EnumBookingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBookingStatusFilter<$PrismaModel> | $Enums.BookingStatus
+  }
+
+  export type NestedDateTimeNullableFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableFilter<$PrismaModel> | Date | string | null
+  }
+
+  export type NestedEnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.BookingStatus | EnumBookingStatusFieldRefInput<$PrismaModel>
+    in?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    notIn?: $Enums.BookingStatus[] | ListEnumBookingStatusFieldRefInput<$PrismaModel>
+    not?: NestedEnumBookingStatusWithAggregatesFilter<$PrismaModel> | $Enums.BookingStatus
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumBookingStatusFilter<$PrismaModel>
+    _max?: NestedEnumBookingStatusFilter<$PrismaModel>
+  }
+
+  export type NestedDateTimeNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Date | string | DateTimeFieldRefInput<$PrismaModel> | null
+    in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    notIn?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel> | null
+    lt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    lte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gt?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    gte?: Date | string | DateTimeFieldRefInput<$PrismaModel>
+    not?: NestedDateTimeNullableWithAggregatesFilter<$PrismaModel> | Date | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedDateTimeNullableFilter<$PrismaModel>
+    _max?: NestedDateTimeNullableFilter<$PrismaModel>
+  }
+
   export type userCreateWithoutAuditLogInput = {
     id?: string
     fullname: string
@@ -18080,8 +18487,9 @@ export namespace Prisma {
     Notifications?: notificationCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
     Department?: departmentCreateNestedOneWithoutUsersInput
-    Bookings?: BookingCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeCreateNestedManyWithoutUserInput
+    createdBookings?: BookingCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingCreateNestedManyWithoutApproverInput
   }
 
   export type userUncheckedCreateWithoutAuditLogInput = {
@@ -18096,8 +18504,9 @@ export namespace Prisma {
     role?: $Enums.ROLE
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
-    Bookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutUserInput
+    createdBookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type userCreateOrConnectWithoutAuditLogInput = {
@@ -18128,8 +18537,9 @@ export namespace Prisma {
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
     Department?: departmentUpdateOneWithoutUsersNestedInput
-    Bookings?: BookingUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUpdateManyWithoutApproverNestedInput
   }
 
   export type userUncheckedUpdateWithoutAuditLogInput = {
@@ -18144,8 +18554,9 @@ export namespace Prisma {
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
-    Bookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type userCreateWithoutNotificationsInput = {
@@ -18160,8 +18571,9 @@ export namespace Prisma {
     AuditLog?: AuditLogCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
     Department?: departmentCreateNestedOneWithoutUsersInput
-    Bookings?: BookingCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeCreateNestedManyWithoutUserInput
+    createdBookings?: BookingCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingCreateNestedManyWithoutApproverInput
   }
 
   export type userUncheckedCreateWithoutNotificationsInput = {
@@ -18176,8 +18588,9 @@ export namespace Prisma {
     role?: $Enums.ROLE
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
-    Bookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutUserInput
+    createdBookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type userCreateOrConnectWithoutNotificationsInput = {
@@ -18208,8 +18621,9 @@ export namespace Prisma {
     AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
     Department?: departmentUpdateOneWithoutUsersNestedInput
-    Bookings?: BookingUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUpdateManyWithoutApproverNestedInput
   }
 
   export type userUncheckedUpdateWithoutNotificationsInput = {
@@ -18224,8 +18638,9 @@ export namespace Prisma {
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
-    Bookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type userCreateWithoutSessionInput = {
@@ -18240,8 +18655,9 @@ export namespace Prisma {
     AuditLog?: AuditLogCreateNestedManyWithoutUserInput
     Notifications?: notificationCreateNestedManyWithoutUserInput
     Department?: departmentCreateNestedOneWithoutUsersInput
-    Bookings?: BookingCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeCreateNestedManyWithoutUserInput
+    createdBookings?: BookingCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingCreateNestedManyWithoutApproverInput
   }
 
   export type userUncheckedCreateWithoutSessionInput = {
@@ -18256,8 +18672,9 @@ export namespace Prisma {
     role?: $Enums.ROLE
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
-    Bookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutUserInput
+    createdBookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type userCreateOrConnectWithoutSessionInput = {
@@ -18288,8 +18705,9 @@ export namespace Prisma {
     AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     Department?: departmentUpdateOneWithoutUsersNestedInput
-    Bookings?: BookingUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUpdateManyWithoutApproverNestedInput
   }
 
   export type userUncheckedUpdateWithoutSessionInput = {
@@ -18304,8 +18722,9 @@ export namespace Prisma {
     role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    Bookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type departmentCreateWithoutChildrenInput = {
@@ -18424,8 +18843,9 @@ export namespace Prisma {
     AuditLog?: AuditLogCreateNestedManyWithoutUserInput
     Notifications?: notificationCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
-    Bookings?: BookingCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeCreateNestedManyWithoutUserInput
+    createdBookings?: BookingCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingCreateNestedManyWithoutApproverInput
   }
 
   export type userUncheckedCreateWithoutDepartmentInput = {
@@ -18440,8 +18860,9 @@ export namespace Prisma {
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
-    Bookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
     Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutUserInput
+    createdBookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type userCreateOrConnectWithoutDepartmentInput = {
@@ -18765,48 +19186,12 @@ export namespace Prisma {
     create: XOR<departmentCreateWithoutUsersInput, departmentUncheckedCreateWithoutUsersInput>
   }
 
-  export type BookingCreateWithoutCreatorInput = {
-    id?: string
-    title: string
-    startTime: Date | string
-    endTime: Date | string
-    status?: boolean
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    Room: RoomCreateNestedOneWithoutBookingsInput
-    Attendees?: BookingAttendeeCreateNestedManyWithoutBookingInput
-  }
-
-  export type BookingUncheckedCreateWithoutCreatorInput = {
-    id?: string
-    title: string
-    startTime: Date | string
-    endTime: Date | string
-    status?: boolean
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    roomId: string
-    Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutBookingInput
-  }
-
-  export type BookingCreateOrConnectWithoutCreatorInput = {
-    where: BookingWhereUniqueInput
-    create: XOR<BookingCreateWithoutCreatorInput, BookingUncheckedCreateWithoutCreatorInput>
-  }
-
-  export type BookingCreateManyCreatorInputEnvelope = {
-    data: BookingCreateManyCreatorInput | BookingCreateManyCreatorInput[]
-    skipDuplicates?: boolean
-  }
-
   export type BookingAttendeeCreateWithoutUserInput = {
     id?: string
     status?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
-    Booking: BookingCreateNestedOneWithoutAttendeesInput
+    Booking: BookingCreateNestedOneWithoutBookingAttendeeInput
   }
 
   export type BookingAttendeeUncheckedCreateWithoutUserInput = {
@@ -18824,6 +19209,98 @@ export namespace Prisma {
 
   export type BookingAttendeeCreateManyUserInputEnvelope = {
     data: BookingAttendeeCreateManyUserInput | BookingAttendeeCreateManyUserInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BookingCreateWithoutCreatorInput = {
+    id?: string
+    title: string
+    description?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Room: RoomCreateNestedOneWithoutBookingsInput
+    BookingAttendee?: BookingAttendeeCreateNestedManyWithoutBookingInput
+    Approver?: userCreateNestedOneWithoutApprovedBookingsInput
+  }
+
+  export type BookingUncheckedCreateWithoutCreatorInput = {
+    id?: string
+    roomId: string
+    title: string
+    description?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    approvedBy?: string | null
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    BookingAttendee?: BookingAttendeeUncheckedCreateNestedManyWithoutBookingInput
+  }
+
+  export type BookingCreateOrConnectWithoutCreatorInput = {
+    where: BookingWhereUniqueInput
+    create: XOR<BookingCreateWithoutCreatorInput, BookingUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type BookingCreateManyCreatorInputEnvelope = {
+    data: BookingCreateManyCreatorInput | BookingCreateManyCreatorInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type BookingCreateWithoutApproverInput = {
+    id?: string
+    title: string
+    description?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    Room: RoomCreateNestedOneWithoutBookingsInput
+    BookingAttendee?: BookingAttendeeCreateNestedManyWithoutBookingInput
+    Creator: userCreateNestedOneWithoutCreatedBookingsInput
+  }
+
+  export type BookingUncheckedCreateWithoutApproverInput = {
+    id?: string
+    roomId: string
+    title: string
+    description?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    createdBy: string
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    BookingAttendee?: BookingAttendeeUncheckedCreateNestedManyWithoutBookingInput
+  }
+
+  export type BookingCreateOrConnectWithoutApproverInput = {
+    where: BookingWhereUniqueInput
+    create: XOR<BookingCreateWithoutApproverInput, BookingUncheckedCreateWithoutApproverInput>
+  }
+
+  export type BookingCreateManyApproverInputEnvelope = {
+    data: BookingCreateManyApproverInput | BookingCreateManyApproverInput[]
     skipDuplicates?: boolean
   }
 
@@ -18953,38 +19430,6 @@ export namespace Prisma {
     Children?: departmentUncheckedUpdateManyWithoutParentNestedInput
   }
 
-  export type BookingUpsertWithWhereUniqueWithoutCreatorInput = {
-    where: BookingWhereUniqueInput
-    update: XOR<BookingUpdateWithoutCreatorInput, BookingUncheckedUpdateWithoutCreatorInput>
-    create: XOR<BookingCreateWithoutCreatorInput, BookingUncheckedCreateWithoutCreatorInput>
-  }
-
-  export type BookingUpdateWithWhereUniqueWithoutCreatorInput = {
-    where: BookingWhereUniqueInput
-    data: XOR<BookingUpdateWithoutCreatorInput, BookingUncheckedUpdateWithoutCreatorInput>
-  }
-
-  export type BookingUpdateManyWithWhereWithoutCreatorInput = {
-    where: BookingScalarWhereInput
-    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutCreatorInput>
-  }
-
-  export type BookingScalarWhereInput = {
-    AND?: BookingScalarWhereInput | BookingScalarWhereInput[]
-    OR?: BookingScalarWhereInput[]
-    NOT?: BookingScalarWhereInput | BookingScalarWhereInput[]
-    id?: StringFilter<"Booking"> | string
-    title?: StringFilter<"Booking"> | string
-    startTime?: DateTimeFilter<"Booking"> | Date | string
-    endTime?: DateTimeFilter<"Booking"> | Date | string
-    status?: BoolFilter<"Booking"> | boolean
-    description?: StringNullableFilter<"Booking"> | string | null
-    createdAt?: DateTimeFilter<"Booking"> | Date | string
-    updatedAt?: DateTimeFilter<"Booking"> | Date | string
-    createdBy?: StringFilter<"Booking"> | string
-    roomId?: StringFilter<"Booking"> | string
-  }
-
   export type BookingAttendeeUpsertWithWhereUniqueWithoutUserInput = {
     where: BookingAttendeeWhereUniqueInput
     update: XOR<BookingAttendeeUpdateWithoutUserInput, BookingAttendeeUncheckedUpdateWithoutUserInput>
@@ -19011,6 +19456,59 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"BookingAttendee"> | Date | string
     bookingId?: StringFilter<"BookingAttendee"> | string
     userId?: StringFilter<"BookingAttendee"> | string
+  }
+
+  export type BookingUpsertWithWhereUniqueWithoutCreatorInput = {
+    where: BookingWhereUniqueInput
+    update: XOR<BookingUpdateWithoutCreatorInput, BookingUncheckedUpdateWithoutCreatorInput>
+    create: XOR<BookingCreateWithoutCreatorInput, BookingUncheckedCreateWithoutCreatorInput>
+  }
+
+  export type BookingUpdateWithWhereUniqueWithoutCreatorInput = {
+    where: BookingWhereUniqueInput
+    data: XOR<BookingUpdateWithoutCreatorInput, BookingUncheckedUpdateWithoutCreatorInput>
+  }
+
+  export type BookingUpdateManyWithWhereWithoutCreatorInput = {
+    where: BookingScalarWhereInput
+    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutCreatorInput>
+  }
+
+  export type BookingScalarWhereInput = {
+    AND?: BookingScalarWhereInput | BookingScalarWhereInput[]
+    OR?: BookingScalarWhereInput[]
+    NOT?: BookingScalarWhereInput | BookingScalarWhereInput[]
+    id?: StringFilter<"Booking"> | string
+    roomId?: StringFilter<"Booking"> | string
+    title?: StringFilter<"Booking"> | string
+    description?: StringNullableFilter<"Booking"> | string | null
+    startTime?: DateTimeFilter<"Booking"> | Date | string
+    endTime?: DateTimeFilter<"Booking"> | Date | string
+    status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
+    participants?: StringNullableListFilter<"Booking">
+    createdBy?: StringFilter<"Booking"> | string
+    approvedBy?: StringNullableFilter<"Booking"> | string | null
+    recurrencePattern?: StringNullableFilter<"Booking"> | string | null
+    recurrenceEndDate?: DateTimeNullableFilter<"Booking"> | Date | string | null
+    recurrenceId?: StringNullableFilter<"Booking"> | string | null
+    createdAt?: DateTimeFilter<"Booking"> | Date | string
+    updatedAt?: DateTimeFilter<"Booking"> | Date | string
+  }
+
+  export type BookingUpsertWithWhereUniqueWithoutApproverInput = {
+    where: BookingWhereUniqueInput
+    update: XOR<BookingUpdateWithoutApproverInput, BookingUncheckedUpdateWithoutApproverInput>
+    create: XOR<BookingCreateWithoutApproverInput, BookingUncheckedCreateWithoutApproverInput>
+  }
+
+  export type BookingUpdateWithWhereUniqueWithoutApproverInput = {
+    where: BookingWhereUniqueInput
+    data: XOR<BookingUpdateWithoutApproverInput, BookingUncheckedUpdateWithoutApproverInput>
+  }
+
+  export type BookingUpdateManyWithWhereWithoutApproverInput = {
+    where: BookingScalarWhereInput
+    data: XOR<BookingUpdateManyMutationInput, BookingUncheckedUpdateManyWithoutApproverInput>
   }
 
   export type RoomFacilityCreateWithoutRoomInput = {
@@ -19046,27 +19544,37 @@ export namespace Prisma {
   export type BookingCreateWithoutRoomInput = {
     id?: string
     title: string
+    description?: string | null
     startTime: Date | string
     endTime: Date | string
-    status?: boolean
-    description?: string | null
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    Creator: userCreateNestedOneWithoutBookingsInput
-    Attendees?: BookingAttendeeCreateNestedManyWithoutBookingInput
+    BookingAttendee?: BookingAttendeeCreateNestedManyWithoutBookingInput
+    Creator: userCreateNestedOneWithoutCreatedBookingsInput
+    Approver?: userCreateNestedOneWithoutApprovedBookingsInput
   }
 
   export type BookingUncheckedCreateWithoutRoomInput = {
     id?: string
     title: string
+    description?: string | null
     startTime: Date | string
     endTime: Date | string
-    status?: boolean
-    description?: string | null
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    createdBy: string
+    approvedBy?: string | null
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    createdBy: string
-    Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutBookingInput
+    BookingAttendee?: BookingAttendeeUncheckedCreateNestedManyWithoutBookingInput
   }
 
   export type BookingCreateOrConnectWithoutRoomInput = {
@@ -19135,7 +19643,7 @@ export namespace Prisma {
     minBookingTime?: number
     maxBookingTime?: number
     maxAdvanceBooking?: number
-    cancelationTime?: number
+    cancellationTime?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Bookings?: BookingCreateNestedManyWithoutRoomInput
@@ -19151,7 +19659,7 @@ export namespace Prisma {
     minBookingTime?: number
     maxBookingTime?: number
     maxAdvanceBooking?: number
-    cancelationTime?: number
+    cancellationTime?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Bookings?: BookingUncheckedCreateNestedManyWithoutRoomInput
@@ -19183,7 +19691,7 @@ export namespace Prisma {
     minBookingTime?: IntFieldUpdateOperationsInput | number
     maxBookingTime?: IntFieldUpdateOperationsInput | number
     maxAdvanceBooking?: IntFieldUpdateOperationsInput | number
-    cancelationTime?: IntFieldUpdateOperationsInput | number
+    cancellationTime?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Bookings?: BookingUpdateManyWithoutRoomNestedInput
@@ -19199,47 +19707,10 @@ export namespace Prisma {
     minBookingTime?: IntFieldUpdateOperationsInput | number
     maxBookingTime?: IntFieldUpdateOperationsInput | number
     maxAdvanceBooking?: IntFieldUpdateOperationsInput | number
-    cancelationTime?: IntFieldUpdateOperationsInput | number
+    cancellationTime?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Bookings?: BookingUncheckedUpdateManyWithoutRoomNestedInput
-  }
-
-  export type userCreateWithoutBookingsInput = {
-    id?: string
-    fullname: string
-    username: string
-    password: string
-    status?: boolean
-    createdAt?: Date | string
-    avatarUrl?: string | null
-    role?: $Enums.ROLE
-    AuditLog?: AuditLogCreateNestedManyWithoutUserInput
-    Notifications?: notificationCreateNestedManyWithoutUserInput
-    session?: sessionCreateNestedManyWithoutUserInput
-    Department?: departmentCreateNestedOneWithoutUsersInput
-    Attendees?: BookingAttendeeCreateNestedManyWithoutUserInput
-  }
-
-  export type userUncheckedCreateWithoutBookingsInput = {
-    id?: string
-    fullname: string
-    username: string
-    password: string
-    status?: boolean
-    createdAt?: Date | string
-    departmentId?: string | null
-    avatarUrl?: string | null
-    role?: $Enums.ROLE
-    AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
-    Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
-    session?: sessionUncheckedCreateNestedManyWithoutUserInput
-    Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutUserInput
-  }
-
-  export type userCreateOrConnectWithoutBookingsInput = {
-    where: userWhereUniqueInput
-    create: XOR<userCreateWithoutBookingsInput, userUncheckedCreateWithoutBookingsInput>
   }
 
   export type RoomCreateWithoutBookingsInput = {
@@ -19252,7 +19723,7 @@ export namespace Prisma {
     minBookingTime?: number
     maxBookingTime?: number
     maxAdvanceBooking?: number
-    cancelationTime?: number
+    cancellationTime?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Facilities?: RoomFacilityCreateNestedManyWithoutRoomInput
@@ -19268,7 +19739,7 @@ export namespace Prisma {
     minBookingTime?: number
     maxBookingTime?: number
     maxAdvanceBooking?: number
-    cancelationTime?: number
+    cancellationTime?: number
     createdAt?: Date | string
     updatedAt?: Date | string
     Facilities?: RoomFacilityUncheckedCreateNestedManyWithoutRoomInput
@@ -19305,47 +19776,82 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
-  export type userUpsertWithoutBookingsInput = {
-    update: XOR<userUpdateWithoutBookingsInput, userUncheckedUpdateWithoutBookingsInput>
-    create: XOR<userCreateWithoutBookingsInput, userUncheckedCreateWithoutBookingsInput>
-    where?: userWhereInput
+  export type userCreateWithoutCreatedBookingsInput = {
+    id?: string
+    fullname: string
+    username: string
+    password: string
+    status?: boolean
+    createdAt?: Date | string
+    avatarUrl?: string | null
+    role?: $Enums.ROLE
+    AuditLog?: AuditLogCreateNestedManyWithoutUserInput
+    Notifications?: notificationCreateNestedManyWithoutUserInput
+    session?: sessionCreateNestedManyWithoutUserInput
+    Department?: departmentCreateNestedOneWithoutUsersInput
+    Attendees?: BookingAttendeeCreateNestedManyWithoutUserInput
+    approvedBookings?: BookingCreateNestedManyWithoutApproverInput
   }
 
-  export type userUpdateToOneWithWhereWithoutBookingsInput = {
-    where?: userWhereInput
-    data: XOR<userUpdateWithoutBookingsInput, userUncheckedUpdateWithoutBookingsInput>
+  export type userUncheckedCreateWithoutCreatedBookingsInput = {
+    id?: string
+    fullname: string
+    username: string
+    password: string
+    status?: boolean
+    createdAt?: Date | string
+    departmentId?: string | null
+    avatarUrl?: string | null
+    role?: $Enums.ROLE
+    AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
+    session?: sessionUncheckedCreateNestedManyWithoutUserInput
+    Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutUserInput
+    approvedBookings?: BookingUncheckedCreateNestedManyWithoutApproverInput
   }
 
-  export type userUpdateWithoutBookingsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fullname?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
-    Notifications?: notificationUpdateManyWithoutUserNestedInput
-    session?: sessionUpdateManyWithoutUserNestedInput
-    Department?: departmentUpdateOneWithoutUsersNestedInput
-    Attendees?: BookingAttendeeUpdateManyWithoutUserNestedInput
+  export type userCreateOrConnectWithoutCreatedBookingsInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutCreatedBookingsInput, userUncheckedCreateWithoutCreatedBookingsInput>
   }
 
-  export type userUncheckedUpdateWithoutBookingsInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    fullname?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    password?: StringFieldUpdateOperationsInput | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
-    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
-    role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
-    AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
-    Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
-    session?: sessionUncheckedUpdateManyWithoutUserNestedInput
-    Attendees?: BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput
+  export type userCreateWithoutApprovedBookingsInput = {
+    id?: string
+    fullname: string
+    username: string
+    password: string
+    status?: boolean
+    createdAt?: Date | string
+    avatarUrl?: string | null
+    role?: $Enums.ROLE
+    AuditLog?: AuditLogCreateNestedManyWithoutUserInput
+    Notifications?: notificationCreateNestedManyWithoutUserInput
+    session?: sessionCreateNestedManyWithoutUserInput
+    Department?: departmentCreateNestedOneWithoutUsersInput
+    Attendees?: BookingAttendeeCreateNestedManyWithoutUserInput
+    createdBookings?: BookingCreateNestedManyWithoutCreatorInput
+  }
+
+  export type userUncheckedCreateWithoutApprovedBookingsInput = {
+    id?: string
+    fullname: string
+    username: string
+    password: string
+    status?: boolean
+    createdAt?: Date | string
+    departmentId?: string | null
+    avatarUrl?: string | null
+    role?: $Enums.ROLE
+    AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
+    Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
+    session?: sessionUncheckedCreateNestedManyWithoutUserInput
+    Attendees?: BookingAttendeeUncheckedCreateNestedManyWithoutUserInput
+    createdBookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
+  }
+
+  export type userCreateOrConnectWithoutApprovedBookingsInput = {
+    where: userWhereUniqueInput
+    create: XOR<userCreateWithoutApprovedBookingsInput, userUncheckedCreateWithoutApprovedBookingsInput>
   }
 
   export type RoomUpsertWithoutBookingsInput = {
@@ -19369,7 +19875,7 @@ export namespace Prisma {
     minBookingTime?: IntFieldUpdateOperationsInput | number
     maxBookingTime?: IntFieldUpdateOperationsInput | number
     maxAdvanceBooking?: IntFieldUpdateOperationsInput | number
-    cancelationTime?: IntFieldUpdateOperationsInput | number
+    cancellationTime?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Facilities?: RoomFacilityUpdateManyWithoutRoomNestedInput
@@ -19385,7 +19891,7 @@ export namespace Prisma {
     minBookingTime?: IntFieldUpdateOperationsInput | number
     maxBookingTime?: IntFieldUpdateOperationsInput | number
     maxAdvanceBooking?: IntFieldUpdateOperationsInput | number
-    cancelationTime?: IntFieldUpdateOperationsInput | number
+    cancellationTime?: IntFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     Facilities?: RoomFacilityUncheckedUpdateManyWithoutRoomNestedInput
@@ -19407,35 +19913,135 @@ export namespace Prisma {
     data: XOR<BookingAttendeeUpdateManyMutationInput, BookingAttendeeUncheckedUpdateManyWithoutBookingInput>
   }
 
-  export type BookingCreateWithoutAttendeesInput = {
+  export type userUpsertWithoutCreatedBookingsInput = {
+    update: XOR<userUpdateWithoutCreatedBookingsInput, userUncheckedUpdateWithoutCreatedBookingsInput>
+    create: XOR<userCreateWithoutCreatedBookingsInput, userUncheckedCreateWithoutCreatedBookingsInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutCreatedBookingsInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutCreatedBookingsInput, userUncheckedUpdateWithoutCreatedBookingsInput>
+  }
+
+  export type userUpdateWithoutCreatedBookingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullname?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
+    AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
+    Notifications?: notificationUpdateManyWithoutUserNestedInput
+    session?: sessionUpdateManyWithoutUserNestedInput
+    Department?: departmentUpdateOneWithoutUsersNestedInput
+    Attendees?: BookingAttendeeUpdateManyWithoutUserNestedInput
+    approvedBookings?: BookingUpdateManyWithoutApproverNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutCreatedBookingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullname?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
+    AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
+    session?: sessionUncheckedUpdateManyWithoutUserNestedInput
+    Attendees?: BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput
+    approvedBookings?: BookingUncheckedUpdateManyWithoutApproverNestedInput
+  }
+
+  export type userUpsertWithoutApprovedBookingsInput = {
+    update: XOR<userUpdateWithoutApprovedBookingsInput, userUncheckedUpdateWithoutApprovedBookingsInput>
+    create: XOR<userCreateWithoutApprovedBookingsInput, userUncheckedCreateWithoutApprovedBookingsInput>
+    where?: userWhereInput
+  }
+
+  export type userUpdateToOneWithWhereWithoutApprovedBookingsInput = {
+    where?: userWhereInput
+    data: XOR<userUpdateWithoutApprovedBookingsInput, userUncheckedUpdateWithoutApprovedBookingsInput>
+  }
+
+  export type userUpdateWithoutApprovedBookingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullname?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
+    AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
+    Notifications?: notificationUpdateManyWithoutUserNestedInput
+    session?: sessionUpdateManyWithoutUserNestedInput
+    Department?: departmentUpdateOneWithoutUsersNestedInput
+    Attendees?: BookingAttendeeUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type userUncheckedUpdateWithoutApprovedBookingsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullname?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    password?: StringFieldUpdateOperationsInput | string
+    status?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    departmentId?: NullableStringFieldUpdateOperationsInput | string | null
+    avatarUrl?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumROLEFieldUpdateOperationsInput | $Enums.ROLE
+    AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
+    Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
+    session?: sessionUncheckedUpdateManyWithoutUserNestedInput
+    Attendees?: BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
+  }
+
+  export type BookingCreateWithoutBookingAttendeeInput = {
     id?: string
     title: string
+    description?: string | null
     startTime: Date | string
     endTime: Date | string
-    status?: boolean
-    description?: string | null
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    Creator: userCreateNestedOneWithoutBookingsInput
     Room: RoomCreateNestedOneWithoutBookingsInput
+    Creator: userCreateNestedOneWithoutCreatedBookingsInput
+    Approver?: userCreateNestedOneWithoutApprovedBookingsInput
   }
 
-  export type BookingUncheckedCreateWithoutAttendeesInput = {
+  export type BookingUncheckedCreateWithoutBookingAttendeeInput = {
     id?: string
+    roomId: string
     title: string
+    description?: string | null
     startTime: Date | string
     endTime: Date | string
-    status?: boolean
-    description?: string | null
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    createdBy: string
+    approvedBy?: string | null
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    createdBy: string
-    roomId: string
   }
 
-  export type BookingCreateOrConnectWithoutAttendeesInput = {
+  export type BookingCreateOrConnectWithoutBookingAttendeeInput = {
     where: BookingWhereUniqueInput
-    create: XOR<BookingCreateWithoutAttendeesInput, BookingUncheckedCreateWithoutAttendeesInput>
+    create: XOR<BookingCreateWithoutBookingAttendeeInput, BookingUncheckedCreateWithoutBookingAttendeeInput>
   }
 
   export type userCreateWithoutAttendeesInput = {
@@ -19451,7 +20057,8 @@ export namespace Prisma {
     Notifications?: notificationCreateNestedManyWithoutUserInput
     session?: sessionCreateNestedManyWithoutUserInput
     Department?: departmentCreateNestedOneWithoutUsersInput
-    Bookings?: BookingCreateNestedManyWithoutCreatorInput
+    createdBookings?: BookingCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingCreateNestedManyWithoutApproverInput
   }
 
   export type userUncheckedCreateWithoutAttendeesInput = {
@@ -19467,7 +20074,8 @@ export namespace Prisma {
     AuditLog?: AuditLogUncheckedCreateNestedManyWithoutUserInput
     Notifications?: notificationUncheckedCreateNestedManyWithoutUserInput
     session?: sessionUncheckedCreateNestedManyWithoutUserInput
-    Bookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
+    createdBookings?: BookingUncheckedCreateNestedManyWithoutCreatorInput
+    approvedBookings?: BookingUncheckedCreateNestedManyWithoutApproverInput
   }
 
   export type userCreateOrConnectWithoutAttendeesInput = {
@@ -19475,41 +20083,51 @@ export namespace Prisma {
     create: XOR<userCreateWithoutAttendeesInput, userUncheckedCreateWithoutAttendeesInput>
   }
 
-  export type BookingUpsertWithoutAttendeesInput = {
-    update: XOR<BookingUpdateWithoutAttendeesInput, BookingUncheckedUpdateWithoutAttendeesInput>
-    create: XOR<BookingCreateWithoutAttendeesInput, BookingUncheckedCreateWithoutAttendeesInput>
+  export type BookingUpsertWithoutBookingAttendeeInput = {
+    update: XOR<BookingUpdateWithoutBookingAttendeeInput, BookingUncheckedUpdateWithoutBookingAttendeeInput>
+    create: XOR<BookingCreateWithoutBookingAttendeeInput, BookingUncheckedCreateWithoutBookingAttendeeInput>
     where?: BookingWhereInput
   }
 
-  export type BookingUpdateToOneWithWhereWithoutAttendeesInput = {
+  export type BookingUpdateToOneWithWhereWithoutBookingAttendeeInput = {
     where?: BookingWhereInput
-    data: XOR<BookingUpdateWithoutAttendeesInput, BookingUncheckedUpdateWithoutAttendeesInput>
+    data: XOR<BookingUpdateWithoutBookingAttendeeInput, BookingUncheckedUpdateWithoutBookingAttendeeInput>
   }
 
-  export type BookingUpdateWithoutAttendeesInput = {
+  export type BookingUpdateWithoutBookingAttendeeInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Creator?: userUpdateOneRequiredWithoutBookingsNestedInput
     Room?: RoomUpdateOneRequiredWithoutBookingsNestedInput
+    Creator?: userUpdateOneRequiredWithoutCreatedBookingsNestedInput
+    Approver?: userUpdateOneWithoutApprovedBookingsNestedInput
   }
 
-  export type BookingUncheckedUpdateWithoutAttendeesInput = {
+  export type BookingUncheckedUpdateWithoutBookingAttendeeInput = {
     id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    createdBy?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: StringFieldUpdateOperationsInput | string
-    roomId?: StringFieldUpdateOperationsInput | string
   }
 
   export type userUpsertWithoutAttendeesInput = {
@@ -19536,7 +20154,8 @@ export namespace Prisma {
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
     Department?: departmentUpdateOneWithoutUsersNestedInput
-    Bookings?: BookingUpdateManyWithoutCreatorNestedInput
+    createdBookings?: BookingUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUpdateManyWithoutApproverNestedInput
   }
 
   export type userUncheckedUpdateWithoutAttendeesInput = {
@@ -19552,7 +20171,8 @@ export namespace Prisma {
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
-    Bookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
+    createdBookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type departmentCreateManyParentInput = {
@@ -19634,8 +20254,9 @@ export namespace Prisma {
     AuditLog?: AuditLogUpdateManyWithoutUserNestedInput
     Notifications?: notificationUpdateManyWithoutUserNestedInput
     session?: sessionUpdateManyWithoutUserNestedInput
-    Bookings?: BookingUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUpdateManyWithoutApproverNestedInput
   }
 
   export type userUncheckedUpdateWithoutDepartmentInput = {
@@ -19650,8 +20271,9 @@ export namespace Prisma {
     AuditLog?: AuditLogUncheckedUpdateManyWithoutUserNestedInput
     Notifications?: notificationUncheckedUpdateManyWithoutUserNestedInput
     session?: sessionUncheckedUpdateManyWithoutUserNestedInput
-    Bookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
     Attendees?: BookingAttendeeUncheckedUpdateManyWithoutUserNestedInput
+    createdBookings?: BookingUncheckedUpdateManyWithoutCreatorNestedInput
+    approvedBookings?: BookingUncheckedUpdateManyWithoutApproverNestedInput
   }
 
   export type userUncheckedUpdateManyWithoutDepartmentInput = {
@@ -19746,24 +20368,46 @@ export namespace Prisma {
     expiresAt: Date | string
   }
 
-  export type BookingCreateManyCreatorInput = {
-    id?: string
-    title: string
-    startTime: Date | string
-    endTime: Date | string
-    status?: boolean
-    description?: string | null
-    createdAt?: Date | string
-    updatedAt?: Date | string
-    roomId: string
-  }
-
   export type BookingAttendeeCreateManyUserInput = {
     id?: string
     status?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
     bookingId: string
+  }
+
+  export type BookingCreateManyCreatorInput = {
+    id?: string
+    roomId: string
+    title: string
+    description?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    approvedBy?: string | null
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type BookingCreateManyApproverInput = {
+    id?: string
+    roomId: string
+    title: string
+    description?: string | null
+    startTime: Date | string
+    endTime: Date | string
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    createdBy: string
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AuditLogUpdateWithoutUserInput = {
@@ -19841,50 +20485,12 @@ export namespace Prisma {
     expiresAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
-  export type BookingUpdateWithoutCreatorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Room?: RoomUpdateOneRequiredWithoutBookingsNestedInput
-    Attendees?: BookingAttendeeUpdateManyWithoutBookingNestedInput
-  }
-
-  export type BookingUncheckedUpdateWithoutCreatorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roomId?: StringFieldUpdateOperationsInput | string
-    Attendees?: BookingAttendeeUncheckedUpdateManyWithoutBookingNestedInput
-  }
-
-  export type BookingUncheckedUpdateManyWithoutCreatorInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    title?: StringFieldUpdateOperationsInput | string
-    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
-    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    roomId?: StringFieldUpdateOperationsInput | string
-  }
-
   export type BookingAttendeeUpdateWithoutUserInput = {
     id?: StringFieldUpdateOperationsInput | string
     status?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Booking?: BookingUpdateOneRequiredWithoutAttendeesNestedInput
+    Booking?: BookingUpdateOneRequiredWithoutBookingAttendeeNestedInput
   }
 
   export type BookingAttendeeUncheckedUpdateWithoutUserInput = {
@@ -19903,6 +20509,112 @@ export namespace Prisma {
     bookingId?: StringFieldUpdateOperationsInput | string
   }
 
+  export type BookingUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Room?: RoomUpdateOneRequiredWithoutBookingsNestedInput
+    BookingAttendee?: BookingAttendeeUpdateManyWithoutBookingNestedInput
+    Approver?: userUpdateOneWithoutApprovedBookingsNestedInput
+  }
+
+  export type BookingUncheckedUpdateWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    BookingAttendee?: BookingAttendeeUncheckedUpdateManyWithoutBookingNestedInput
+  }
+
+  export type BookingUncheckedUpdateManyWithoutCreatorInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type BookingUpdateWithoutApproverInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    Room?: RoomUpdateOneRequiredWithoutBookingsNestedInput
+    BookingAttendee?: BookingAttendeeUpdateManyWithoutBookingNestedInput
+    Creator?: userUpdateOneRequiredWithoutCreatedBookingsNestedInput
+  }
+
+  export type BookingUncheckedUpdateWithoutApproverInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    createdBy?: StringFieldUpdateOperationsInput | string
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    BookingAttendee?: BookingAttendeeUncheckedUpdateManyWithoutBookingNestedInput
+  }
+
+  export type BookingUncheckedUpdateManyWithoutApproverInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    roomId?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    startTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    createdBy?: StringFieldUpdateOperationsInput | string
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type RoomFacilityCreateManyRoomInput = {
     id?: string
     name: string
@@ -19916,13 +20628,18 @@ export namespace Prisma {
   export type BookingCreateManyRoomInput = {
     id?: string
     title: string
+    description?: string | null
     startTime: Date | string
     endTime: Date | string
-    status?: boolean
-    description?: string | null
+    status?: $Enums.BookingStatus
+    participants?: BookingCreateparticipantsInput | string[]
+    createdBy: string
+    approvedBy?: string | null
+    recurrencePattern?: string | null
+    recurrenceEndDate?: Date | string | null
+    recurrenceId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
-    createdBy: string
   }
 
   export type RoomFacilityUpdateWithoutRoomInput = {
@@ -19958,39 +20675,54 @@ export namespace Prisma {
   export type BookingUpdateWithoutRoomInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    Creator?: userUpdateOneRequiredWithoutBookingsNestedInput
-    Attendees?: BookingAttendeeUpdateManyWithoutBookingNestedInput
+    BookingAttendee?: BookingAttendeeUpdateManyWithoutBookingNestedInput
+    Creator?: userUpdateOneRequiredWithoutCreatedBookingsNestedInput
+    Approver?: userUpdateOneWithoutApprovedBookingsNestedInput
   }
 
   export type BookingUncheckedUpdateWithoutRoomInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    createdBy?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: StringFieldUpdateOperationsInput | string
-    Attendees?: BookingAttendeeUncheckedUpdateManyWithoutBookingNestedInput
+    BookingAttendee?: BookingAttendeeUncheckedUpdateManyWithoutBookingNestedInput
   }
 
   export type BookingUncheckedUpdateManyWithoutRoomInput = {
     id?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
-    status?: BoolFieldUpdateOperationsInput | boolean
-    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
+    participants?: BookingUpdateparticipantsInput | string[]
+    createdBy?: StringFieldUpdateOperationsInput | string
+    approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
+    recurrenceEndDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    recurrenceId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    createdBy?: StringFieldUpdateOperationsInput | string
   }
 
   export type BookingAttendeeCreateManyBookingInput = {

@@ -21,11 +21,9 @@ import { CreateRoomFormData, createRoomSchema } from "@/lib/schemas/room";
 interface RoomFormProps {
   onSubmit: (data: CreateRoomFormData) => void;
   initialData?: Partial<CreateRoomFormData> | null;
- 
 }
 
 export function CreateRoomForm({ onSubmit, initialData }: RoomFormProps) {
-
   const form = useForm<CreateRoomFormData>({
     resolver: zodResolver(createRoomSchema),
     defaultValues: initialData || {
@@ -38,7 +36,7 @@ export function CreateRoomForm({ onSubmit, initialData }: RoomFormProps) {
       minBookingTime: 30,
       maxBookingTime: 480,
       maxAdvanceBooking: 30,
-      cancelationTime: 24,
+      cancellationTime: 24,
     },
   });
 
@@ -187,7 +185,7 @@ export function CreateRoomForm({ onSubmit, initialData }: RoomFormProps) {
 
             <FormField
               control={form.control}
-              name="cancelationTime"
+              name="cancellationTime"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Thời Gian Hủy Trước (giờ)</FormLabel>

@@ -15,7 +15,7 @@ interface Props {
   mode: "create" | "edit";
 }
 
-const EnventDialog = ({ open, onOpenChange, mode }: Props) => {
+const EventDialog = ({ open, onOpenChange, mode }: Props) => {
   const title =
     mode === "create"
       ? "Đăng ký phòng họp"
@@ -26,7 +26,7 @@ const EnventDialog = ({ open, onOpenChange, mode }: Props) => {
       : "Thay đổi thông tin đặt phòng họp";
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="">
         <DialogTitle>{title}</DialogTitle>
         <DialogDescription>{description}</DialogDescription>
         {mode === "create" ? (
@@ -39,4 +39,4 @@ const EnventDialog = ({ open, onOpenChange, mode }: Props) => {
   );
 };
 
-export default EnventDialog;
+export default EventDialog;
