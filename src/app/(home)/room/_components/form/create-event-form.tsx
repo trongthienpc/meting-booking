@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addMinutes, format } from "date-fns";
@@ -39,16 +39,17 @@ export default function CreateEventForm({
       title: "",
       startTime: defaultDate ?? new Date(),
       endTime: defaultDate ?? new Date(),
+      duration: 30,
       description: "",
       roomId: "",
-      attendees: [],
-      approvedBy: null,
       recurrencePattern: null,
       recurrenceEndDate: null,
       recurrenceId: null,
     },
     mode: "onChange",
   });
+
+  const { isValid, isSubmitting, isDirty } = form.formState;
 
   const { rooms } = useRoom();
 
@@ -61,26 +62,29 @@ export default function CreateEventForm({
     [form]
   );
 
-  const [duration, setDuration] = useState<number | 0>(0);
-
   // Theo dõi thay đổi của startTime và duration để cập nhật endTime
   useEffect(() => {
     const startTime = form.getValues("startTime");
+    const duration = form.getValues("duration");
     if (startTime && duration) {
       updateEndTime(startTime, duration);
     }
-  }, [duration, form, updateEndTime]);
+  }, [form, updateEndTime]);
 
-  const handleSubmit = form.handleSubmit((values) => {
+  const handleSubmit = async (values: BookingData) => {
     console.log("🚀 ~ handleSubmit ~ values:", values);
-
-    onSave(values);
-  });
+    try {
+      onSave(values);
+    } catch (error) {
+      console.error("Lỗi khi lưu phòng họp:", error);
+      return;
+    }
+  };
 
   return (
     <Form {...form}>
       <form
-        onSubmit={handleSubmit}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="space-y-6 w-full max-h-[70vh] max-w-2xl mx-auto p-6 overflow-y-auto "
       >
         <FormField
@@ -96,12 +100,12 @@ export default function CreateEventForm({
             </FormItem>
           )}
         />
-        <div className="flex flex-col sm:flex-row gap-3 justify-between">
+        <div className="flex flex-col sm:flex-row gap-3 ">
           <FormField
             control={form.control}
             name="roomId"
             render={({ field }) => (
-              <FormItem className="w-1/2">
+              <FormItem className="w-full sm:w-2/3">
                 <FormLabel>Phòng họp</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl className="w-full">
@@ -124,18 +128,18 @@ export default function CreateEventForm({
             )}
           />
           <FormField
-            // control={form.control}
+            control={form.control}
             name="duration"
             render={({ field }) => (
-              <FormItem>
+              <FormItem className="w-full flex-1">
                 <FormLabel>Thời lượng</FormLabel>
                 <Select
                   onValueChange={(value) => {
-                    setDuration(parseInt(value));
                     const startTime = form.getValues("startTime");
                     if (startTime) {
-                      updateEndTime(startTime, duration);
+                      updateEndTime(startTime, Number(value));
                     }
+                    field.onChange(Number(value));
                   }}
                   value={field.value?.toString()}
                 >
@@ -173,6 +177,8 @@ export default function CreateEventForm({
                   value={format(field.value, "yyyy-MM-dd'T'HH:mm")}
                   onChange={(e) => {
                     const date = new Date(e.target.value);
+                    const duration = form.getValues("duration");
+                    updateEndTime(date, Number(duration));
                     field.onChange(date);
                   }}
                 />
@@ -255,8 +261,12 @@ export default function CreateEventForm({
         )}
 
         <div className="flex justify-end space-x-4">
-          <Button type="submit" className="w-32">
-            Lưu
+          <Button
+            type="submit"
+            className="w-32"
+            disabled={!isValid || isSubmitting || !isDirty}
+          >
+            {isSubmitting ? "Đang lưu..." : "Lưu"}
           </Button>
         </div>
       </form>

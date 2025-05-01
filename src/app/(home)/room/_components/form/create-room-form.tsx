@@ -40,6 +40,8 @@ export function CreateRoomForm({ onSubmit, initialData }: RoomFormProps) {
     },
   });
 
+  console.log(form.watch());
+
   const handleSubmit = async (data: CreateRoomFormData) => {
     try {
       onSubmit(data);

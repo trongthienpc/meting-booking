@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Dialog,
@@ -8,14 +9,22 @@ import {
 
 import CreateEventForm from "../form/create-event-form";
 import EditEventForm from "../form/edit-event-form";
+import { BookingUpdateData } from "@/lib/schemas/booking";
+import { useBooking } from "@/providers/booking-provider";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   mode: "create" | "edit";
+  initialData: BookingUpdateData;
 }
 
-const EventDialog = ({ open, onOpenChange, mode }: Props) => {
+const EventDialog = ({ open, onOpenChange, mode, initialData }: Props) => {
+  const { updateBooking } = useBooking();
+  const handleUpdateSubmit = async (data: BookingUpdateData) => {
+    await updateBooking(data.id, data);
+    onOpenChange(false);
+  };
   const title =
     mode === "create"
       ? "Đăng ký phòng họp"
@@ -32,7 +41,10 @@ const EventDialog = ({ open, onOpenChange, mode }: Props) => {
         {mode === "create" ? (
           <CreateEventForm onSave={() => alert("saved")} />
         ) : (
-          <EditEventForm onSave={() => alert("saved")} />
+          <EditEventForm
+            initialData={initialData}
+            onSave={handleUpdateSubmit}
+          />
         )}
       </DialogContent>
     </Dialog>

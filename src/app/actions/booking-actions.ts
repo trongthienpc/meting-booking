@@ -1,3 +1,4 @@
+"use server";
 import { Booking } from "@/generated/prisma";
 import { db } from "@/lib/db";
 import { validateRequest } from "@/lib/lucia";
@@ -8,10 +9,22 @@ import {
 } from "@/lib/schemas/booking";
 import { handleServerError, ServerActionError } from "@/lib/utils";
 
-export async function createBooking(
-  data: BookingData,
-  userId: string
-): Promise<{ success: true; data: Booking } | ServerActionError> {
+export async function createBooking(data: BookingData): Promise<
+  | {
+      success: true;
+      data: Booking & {
+        Room: { id: string; name: string };
+        Creator: {
+          id: string;
+          fullname: string;
+          Department: {
+            name: string;
+          } | null;
+        };
+      };
+    }
+  | ServerActionError
+> {
   // Validate input data
 
   const { user } = await validateRequest();
@@ -82,8 +95,27 @@ export async function createBooking(
       startTime: validatedData.startTime,
       endTime: validatedData.endTime,
       description: validatedData.description,
-      createdBy: userId,
+      createdBy: user.id,
       roomId: validatedData.roomId,
+    },
+    include: {
+      Room: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      Creator: {
+        select: {
+          id: true,
+          fullname: true,
+          Department: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
 
@@ -133,8 +165,17 @@ export async function getRoomBookings(
 // Manager only functions
 export async function getAllBookings(): Promise<
   | {
-      success: boolean;
-      data: Booking[];
+      success: true;
+      data: (Booking & {
+        Room: { id: string; name: string };
+        Creator: {
+          id: string;
+          fullname: string;
+          Department: {
+            name: string;
+          } | null;
+        };
+      })[];
     }
   | ServerActionError
 > {
@@ -142,15 +183,26 @@ export async function getAllBookings(): Promise<
 
   if (!user) return handleServerError("Không có quyền truy cập");
 
-  // if (user.role !== "MANAGER") {
-  //   return handleServerError("Bạn không có quyền truy cập");
-  // }
-
   const data = await db.booking.findMany({
     orderBy: { startTime: "asc" },
     include: {
-      Room: true,
-      Creator: true,
+      Room: {
+        select: {
+          id: true,
+          name: true,
+        },
+      },
+      Creator: {
+        select: {
+          id: true,
+          fullname: true,
+          Department: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
 

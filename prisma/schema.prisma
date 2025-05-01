@@ -166,6 +166,7 @@ model Booking {
   description  String?
   startTime    DateTime
   endTime      DateTime
+  duration     Int           @default(30) // Thời gian đặt phòng (phút)
   status       BookingStatus @default(PENDING)
   participants String[] // Danh sách người tham gia
   createdBy    String

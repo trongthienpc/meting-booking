@@ -51,14 +51,14 @@ const Page = () => {
       <div className="flex justify-between items-center">
         <div className="flex space-x-2">
           <Button
-            className="text-white"
+            className=""
             variant={viewMode === "table" ? "default" : "outline"}
             onClick={() => setViewMode("table")}
           >
             <LayoutDashboard />
           </Button>
           <Button
-            className="text-white"
+            className=""
             variant={viewMode === "calendar" ? "default" : "outline"}
             onClick={() => setViewMode("calendar")}
           >
@@ -117,7 +117,7 @@ const Page = () => {
         />
       ) : (
         <div className="w-full h-full">
-          <CalendarView handleOpenSheet={setIsOpen} />
+          <CalendarView />
         </div>
       )}
     </main>

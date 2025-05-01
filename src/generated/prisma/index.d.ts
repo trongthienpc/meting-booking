@@ -12388,8 +12388,18 @@ export namespace Prisma {
 
   export type AggregateBooking = {
     _count: BookingCountAggregateOutputType | null
+    _avg: BookingAvgAggregateOutputType | null
+    _sum: BookingSumAggregateOutputType | null
     _min: BookingMinAggregateOutputType | null
     _max: BookingMaxAggregateOutputType | null
+  }
+
+  export type BookingAvgAggregateOutputType = {
+    duration: number | null
+  }
+
+  export type BookingSumAggregateOutputType = {
+    duration: number | null
   }
 
   export type BookingMinAggregateOutputType = {
@@ -12399,6 +12409,7 @@ export namespace Prisma {
     description: string | null
     startTime: Date | null
     endTime: Date | null
+    duration: number | null
     status: $Enums.BookingStatus | null
     createdBy: string | null
     approvedBy: string | null
@@ -12416,6 +12427,7 @@ export namespace Prisma {
     description: string | null
     startTime: Date | null
     endTime: Date | null
+    duration: number | null
     status: $Enums.BookingStatus | null
     createdBy: string | null
     approvedBy: string | null
@@ -12433,6 +12445,7 @@ export namespace Prisma {
     description: number
     startTime: number
     endTime: number
+    duration: number
     status: number
     participants: number
     createdBy: number
@@ -12446,6 +12459,14 @@ export namespace Prisma {
   }
 
 
+  export type BookingAvgAggregateInputType = {
+    duration?: true
+  }
+
+  export type BookingSumAggregateInputType = {
+    duration?: true
+  }
+
   export type BookingMinAggregateInputType = {
     id?: true
     roomId?: true
@@ -12453,6 +12474,7 @@ export namespace Prisma {
     description?: true
     startTime?: true
     endTime?: true
+    duration?: true
     status?: true
     createdBy?: true
     approvedBy?: true
@@ -12470,6 +12492,7 @@ export namespace Prisma {
     description?: true
     startTime?: true
     endTime?: true
+    duration?: true
     status?: true
     createdBy?: true
     approvedBy?: true
@@ -12487,6 +12510,7 @@ export namespace Prisma {
     description?: true
     startTime?: true
     endTime?: true
+    duration?: true
     status?: true
     participants?: true
     createdBy?: true
@@ -12537,6 +12561,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: BookingAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: BookingSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: BookingMinAggregateInputType
@@ -12567,6 +12603,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: BookingCountAggregateInputType | true
+    _avg?: BookingAvgAggregateInputType
+    _sum?: BookingSumAggregateInputType
     _min?: BookingMinAggregateInputType
     _max?: BookingMaxAggregateInputType
   }
@@ -12578,6 +12616,7 @@ export namespace Prisma {
     description: string | null
     startTime: Date
     endTime: Date
+    duration: number
     status: $Enums.BookingStatus
     participants: string[]
     createdBy: string
@@ -12588,6 +12627,8 @@ export namespace Prisma {
     createdAt: Date
     updatedAt: Date
     _count: BookingCountAggregateOutputType | null
+    _avg: BookingAvgAggregateOutputType | null
+    _sum: BookingSumAggregateOutputType | null
     _min: BookingMinAggregateOutputType | null
     _max: BookingMaxAggregateOutputType | null
   }
@@ -12613,6 +12654,7 @@ export namespace Prisma {
     description?: boolean
     startTime?: boolean
     endTime?: boolean
+    duration?: boolean
     status?: boolean
     participants?: boolean
     createdBy?: boolean
@@ -12636,6 +12678,7 @@ export namespace Prisma {
     description?: boolean
     startTime?: boolean
     endTime?: boolean
+    duration?: boolean
     status?: boolean
     participants?: boolean
     createdBy?: boolean
@@ -12657,6 +12700,7 @@ export namespace Prisma {
     description?: boolean
     startTime?: boolean
     endTime?: boolean
+    duration?: boolean
     status?: boolean
     participants?: boolean
     createdBy?: boolean
@@ -12678,6 +12722,7 @@ export namespace Prisma {
     description?: boolean
     startTime?: boolean
     endTime?: boolean
+    duration?: boolean
     status?: boolean
     participants?: boolean
     createdBy?: boolean
@@ -12689,7 +12734,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roomId" | "title" | "description" | "startTime" | "endTime" | "status" | "participants" | "createdBy" | "approvedBy" | "recurrencePattern" | "recurrenceEndDate" | "recurrenceId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
+  export type BookingOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "roomId" | "title" | "description" | "startTime" | "endTime" | "duration" | "status" | "participants" | "createdBy" | "approvedBy" | "recurrencePattern" | "recurrenceEndDate" | "recurrenceId" | "createdAt" | "updatedAt", ExtArgs["result"]["booking"]>
   export type BookingInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     Room?: boolean | RoomDefaultArgs<ExtArgs>
     BookingAttendee?: boolean | Booking$BookingAttendeeArgs<ExtArgs>
@@ -12723,6 +12768,7 @@ export namespace Prisma {
       description: string | null
       startTime: Date
       endTime: Date
+      duration: number
       status: $Enums.BookingStatus
       participants: string[]
       createdBy: string
@@ -13165,6 +13211,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Booking", 'String'>
     readonly startTime: FieldRef<"Booking", 'DateTime'>
     readonly endTime: FieldRef<"Booking", 'DateTime'>
+    readonly duration: FieldRef<"Booking", 'Int'>
     readonly status: FieldRef<"Booking", 'BookingStatus'>
     readonly participants: FieldRef<"Booking", 'String[]'>
     readonly createdBy: FieldRef<"Booking", 'String'>
@@ -14860,6 +14907,7 @@ export namespace Prisma {
     description: 'description',
     startTime: 'startTime',
     endTime: 'endTime',
+    duration: 'duration',
     status: 'status',
     participants: 'participants',
     createdBy: 'createdBy',
@@ -15696,6 +15744,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Booking"> | string | null
     startTime?: DateTimeFilter<"Booking"> | Date | string
     endTime?: DateTimeFilter<"Booking"> | Date | string
+    duration?: IntFilter<"Booking"> | number
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     participants?: StringNullableListFilter<"Booking">
     createdBy?: StringFilter<"Booking"> | string
@@ -15718,6 +15767,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    duration?: SortOrder
     status?: SortOrder
     participants?: SortOrder
     createdBy?: SortOrder
@@ -15743,6 +15793,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Booking"> | string | null
     startTime?: DateTimeFilter<"Booking"> | Date | string
     endTime?: DateTimeFilter<"Booking"> | Date | string
+    duration?: IntFilter<"Booking"> | number
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     participants?: StringNullableListFilter<"Booking">
     createdBy?: StringFilter<"Booking"> | string
@@ -15765,6 +15816,7 @@ export namespace Prisma {
     description?: SortOrderInput | SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    duration?: SortOrder
     status?: SortOrder
     participants?: SortOrder
     createdBy?: SortOrder
@@ -15775,8 +15827,10 @@ export namespace Prisma {
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: BookingCountOrderByAggregateInput
+    _avg?: BookingAvgOrderByAggregateInput
     _max?: BookingMaxOrderByAggregateInput
     _min?: BookingMinOrderByAggregateInput
+    _sum?: BookingSumOrderByAggregateInput
   }
 
   export type BookingScalarWhereWithAggregatesInput = {
@@ -15789,6 +15843,7 @@ export namespace Prisma {
     description?: StringNullableWithAggregatesFilter<"Booking"> | string | null
     startTime?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
     endTime?: DateTimeWithAggregatesFilter<"Booking"> | Date | string
+    duration?: IntWithAggregatesFilter<"Booking"> | number
     status?: EnumBookingStatusWithAggregatesFilter<"Booking"> | $Enums.BookingStatus
     participants?: StringNullableListFilter<"Booking">
     createdBy?: StringWithAggregatesFilter<"Booking"> | string
@@ -16620,6 +16675,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     recurrencePattern?: string | null
@@ -16640,6 +16696,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     createdBy: string
@@ -16658,6 +16715,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16678,6 +16736,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -16697,6 +16756,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     createdBy: string
@@ -16714,6 +16774,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
@@ -16730,6 +16791,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -17433,6 +17495,7 @@ export namespace Prisma {
     description?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    duration?: SortOrder
     status?: SortOrder
     participants?: SortOrder
     createdBy?: SortOrder
@@ -17444,6 +17507,10 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type BookingAvgOrderByAggregateInput = {
+    duration?: SortOrder
+  }
+
   export type BookingMaxOrderByAggregateInput = {
     id?: SortOrder
     roomId?: SortOrder
@@ -17451,6 +17518,7 @@ export namespace Prisma {
     description?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    duration?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     approvedBy?: SortOrder
@@ -17468,6 +17536,7 @@ export namespace Prisma {
     description?: SortOrder
     startTime?: SortOrder
     endTime?: SortOrder
+    duration?: SortOrder
     status?: SortOrder
     createdBy?: SortOrder
     approvedBy?: SortOrder
@@ -17476,6 +17545,10 @@ export namespace Prisma {
     recurrenceId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type BookingSumOrderByAggregateInput = {
+    duration?: SortOrder
   }
 
   export type EnumBookingStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -19218,6 +19291,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     recurrencePattern?: string | null
@@ -19237,6 +19311,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     approvedBy?: string | null
@@ -19264,6 +19339,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     recurrencePattern?: string | null
@@ -19283,6 +19359,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     createdBy: string
@@ -19484,6 +19561,7 @@ export namespace Prisma {
     description?: StringNullableFilter<"Booking"> | string | null
     startTime?: DateTimeFilter<"Booking"> | Date | string
     endTime?: DateTimeFilter<"Booking"> | Date | string
+    duration?: IntFilter<"Booking"> | number
     status?: EnumBookingStatusFilter<"Booking"> | $Enums.BookingStatus
     participants?: StringNullableListFilter<"Booking">
     createdBy?: StringFilter<"Booking"> | string
@@ -19547,6 +19625,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     recurrencePattern?: string | null
@@ -19565,6 +19644,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     createdBy: string
@@ -20009,6 +20089,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     recurrencePattern?: string | null
@@ -20028,6 +20109,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     createdBy: string
@@ -20100,6 +20182,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20119,6 +20202,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -20383,6 +20467,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     approvedBy?: string | null
@@ -20400,6 +20485,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     createdBy: string
@@ -20515,6 +20601,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20534,6 +20621,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20552,6 +20640,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     approvedBy?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20568,6 +20657,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20587,6 +20677,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -20605,6 +20696,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -20631,6 +20723,7 @@ export namespace Prisma {
     description?: string | null
     startTime: Date | string
     endTime: Date | string
+    duration?: number
     status?: $Enums.BookingStatus
     participants?: BookingCreateparticipantsInput | string[]
     createdBy: string
@@ -20678,6 +20771,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     recurrencePattern?: NullableStringFieldUpdateOperationsInput | string | null
@@ -20696,6 +20790,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     createdBy?: StringFieldUpdateOperationsInput | string
@@ -20714,6 +20809,7 @@ export namespace Prisma {
     description?: NullableStringFieldUpdateOperationsInput | string | null
     startTime?: DateTimeFieldUpdateOperationsInput | Date | string
     endTime?: DateTimeFieldUpdateOperationsInput | Date | string
+    duration?: IntFieldUpdateOperationsInput | number
     status?: EnumBookingStatusFieldUpdateOperationsInput | $Enums.BookingStatus
     participants?: BookingUpdateparticipantsInput | string[]
     createdBy?: StringFieldUpdateOperationsInput | string

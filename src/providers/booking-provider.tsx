@@ -24,7 +24,16 @@ import { toast } from "sonner";
 
 type BookingContextType = {
   // Data
-  bookings: Booking[];
+  bookings: (Booking & {
+    Room: { id: string; name: string };
+    Creator: {
+      id: string;
+      fullname: string;
+      Department: {
+        name: string;
+      } | null;
+    };
+  })[];
 
   // Main loading and error states
   isLoading: boolean;
@@ -106,7 +115,18 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     error,
     isLoading,
     mutate: mutateBookings,
-  } = useSWR<Booking[]>(
+  } = useSWR<
+    (Booking & {
+      Room: { id: string; name: string };
+      Creator: {
+        id: string;
+        fullname: string;
+        Department: {
+          name: string;
+        } | null;
+      };
+    })[]
+  >(
     BOOKINGS_KEY,
     async () => {
       const res = await getAllBookingsAction();
@@ -120,12 +140,29 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
 
   // Optimistic updates
   const [optimisticBookings, addOptimisticBooking] = useOptimistic<
-    Booking[],
+    (Booking & {
+      Room: { id: string; name: string };
+      Creator: {
+        id: string;
+        fullname: string;
+        Department: {
+          name: string;
+        } | null;
+      };
+    })[],
     { action: "create" | "update" | "cancel" | "approve"; data: any }
   >(bookings, (state, { action, data }) => {
     switch (action) {
       case "create":
-        return [...state, { ...data, id: "temp-" + Date.now() }];
+        return [
+          ...state,
+          {
+            ...data,
+            id: "temp-" + Date.now(),
+            Room: data.room,
+            Creator: data.creator,
+          },
+        ];
       case "update":
         return state.map((booking) =>
           booking.id === data.id ? { ...booking, ...data } : booking
@@ -150,7 +187,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
     try {
       startTransition(async () => {
         addOptimisticBooking({ action: "create", data });
-        const result = await createBookingAction(data, data.createdBy);
+        const result = await createBookingAction(data);
         if (!result.success) {
           toast.error(result.message || "Không thể tạo lịch họp");
           setCreateError(new Error(result.message || "Không thể tạo lịch họp"));

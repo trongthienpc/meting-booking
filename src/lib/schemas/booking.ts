@@ -5,11 +5,12 @@ export const BookingBaseSchema = z.object({
   title: z.string().min(1, "Tiêu đề không được để trống"),
   startTime: z.date(),
   endTime: z.date(),
+  duration: z.number(),
   description: z.string().nullable(),
   roomId: z.string().min(1, "Phải chọn phòng"),
-  attendees: z.array(z.string()).min(1, "Phải có ít nhất 1 người tham dự"),
-  createdBy: z.string().min(1, "Người tạo là bắt buộc"),
-  approvedBy: z.string().nullable(),
+  // attendees: z.array(z.string()).min(1, "Phải có ít nhất 1 người tham dự"),
+  // createdBy: z.string().min(1, "Người tạo là bắt buộc"),
+  // approvedBy: z.string().nullable(),
   recurrencePattern: z.string().nullable(),
   recurrenceEndDate: z.date().nullable(),
   recurrenceId: z.string().nullable(),
@@ -32,3 +33,10 @@ export type BookingData = z.infer<typeof BookingBaseSchema>;
 export type BookingTimeValidationData = z.infer<
   typeof BookingTimeValidationSchema
 >;
+
+// Schema cho dữ liệu booking khi cập nhật
+export const BookingUpdateSchema = BookingBaseSchema.extend({
+  id: z.string(),
+});
+// Type cho dữ liệu booking khi cập nhật
+export type BookingUpdateData = z.infer<typeof BookingUpdateSchema>;

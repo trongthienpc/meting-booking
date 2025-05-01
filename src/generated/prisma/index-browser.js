@@ -226,6 +226,7 @@ exports.Prisma.BookingScalarFieldEnum = {
   description: 'description',
   startTime: 'startTime',
   endTime: 'endTime',
+  duration: 'duration',
   status: 'status',
   participants: 'participants',
   createdBy: 'createdBy',
