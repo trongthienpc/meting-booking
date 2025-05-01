@@ -15,7 +15,7 @@ interface DeleteConfirmDialogProps {
   onClose: () => void;
   onConfirm: () => void;
   isPending: boolean;
-  RoomName?: string;
+  objectName?: string;
 }
 
 export function DeleteConfirmDialog({
@@ -23,7 +23,7 @@ export function DeleteConfirmDialog({
   onClose,
   onConfirm,
   isPending,
-  RoomName,
+  objectName,
 }: DeleteConfirmDialogProps) {
   return (
     <AlertDialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
@@ -32,7 +32,7 @@ export function DeleteConfirmDialog({
           <AlertDialogTitle>Bạn có chắc chắn xóa?</AlertDialogTitle>
           <AlertDialogDescription>
             Hành động này sẽ tạm ngừng hoạt động &quot;
-            {RoomName || "phòng họp"}&quot; .
+            {objectName || "phòng họp"}&quot; .
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

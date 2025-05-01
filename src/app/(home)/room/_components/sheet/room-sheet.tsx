@@ -11,7 +11,7 @@ import {
 
 import { RoomProvider, useRoom } from "@/providers/room-provider";
 import { CreateRoomForm } from "../form/create-room-form";
-import { Room } from "";
+import { Room } from "@/generated/prisma";
 import { UpdateRoomForm } from "../form/update-room-form";
 
 interface RoomSheetProps {

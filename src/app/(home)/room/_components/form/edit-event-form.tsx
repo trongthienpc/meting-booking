@@ -37,7 +37,7 @@ type Event = {
   duration: number;
 };
 
-export default function EventForm({
+export default function EditEventForm({
   event,
   onSave,
   defaultDate,

@@ -105,7 +105,7 @@ const Page = () => {
         isPending={isLoading}
         onClose={() => setDeleteDialogOpen(false)}
         onConfirm={submitDelete}
-        RoomName=""
+        objectName=""
       />
 
       {viewMode === "table" ? (

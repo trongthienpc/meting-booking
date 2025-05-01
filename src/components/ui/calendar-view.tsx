@@ -15,8 +15,9 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./dialog";
-import EventForm from "../event/EventForm";
-import EnventDialog from "../event/Dialog";
+import EventForm from "../../app/(home)/room/_components/form/create-event-form";
+import EnventDialog from "../../app/(home)/room/_components/sheet/event-dialog";
+import { DeleteConfirmDialog } from "@/app/(home)/room/_components/form/delete-dialog";
 
 type Event = {
   id: number;
@@ -108,6 +109,7 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
   const [selectedDate, setSelectedDate] = useState<Date>(new Date());
   const [events, setEvents] = useState(initialEvents);
   const [editingEvent, setEditingEvent] = useState<Event | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleDayClick = (date: Date) => {
@@ -237,7 +239,8 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
                         variant="ghost"
                         className="text-red-500 hover:text-red-700"
                         onClick={() =>
-                          setEvents(events.filter((e) => e.id !== event.id))
+                          // setEvents(events.filter((e) => e.id !== event.id))
+                          setDeleteDialogOpen(true)
                         }
                       >
                         <Trash2 className="w-4 h-4" />
@@ -251,7 +254,19 @@ export default function CalendarView({ handleOpenSheet }: CalendarViewProps) {
         </div>
       </div>
 
-      {editingEvent && <EnventDialog open={open} onOpenChange={setOpen} />}
+      {editingEvent && (
+        <EnventDialog mode="edit" open={open} onOpenChange={setOpen} />
+      )}
+
+      {deleteDialogOpen && (
+        <DeleteConfirmDialog
+          isOpen={deleteDialogOpen}
+          isPending={false}
+          onClose={() => setDeleteDialogOpen(false)}
+          onConfirm={() => alert("delete")}
+          objectName=""
+        />
+      )}
     </div>
   );
 }
