@@ -271,7 +271,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/thientt/Documents/2025/meting-booking/src/generated/prisma",
+      "value": "D:\\2025\\Projects\\New folder\\meting-booking\\src\\generated\\prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -280,12 +280,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "darwin-arm64",
+        "value": "windows",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/thientt/Documents/2025/meting-booking/prisma/schema.prisma",
+    "sourceFilePath": "D:\\2025\\Projects\\New folder\\meting-booking\\prisma\\schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -303,7 +303,7 @@ const config = {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": "postgresql://zubu:553113@localhost:5432/meting-booking?schema=public"
+        "value": "postgresql://zubu:553113@localhost:5434/metting-booking?schema=public"
       }
     }
   },
@@ -347,8 +347,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
-path.join(process.cwd(), "src/generated/prisma/libquery_engine-darwin-arm64.dylib.node")
+path.join(__dirname, "query_engine-windows.dll.node");
+path.join(process.cwd(), "src/generated/prisma/query_engine-windows.dll.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "src/generated/prisma/schema.prisma")
