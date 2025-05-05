@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { format } from "date-fns";
+import { useSearchParams, useRouter } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Calendar as CalendarIcon } from "lucide-react";
@@ -24,29 +25,101 @@ import { BookingData } from "@/lib/schemas/booking";
 import { FuturisticEventCard } from "./futuristic-event-card";
 
 export default function CalendarView() {
-  const [selectedDate, setSelectedDate] = useState<Date>(new Date());
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const dateParam = searchParams.get("date");
+  const searchParam = searchParams.get("search")
+    ? decodeURIComponent(searchParams.get("search")!)
+    : null;
+
+  const [selectedDate, setSelectedDate] = useState<Date>(
+    dateParam ? new Date(dateParam) : new Date()
+  );
+  const [value, setValue] = useState(searchParam ?? "");
   const [editingEvent, setEditingEvent] = useState<Booking | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openCreateDialog, setOpenCreateDialog] = useState(false);
+  const { bookings, createBooking, cancelBooking } = useBooking();
 
-  const { bookings, createBooking } = useBooking();
+  // Cập nhật URL khi state thay đổi
+  const updateURL = (date: Date, searchValue?: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("date", format(date, "yyyy-MM-dd"));
+    if (searchValue?.trim()) {
+      params.set("search", encodeURIComponent(searchValue));
+    } else {
+      params.delete("search");
+    }
+    router.push(`?${params.toString()}`);
+  };
 
   const handleDayClick = (date: Date) => {
     setSelectedDate(date);
-
     setEditingEvent(null);
+    updateURL(date, searchParam || "");
   };
+
+  // Xử lý thay đổi giá trị tìm kiếm
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    const searchValue = normalizeVietnamese(e.target.value);
+    updateURL(selectedDate, searchValue);
+  };
+
+  // Đồng bộ state với URL khi URL thay đổi
+  useEffect(() => {
+    if (dateParam) {
+      setSelectedDate(new Date(dateParam));
+    }
+  }, [dateParam]);
 
   const handleSave = (data: BookingData) => {
-    createBooking(data);
-    setOpenCreateDialog(false);
+    createBooking(data).then((success) => {
+      if (success) {
+        setOpenCreateDialog(false);
+      }
+    });
   };
 
-  const dailyBookings = bookings.filter(
-    (e) =>
-      format(e.startTime, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd")
-  );
+  const handleDelete = (bookingId: string) => {
+    cancelBooking(bookingId);
+    setDeleteDialogOpen(false);
+  };
+
+  // Hàm chuẩn hóa chuỗi tiếng Việt
+  const normalizeVietnamese = (str: string) => {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/đ/g, "d");
+  };
+
+  // Filter bookings by both date and search value
+  const dailyBookings = bookings.filter((e) => {
+    const isActive = e.status !== "CANCELLED";
+    const matchesDate =
+      format(e.startTime, "yyyy-MM-dd") === format(selectedDate, "yyyy-MM-dd");
+
+    if (!searchParam?.trim()) return matchesDate && isActive;
+
+    const normalizedSearch = normalizeVietnamese(searchParam);
+    const normalizedTitle = normalizeVietnamese(e.title);
+    const normalizedCreator = normalizeVietnamese(e.Creator.fullname);
+    const normalizedRoom = normalizeVietnamese(e.Room.name);
+    const normalizedDepartment = e.Creator.Department?.name
+      ? normalizeVietnamese(e.Creator.Department.name)
+      : "";
+
+    const matchesSearch =
+      normalizedTitle.includes(normalizedSearch) ||
+      normalizedCreator.includes(normalizedSearch) ||
+      normalizedRoom.includes(normalizedSearch) ||
+      normalizedDepartment.includes(normalizedSearch);
+
+    return matchesDate && matchesSearch && isActive;
+  });
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 rounded shadow p-4 h-full min-h-0">
@@ -72,7 +145,8 @@ export default function CalendarView() {
                   bookings.some(
                     (event) =>
                       format(event.startTime, "yyyy-MM-dd") ===
-                      format(date, "yyyy-MM-dd")
+                        format(date, "yyyy-MM-dd") &&
+                      event.status !== "CANCELLED"
                   ),
               }}
               modifiersClassNames={{
@@ -111,11 +185,23 @@ export default function CalendarView() {
       </div>
 
       {/* Right: Event List */}
-      <div className="p-4 overflow-y-auto h-full flex flex-col min-h-0 max-h-[calc(100vh-8rem)]">
-        <h1 className="text-3xl font-bold mb-2">SỰ KIỆN TRONG NGÀY</h1>
-        <p className="text-xl mb-4">{format(selectedDate, "dd/MM/yyyy")}</p>
+      <div className="p-4 h-full flex flex-col min-h-0 max-h-[calc(100vh-8rem)]">
+        <div className="flex-none">
+          <h1 className="text-3xl font-bold mb-2">SỰ KIỆN TRONG NGÀY</h1>
+          {/* <p className="text-xl mb-4">{format(selectedDate, "dd/MM/yyyy")}</p> */}
+          <div className="flex items-center gap-2 mb-4">
+            <input
+              value={value}
+              onChange={handleSearchChange}
+              type="text"
+              placeholder="Search events..."
+              className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+            />
+            <Button variant={"outline"}>{dailyBookings.length}</Button>
+          </div>
+        </div>
 
-        <div className="space-y-4">
+        <div className="flex-1 overflow-y-auto space-y-4">
           {dailyBookings.length === 0 ? (
             <Card>
               <CardContent className="p-6 text-center text-muted-foreground">
@@ -124,65 +210,6 @@ export default function CalendarView() {
             </Card>
           ) : (
             dailyBookings.map((event) => (
-              // <Card key={event.id} className="overflow-hidden">
-              //   <CardContent className="p-0 flex-col">
-              //     <div className="flex items-center">
-              //       <div className="bg-blue-500 p-4 flex flex-col items-center justify-center text-white">
-              //         <span className="text-xl font-bold">
-              //           {format(event.startTime, "HH:mm") ?? "00:00"}
-              //         </span>
-              //       </div>
-              //       <div className="p-4 flex-1 space-y-1">
-              //         <h3 className="text-lg font-semibold">{event.title}</h3>
-              //         <span className="text-sm text-muted-foreground flex gap-1">
-              //           <Timer className="w-4 h-4" />{" "}
-              //           {format(event.startTime, "HH:mm")} -{" "}
-              //           {format(event.endTime, "HH:mm")}(
-              //           {getMinutes(event.endTime) -
-              //             getMinutes(event.startTime)}{" "}
-              //           phút)
-              //         </span>
-              //         <span className="text-sm text-muted-foreground flex gap-1">
-              //           <Calendar1 className="w-4 h-4" />{" "}
-              //           {format(event.startTime, "EEEE, dd MMMM yyyy")}
-              //         </span>
-              //         <span className="text-sm text-muted-foreground flex gap-1">
-              //           <MapPinned className="w-4 h-4" /> {event.Room.name}
-              //         </span>
-              //       </div>
-              //       <div className="p-2 flex flex-col gap-2">
-              //         <Button
-              //           size="icon"
-              //           variant="ghost"
-              //           onClick={() => {
-              //             setEditingEvent(event);
-              //             setOpen(true);
-              //           }}
-              //         >
-              //           <Pencil className="w-4 h-4" />
-              //         </Button>
-              //         <Button
-              //           size="icon"
-              //           variant="ghost"
-              //           className="text-red-500 hover:text-red-700"
-              //           onClick={() => setDeleteDialogOpen(true)}
-              //         >
-              //           <Trash2 className="w-4 h-4" />
-              //         </Button>
-              //       </div>
-              //     </div>
-              //     <div className="flex flex-col items-end p-3">
-              //       <p className="text-sm text-muted-foreground flex gap-1">
-              //         <User className="w-4 h-4" /> {event.Creator.fullname}
-              //       </p>
-              //       <p className="text-sm text-muted-foreground flex gap-1">
-              //         <HouseIcon className="w-4 h-4" />{" "}
-              //         {event.Creator.Department?.name}
-              //       </p>
-              //     </div>
-              //   </CardContent>
-              // </Card>
-
               <FuturisticEventCard
                 key={event.id}
                 event={event}
@@ -190,7 +217,10 @@ export default function CalendarView() {
                   setEditingEvent(event);
                   setOpenEditDialog(true);
                 }}
-                onDelete={() => setDeleteDialogOpen(true)}
+                onDelete={() => {
+                  setEditingEvent(event);
+                  setDeleteDialogOpen(true);
+                }}
               />
             ))
           )}
@@ -211,7 +241,7 @@ export default function CalendarView() {
           isOpen={deleteDialogOpen}
           isPending={false}
           onClose={() => setDeleteDialogOpen(false)}
-          onConfirm={() => alert("delete")}
+          onConfirm={() => handleDelete(editingEvent!.id)}
           objectName=""
         />
       )}

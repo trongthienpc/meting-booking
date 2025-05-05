@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { addMinutes, format } from "date-fns";
 
@@ -37,12 +37,15 @@ export default function CreateEventForm({
     resolver: zodResolver(BookingBaseSchema),
     defaultValues: {
       title: "",
-      startTime: defaultDate ?? new Date(),
+      startTime:
+        defaultDate && new Date(defaultDate) > new Date()
+          ? defaultDate
+          : new Date(),
       endTime: defaultDate ?? new Date(),
       duration: 30,
       description: "",
       roomId: "",
-      recurrencePattern: null,
+      recurrencePattern: "none",
       recurrenceEndDate: null,
       recurrenceId: null,
     },
@@ -52,6 +55,18 @@ export default function CreateEventForm({
   const { isValid, isSubmitting, isDirty } = form.formState;
 
   const { rooms } = useRoom();
+
+  const recurrencePattern = useWatch({
+    control: form.control,
+    name: "recurrencePattern",
+    defaultValue: "none", // Đảm bảo có giá trị mặc định
+  });
+
+  // 2. Tạo hàm đánh giá điều kiện
+  const shouldShowEndDate =
+    recurrencePattern &&
+    recurrencePattern !== "none" &&
+    recurrencePattern !== "";
 
   // Tự động tính thời gian kết thúc dựa trên thời gian bắt đầu và thời lượng
   const updateEndTime = useCallback(
@@ -72,7 +87,6 @@ export default function CreateEventForm({
   }, [form, updateEndTime]);
 
   const handleSubmit = async (values: BookingData) => {
-    console.log("🚀 ~ handleSubmit ~ values:", values);
     try {
       onSave(values);
     } catch (error) {
@@ -181,6 +195,7 @@ export default function CreateEventForm({
                     updateEndTime(date, Number(duration));
                     field.onChange(date);
                   }}
+                  min={format(new Date(), "yyyy-MM-dd'T'HH:mm")}
                 />
               </FormControl>
               <FormMessage />
@@ -234,7 +249,7 @@ export default function CreateEventForm({
           )}
         />
 
-        {form.watch("recurrencePattern") && (
+        {shouldShowEndDate && (
           <FormField
             control={form.control}
             name="recurrenceEndDate"

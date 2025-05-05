@@ -40,13 +40,13 @@ type BookingContextType = {
   error: Error | null;
 
   // Actions
-  createBooking: (data: BookingData) => Promise<void>;
-  approveBooking: (bookingId: string, userId: string) => Promise<void>;
-  cancelBooking: (bookingId: string, userId: string) => Promise<void>;
+  createBooking: (data: BookingData) => Promise<boolean>;
+  approveBooking: (bookingId: string, userId: string) => Promise<boolean>;
+  cancelBooking: (bookingId: string) => Promise<boolean>;
   updateBooking: (
     bookingId: string,
     data: Partial<BookingData>
-  ) => Promise<void>;
+  ) => Promise<boolean>;
   getUserBookings: (userId: string) => Promise<void>;
   getRoomBookings: (roomId: string, userId?: string) => Promise<void>;
   getAllBookings: () => Promise<void>;
@@ -181,20 +181,38 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
   });
 
   // Create booking with optimistic update
-  const handleCreateBooking = async (data: BookingData) => {
+  const handleCreateBooking = async (data: BookingData): Promise<boolean> => {
     setIsCreating(true);
     setCreateError(null);
     try {
-      startTransition(async () => {
-        addOptimisticBooking({ action: "create", data });
-        const result = await createBookingAction(data);
-        if (!result.success) {
-          toast.error(result.message || "Không thể tạo lịch họp");
-          setCreateError(new Error(result.message || "Không thể tạo lịch họp"));
-          return;
-        }
-        await mutateBookings();
-        toast.success("Tạo lịch họp thành công");
+      // Sử dụng Promise để đợi cho đến khi các thao tác trong startTransition hoàn thành
+      return await new Promise<boolean>((resolve) => {
+        startTransition(async () => {
+          try {
+            addOptimisticBooking({ action: "create", data });
+            const result = await createBookingAction(data);
+            if (!result.success) {
+              toast.error(result.message || "Không thể tạo lịch họp");
+              setCreateError(
+                new Error(result.message || "Không thể tạo lịch họp")
+              );
+              resolve(false);
+              return;
+            }
+            await mutateBookings();
+            toast.success("Tạo lịch họp thành công");
+            resolve(true);
+          } catch (innerErr) {
+            const innerError =
+              innerErr instanceof Error
+                ? innerErr
+                : new Error("Không thể tạo lịch họp");
+            setCreateError(innerError);
+            toast.error(innerError.message);
+            await mutateBookings(); // Revert optimistic update
+            resolve(false);
+          }
+        });
       });
     } catch (err) {
       const error =
@@ -202,28 +220,48 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
       setCreateError(error);
       toast.error(error.message);
       await mutateBookings(); // Revert optimistic update
+      return false;
     } finally {
       setIsCreating(false);
     }
   };
 
   // Approve booking with optimistic update
-  const handleApproveBooking = async (bookingId: string, userId: string) => {
+  const handleApproveBooking = async (
+    bookingId: string,
+    userId: string
+  ): Promise<boolean> => {
     setIsApproving(true);
     setApproveError(null);
     try {
-      startTransition(async () => {
-        addOptimisticBooking({ action: "approve", data: bookingId });
-        const result = await approveBookingAction(bookingId, userId);
-        if (!result.success) {
-          toast.error(result.message || "Không thể phê duyệt lịch họp");
-          setApproveError(
-            new Error(result.message || "Không thể phê duyệt lịch họp")
-          );
-          return;
-        }
-        await mutateBookings();
-        toast.success("Phê duyệt lịch họp thành công");
+      // Sử dụng Promise để đợi cho đến khi các thao tác trong startTransition hoàn thành
+      return await new Promise<boolean>((resolve) => {
+        startTransition(async () => {
+          try {
+            addOptimisticBooking({ action: "approve", data: bookingId });
+            const result = await approveBookingAction(bookingId, userId);
+            if (!result.success) {
+              toast.error(result.message || "Không thể phê duyệt lịch họp");
+              setApproveError(
+                new Error(result.message || "Không thể phê duyệt lịch họp")
+              );
+              resolve(false);
+              return;
+            }
+            await mutateBookings();
+            toast.success("Phê duyệt lịch họp thành công");
+            resolve(true);
+          } catch (innerErr) {
+            const innerError =
+              innerErr instanceof Error
+                ? innerErr
+                : new Error("Không thể phê duyệt lịch họp");
+            setApproveError(innerError);
+            toast.error(innerError.message);
+            await mutateBookings(); // Revert optimistic update
+            resolve(false);
+          }
+        });
       });
     } catch (err) {
       const error =
@@ -231,26 +269,45 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
       setApproveError(error);
       toast.error(error.message);
       await mutateBookings(); // Revert optimistic update
+      return false;
     } finally {
       setIsApproving(false);
     }
   };
 
   // Cancel booking with optimistic update
-  const handleCancelBooking = async (bookingId: string, userId: string) => {
+  const handleCancelBooking = async (bookingId: string): Promise<boolean> => {
     setIsCanceling(true);
     setCancelError(null);
     try {
-      startTransition(async () => {
-        addOptimisticBooking({ action: "cancel", data: bookingId });
-        const result = await cancelBookingAction(bookingId, userId);
-        if (!result.success) {
-          toast.error(result.message || "Không thể hủy lịch họp");
-          setCancelError(new Error(result.message || "Không thể hủy lịch họp"));
-          return;
-        }
-        await mutateBookings();
-        toast.success("Hủy lịch họp thành công");
+      // Sử dụng Promise để đợi cho đến khi các thao tác trong startTransition hoàn thành
+      return await new Promise<boolean>((resolve) => {
+        startTransition(async () => {
+          try {
+            addOptimisticBooking({ action: "cancel", data: bookingId });
+            const result = await cancelBookingAction(bookingId);
+            if (!result.success) {
+              toast.error(result.message || "Không thể hủy lịch họp");
+              setCancelError(
+                new Error(result.message || "Không thể hủy lịch họp")
+              );
+              resolve(false);
+              return;
+            }
+            await mutateBookings();
+            toast.success("Hủy lịch họp thành công");
+            resolve(true);
+          } catch (innerErr) {
+            const innerError =
+              innerErr instanceof Error
+                ? innerErr
+                : new Error("Không thể hủy lịch họp");
+            setCancelError(innerError);
+            toast.error(innerError.message);
+            await mutateBookings(); // Revert optimistic update
+            resolve(false);
+          }
+        });
       });
     } catch (err) {
       const error =
@@ -258,6 +315,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
       setCancelError(error);
       toast.error(error.message);
       await mutateBookings(); // Revert optimistic update
+      return false;
     } finally {
       setIsCanceling(false);
     }
@@ -267,28 +325,44 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
   const handleUpdateBooking = async (
     bookingId: string,
     data: Partial<BookingData>
-  ) => {
+  ): Promise<boolean> => {
     setIsUpdating(true);
     setUpdateError(null);
     try {
-      startTransition(async () => {
-        addOptimisticBooking({
-          action: "update",
-          data: { id: bookingId, ...data },
+      // Sử dụng Promise để đợi cho đến khi các thao tác trong startTransition hoàn thành
+      return await new Promise<boolean>((resolve) => {
+        startTransition(async () => {
+          try {
+            addOptimisticBooking({
+              action: "update",
+              data: { id: bookingId, ...data },
+            });
+            const result = await updateBookingAction(
+              bookingId,
+              data as BookingData
+            );
+            if (!result.success) {
+              toast.error(result.message || "Không thể cập nhật lịch họp");
+              setUpdateError(
+                new Error(result.message || "Không thể cập nhật lịch họp")
+              );
+              resolve(false);
+              return;
+            }
+            await mutateBookings();
+            toast.success("Cập nhật lịch họp thành công");
+            resolve(true);
+          } catch (innerErr) {
+            const innerError =
+              innerErr instanceof Error
+                ? innerErr
+                : new Error("Không thể cập nhật lịch họp");
+            setUpdateError(innerError);
+            toast.error(innerError.message);
+            await mutateBookings(); // Revert optimistic update
+            resolve(false);
+          }
         });
-        const result = await updateBookingAction(
-          bookingId,
-          data as BookingData
-        );
-        if (!result.success) {
-          toast.error(result.message || "Không thể cập nhật lịch họp");
-          setUpdateError(
-            new Error(result.message || "Không thể cập nhật lịch họp")
-          );
-          return;
-        }
-        await mutateBookings();
-        toast.success("Cập nhật lịch họp thành công");
       });
     } catch (err) {
       const error =
@@ -296,6 +370,7 @@ export function BookingProvider({ children }: { children: React.ReactNode }) {
       setUpdateError(error);
       toast.error(error.message);
       await mutateBookings(); // Revert optimistic update
+      return false;
     } finally {
       setIsUpdating(false);
     }

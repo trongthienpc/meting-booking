@@ -107,7 +107,7 @@ export function FuturisticEventCard({
         }}
       />
 
-      <div className="relative bg-gradient-to-br from-gray-900 to-gray-800 rounded-3xl overflow-hidden shadow-2xl group">
+      <div className="relative box-border border-2 border-sky-500 border-dashed overflow-x-hidden bg-gradient-to-br  dark:from-gray-900 dark:to-gray-800 from-white to-white rounded-3xl overflow-hidden shadow-lg group">
         {/* Các hình trang trí */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl" />
         <div className="absolute bottom-0 left-0 w-24 h-24 bg-purple-500/10 rounded-full translate-y-1/2 -translate-x-1/2 blur-xl" />
@@ -122,40 +122,42 @@ export function FuturisticEventCard({
         </div>
 
         {/* Nội dung chính */}
-        <div className="relative p-6 text-white">
+        <div className="relative p-6 text-gray-900 dark:text-white">
           <div className="flex items-start gap-6">
             {/* Phần ngày tháng */}
-            <div className="flex flex-col items-center justify-center bg-white/10 backdrop-blur-sm rounded-2xl p-3 min-w-[80px]">
-              <span className="text-xs font-medium text-blue-300">{month}</span>
+            <div className="flex flex-col items-center justify-center bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm rounded-2xl p-3 min-w-[80px]">
+              <span className="text-xs font-medium text-blue-600 dark:text-blue-300">
+                {month}
+              </span>
               <span className="text-3xl font-bold">{dayOfMonth}</span>
-              <span className="text-xs font-medium text-blue-300">
+              <span className="text-xs font-medium text-blue-600 dark:text-blue-300">
                 {dayOfWeek}
               </span>
             </div>
 
             {/* Phần tiêu đề và thông tin */}
             <div className="flex-1">
-              <h3 className="text-xl font-bold leading-tight line-clamp-2 group-hover:text-cyan-300 transition-colors">
+              <h3 className="text-xl font-bold leading-tight line-clamp-2 group-hover:text-cyan-600 dark:group-hover:text-cyan-300 transition-colors">
                 {event.title}
               </h3>
 
               <div className="mt-3 flex flex-wrap gap-3">
-                <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 text-xs">
-                  <Clock className="w-3.5 h-3.5 text-cyan-400" />
+                <div className="flex items-center gap-1.5 bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 text-xs">
+                  <Clock className="w-3.5 h-3.5 text-cyan-600 dark:text-cyan-400" />
                   <span>
                     {startTime} - {endTime}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 text-xs">
-                  <MapPin className="w-3.5 h-3.5 text-purple-400" />
+                <div className="flex items-center gap-1.5 bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 text-xs">
+                  <MapPin className="w-3.5 h-3.5 text-purple-600 dark:text-purple-400" />
                   <span className="truncate max-w-[150px]">
                     {event.Room?.name}
                   </span>
                 </div>
 
-                <div className="flex items-center gap-1.5 bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 text-xs">
-                  <User className="w-3.5 h-3.5 text-blue-400" />
+                <div className="flex items-center gap-1.5 bg-gray-100/80 dark:bg-white/10 backdrop-blur-sm rounded-full px-3 py-1 text-xs">
+                  <User className="w-3.5 h-3.5 text-blue-600 dark:text-blue-400" />
                   <span>{event.Creator?.fullname}</span>
                 </div>
               </div>
@@ -166,31 +168,35 @@ export function FuturisticEventCard({
               <Button
                 size="icon"
                 variant="ghost"
-                className="h-8 w-8 rounded-full bg-white/10 hover:bg-white/20 text-white"
+                className="h-8 w-8 rounded-full bg-gray-100/80 dark:bg-white/10 hover:bg-gray-200/80 dark:hover:bg-white/20 text-gray-700 dark:text-white"
                 onClick={() => onEdit(event)}
               >
                 <Pencil className="w-4 h-4" />
               </Button>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="h-8 w-8 rounded-full bg-white/10 hover:bg-red-500/30 text-white"
-                onClick={() => onDelete()}
-              >
-                <Trash2 className="w-4 h-4" />
-              </Button>
+              {new Date(event.startTime) > new Date() && (
+                <Button
+                  size="icon"
+                  variant="ghost"
+                  className="h-8 w-8 rounded-full bg-gray-100/80 dark:bg-white/10 hover:bg-red-100/80 dark:hover:bg-red-500/30 text-gray-700 dark:text-white"
+                  onClick={() => onDelete()}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              )}
             </div>
           </div>
 
           {/* Phần timeline */}
           <div className="mt-6 mb-2">
-            <div className="flex justify-between items-center text-xs text-gray-400 mb-1">
+            <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-400 mb-1">
               <span>Tiến trình</span>
-              <span className="text-cyan-400 font-medium">{duration} phút</span>
+              <span className="text-cyan-600 dark:text-cyan-400 font-medium">
+                {duration} phút
+              </span>
             </div>
 
             <div
-              className="relative h-1.5 bg-gray-700 rounded-full overflow-hidden"
+              className="relative h-1.5 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden"
               ref={timelineRef}
             >
               <motion.div
@@ -204,7 +210,7 @@ export function FuturisticEventCard({
               {timePoints.map((point, index) => (
                 <div
                   key={index}
-                  className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-gray-800 border-2 border-gray-600 rounded-full"
+                  className="absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 rounded-full"
                   style={{ left: `${(point.position / timelineWidth) * 100}%` }}
                 >
                   {point.label && (
