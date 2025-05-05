@@ -91,12 +91,7 @@ const Page = () => {
           <Button className="text-white" onClick={() => setIsOpen(true)}>
             Create meeting room
           </Button>
-          <RoomSheet
-            isOpen={isOpen}
-            onOpenChange={setIsOpen}
-            mode={mode}
-            initialData={selectedRoom}
-          />
+          <RoomSheet isOpen={isOpen} onOpenChange={setIsOpen} mode={mode} initialData={selectedRoom} />
         </div>
       </div>
 
@@ -109,12 +104,7 @@ const Page = () => {
       />
 
       {viewMode === "table" ? (
-        <DataTable
-          data={rooms}
-          columns={columns}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
+        <DataTable data={rooms} columns={columns} onEdit={handleEdit} onDelete={handleDelete} />
       ) : (
         <div className="w-full h-full">
           <CalendarView />

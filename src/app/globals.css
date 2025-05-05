@@ -392,10 +392,3 @@
   box-shadow: 12px 12px var(--color-violet-500)
 } */
 
-.block {
-  position: absolute;
-  height: 50px;
-  width: 100px;
-  background: #6969ff;
-  box-shadow: 10px 10px 50px #7171df;
-}

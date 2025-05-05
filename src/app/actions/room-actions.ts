@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { revalidatePath } from "next/cache";
 import { validateRequest } from "@/lib/lucia";
 import { handleServerError, ServerActionError } from "@/lib/utils";
-import { CreateRoomFormData,  UpdateRoomFormData, createRoomSchema, updateRoomSchema } from "@/lib/schemas/room";
+import { CreateRoomFormData, UpdateRoomFormData, createRoomSchema, updateRoomSchema } from "@/lib/schemas/room";
 import { db } from "@/lib/db";
 import { Room } from "@/generated/prisma";
+import { read, utils } from "xlsx";
 
 // Tạo phòng họp mới
 export async function createRoom(data: CreateRoomFormData): Promise<{ success: true; data: Room } | ServerActionError> {
@@ -27,7 +29,6 @@ export async function createRoom(data: CreateRoomFormData): Promise<{ success: t
     const room = await db.room.create({
       data: {
         ...validated,
-
       },
       include: {
         Facilities: true,
@@ -69,7 +70,6 @@ export async function updateRoom(data: UpdateRoomFormData): Promise<{ success: t
       where: { id },
       data: {
         ...updateData,
-
       },
       include: {
         Facilities: true,
@@ -147,5 +147,92 @@ export async function getRooms(): Promise<{ success: true; data: Room[] } | Serv
   } catch (error) {
     console.error("Lỗi khi lấy danh sách phòng họp:", error);
     return handleServerError(error, "Không thể lấy danh sách phòng họp");
+  }
+}
+
+type ImportResult = {
+  success: boolean;
+  imported: number;
+  failed: number;
+  errors: Array<{ row: number; message: string }>;
+};
+
+export async function importRooms(
+  formData: FormData
+): Promise<{ success: true; data: ImportResult } | ServerActionError> {
+  try {
+    // Validate request
+    const { user } = await validateRequest();
+    if (!user) return handleServerError("Unauthorized");
+
+    const file = formData.get("file") as File;
+    if (!file) return handleServerError("No file provided");
+
+    // Read file content
+    const buffer = await file.arrayBuffer();
+    const workbook = read(buffer);
+    const worksheet = workbook.Sheets[workbook.SheetNames[0]];
+    const data = utils.sheet_to_json(worksheet) as Record<string, any>[];
+
+    const results: ImportResult = {
+      success: true,
+      imported: 0,
+      failed: 0,
+      errors: [],
+    };
+
+    // Process each row
+    for (let i = 0; i < data.length; i++) {
+      const row = data[i];
+      try {
+        // Validate required fields
+        if (!row.name) {
+          throw new Error("Room name is required");
+        }
+        if (!row.capacity || row.capacity <= 0) {
+          throw new Error("Capacity must be greater than 0");
+        }
+
+        // Upsert room
+        await db.room.upsert({
+          where: { name: row.name },
+          update: {
+            capacity: parseInt(row.capacity),
+            floor: row.floor,
+            description: row.description,
+            status: row.status === "true" || row.status === true,
+            minBookingTime: parseInt(row.minBookingTime) || 30,
+            maxBookingTime: parseInt(row.maxBookingTime) || 480,
+            maxAdvanceBooking: parseInt(row.maxAdvanceBooking) || 30,
+            cancellationTime: parseInt(row.cancellationTime) || 24,
+          },
+          create: {
+            name: row.name,
+            capacity: parseInt(row.capacity),
+            floor: row.floor,
+            description: row.description,
+            status: row.status === "true" || row.status === true,
+            minBookingTime: parseInt(row.minBookingTime) || 30,
+            maxBookingTime: parseInt(row.maxBookingTime) || 480,
+            maxAdvanceBooking: parseInt(row.maxAdvanceBooking) || 30,
+            cancellationTime: parseInt(row.cancellationTime) || 24,
+          },
+        });
+
+        results.imported++;
+      } catch (error) {
+        results.failed++;
+        results.errors.push({
+          row: i + 2, // +1 for header, +1 for 0-index
+          message: error instanceof Error ? error.message : "Unknown error",
+        });
+      }
+    }
+
+    revalidatePath("/room");
+    return { success: true, data: results };
+  } catch (error) {
+    console.error("Error importing rooms:", error);
+    return handleServerError(error, "Failed to import rooms");
   }
 }
