@@ -91,7 +91,7 @@ export function FuturisticEventCard({
   return (
     <motion.div
       ref={cardRef}
-      className="relative overflow-visible"
+      className="relative overflow-hidden"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -306,7 +306,7 @@ export function FuturisticEventCard({
                   <Button
                     variant="default"
                     size="sm"
-                    className=""
+                    className="text-white"
                     onClick={() => onEdit(event)}
                   >
                     <Pencil className="w-3.5 h-3.5 mr-1" />
